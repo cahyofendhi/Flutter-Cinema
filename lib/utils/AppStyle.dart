@@ -8,11 +8,11 @@ enum ThemeColor {
   blackText,
   greyText,
   grey,
+  greyTextDesc,
   greyYoung,
 }
 
 class AppStyle {
-
   static Color getColor([ThemeColor color = ThemeColor.primary]) {
     switch (color) {
       case ThemeColor.blackText:
@@ -27,8 +27,61 @@ class AppStyle {
         return HexColor("BFC0C2");
       case ThemeColor.greyYoung:
         return HexColor("F8FAFB");
+      case ThemeColor.greyTextDesc:
+        return HexColor("#A5A7A9");
       default:
         return HexColor("FFFFFF");
     }
   }
+
+  static Text textSubtitle([String title, Color textColor]) {
+    Color _textColor = getColor(ThemeColor.greyText);
+    if (textColor != null) {
+      _textColor = textColor;
+    }
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 12,
+        letterSpacing: -0.04,
+        color: _textColor,
+      ),
+    );
+  }
+
+  static Text textTitleItem([String title, Color textColor]) {
+    Color _textColor = getColor(ThemeColor.secondary);
+    if (textColor != null) {
+      _textColor = textColor;
+    }
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 14,
+        letterSpacing: -0.04,
+        color: _textColor,
+      ),
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  static Text textTitleBoldItem([String title, Color textColor, int line = 2]) {
+    Color _textColor = getColor(ThemeColor.secondary);
+    if (textColor != null) {
+      _textColor = textColor;
+    }
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        letterSpacing: -0.04,
+        color: _textColor,
+      ),
+      maxLines: line,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
 }
