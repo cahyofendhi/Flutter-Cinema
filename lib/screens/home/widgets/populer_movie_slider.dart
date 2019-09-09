@@ -20,6 +20,7 @@ class _PopulerMovieSliderState extends State<PopulerMovieSlider> {
       aspectRatio: 16 / 9,
       viewportFraction: 0.8,
       enlargeCenterPage: true,
+      initialPage: 0,
       items: data.map((i) {
         return Builder(
           builder: (BuildContext context) {
