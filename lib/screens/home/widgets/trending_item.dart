@@ -1,4 +1,5 @@
-import 'package:cinema_flt/components/widgets/ratingbar_result_item.dart';
+import 'dart:math' as math;
+import 'package:cinema_flt/components/widgets/rating_result.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +54,11 @@ class TredingItem extends StatelessWidget {
                     'Avanger End Game',
                     AppStyle.getColor(ThemeColor.blackText),
                   ),
-                  RatingBarRestultItem(4.5),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    child: RatingResult(format((3.7 + index - 0.4))),
+                  ),
+                  // RatingBarRestultItem(4.5),
                   AppStyle.textSubtitle(
                     'Adventure, Action',
                     AppStyle.getColor(ThemeColor.greyTextDesc),
@@ -72,5 +77,9 @@ class TredingItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  double format(double n) {
+    return n.ceilToDouble();
   }
 }

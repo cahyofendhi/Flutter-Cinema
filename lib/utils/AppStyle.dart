@@ -77,6 +77,7 @@ class AppStyle {
         fontSize: 12,
         fontWeight: FontWeight.w500,
         letterSpacing: -0.04,
+        height: 1.5,
         color: _textColor,
       ),
       maxLines: line,
