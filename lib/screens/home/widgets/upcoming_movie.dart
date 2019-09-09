@@ -2,45 +2,31 @@ import 'package:flutter/material.dart';
 
 import 'package:snaplist/snaplist_view.dart';
 
-class UpcomingMovieSlider extends StatefulWidget {
+import 'upcoming_movie_item.dart';
+
+class PopulerMovieSlider extends StatefulWidget {
   @override
-  _UpcomingMovieSliderState createState() => _UpcomingMovieSliderState();
+  _PopulerMovieSliderState createState() => _PopulerMovieSliderState();
 }
 
-class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
+class _PopulerMovieSliderState extends State<PopulerMovieSlider> {
   final data = [1, 2, 3, 4, 5, 6, 7, 8];
   int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final Size cardSize = Size(screenWidth / 3, screenWidth / 2);
+    final heightCard = screenWidth / 1.5;
+    final Size cardSize = Size(screenWidth / 3, heightCard);
     return SizedBox(
       width: double.infinity,
-      height: screenWidth / 2,
+      height: heightCard,
       child: SnapList(
         padding: EdgeInsets.symmetric(horizontal: 25),
         sizeProvider: (index, data) => cardSize,
         separatorProvider: (index, data) => Size(15.0, 15.0),
         builder: (context, index, data) {
-          return Padding(
-            padding:
-                const EdgeInsets.only(top: 10, bottom: 10),
-            child: Container(
-              width: screenWidth / 3,
-              height: screenWidth / 2,
-              decoration: BoxDecoration(
-                color: Colors.amber,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      offset: Offset(1.0, 2.0),
-                      blurRadius: 1.0),
-                ],
-              ),
-            ),
-          );
+          return UpcomingMovieItem(index);
         },
         count: 5,
       ),
