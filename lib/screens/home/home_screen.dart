@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //! header content
       alignment: Alignment.bottomCenter,
       decoration: BoxDecoration(
-        color: AppStyle.getColor(ThemeColor.primary),
+        color: Colors.transparent,
       ),
       height: 150,
       child: _formSearch(),
@@ -92,11 +92,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _populerMovie() {
-    return _containerCategory('Populer Movie', PopulerMovieSlider());
+    return _containerCategory('Upcoming Movie', UpcomingMovieSlider());
   }
 
   Widget _upcomingMovie() {
-    return _containerCategory('Upcoming Movie', UpcomingMovieSlider());
+    return _containerCategory('Populer Movie', PopulerMovieSlider());
   }
 
   Widget _trendingMovie() {

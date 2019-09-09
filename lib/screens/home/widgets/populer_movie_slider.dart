@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 
 import 'package:snaplist/snaplist_view.dart';
 
-class PopulerMovieSlider extends StatefulWidget {
+class UpcomingMovieSlider extends StatefulWidget {
   @override
-  _PopulerMovieSliderState createState() => _PopulerMovieSliderState();
+  _UpcomingMovieSliderState createState() => _UpcomingMovieSliderState();
 }
 
-class _PopulerMovieSliderState extends State<PopulerMovieSlider> {
+class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
   final data = [1, 2, 3, 4, 5, 6, 7, 8];
   int _currentIndex = 0;
 
@@ -67,7 +67,12 @@ class _PopulerMovieSliderState extends State<PopulerMovieSlider> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
+                Colors.black.withOpacity(0.1),
+                Colors.black.withOpacity(0.3),
                 Colors.black.withOpacity(0.5),
+                Colors.black.withOpacity(0.7),
+                Colors.black.withOpacity(0.8),
+                Colors.black.withOpacity(0.9),
                 Colors.black,
               ],
               begin: Alignment.topCenter,
@@ -86,22 +91,12 @@ class _PopulerMovieSliderState extends State<PopulerMovieSlider> {
 
   Widget _titleContent() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            'Avanger Endmen',
-            style: TextStyle(
-              color: AppStyle.getColor(ThemeColor.secondary),
-              fontSize: 14,
-            ),
-            textAlign: TextAlign.left,
-          ),
-          SizedBox(
-            height: 3,
-          ),
+          AppStyle.textTitleItem('Avanger End Game'),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
