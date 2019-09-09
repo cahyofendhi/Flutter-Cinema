@@ -110,10 +110,6 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               AppStyle.textSubtitle('2h 3m'),
-              TextDotCenter(),
-              AppStyle.textSubtitle('Rate 5'),
-              TextDotCenter(),
-              AppStyle.textSubtitle('8.5'),
             ],
           ),
         ],

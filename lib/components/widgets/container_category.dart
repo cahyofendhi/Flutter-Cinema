@@ -12,7 +12,7 @@ class ContainerCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: 15),
       child: Column(
         children: <Widget>[
           Padding(
@@ -26,7 +26,7 @@ class ContainerCategory extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 20,
           ),
           content,
         ],

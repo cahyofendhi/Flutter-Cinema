@@ -1,3 +1,4 @@
+import 'package:cinema_flt/components/widgets/rating_result.dart';
 import 'package:cinema_flt/components/widgets/ratingbar_result_item.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,8 @@ class PopulerMovieItem extends StatelessWidget {
             'Avanged End Game',
             AppStyle.getColor(ThemeColor.blackText),
           ),
-          RatingBarRestultItem(4.5),
+          // RatingResult(4.0),
+          // RatingBarRestultItem(4.5),
           AppStyle.textSubtitle(
             'Adventure, Action',
             AppStyle.getColor(ThemeColor.greyTextDesc),
