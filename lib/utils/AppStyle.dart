@@ -12,7 +12,6 @@ enum ThemeColor {
 }
 
 class AppStyle {
-
   static Color getColor([ThemeColor color = ThemeColor.primary]) {
     switch (color) {
       case ThemeColor.blackText:
@@ -30,5 +29,20 @@ class AppStyle {
       default:
         return HexColor("FFFFFF");
     }
+  }
+
+  static Text textSubtitle([String title, Color textColor]) {
+    Color _textColor = getColor(ThemeColor.greyText);
+    if (textColor != null) {
+      _textColor = textColor;
+    }
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 12,
+        letterSpacing: -0.04,
+        color: _textColor,
+      ),
+    );
   }
 }
