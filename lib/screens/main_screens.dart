@@ -1,7 +1,8 @@
 import 'package:cinema_flt/screens/home/home_screen.dart';
-import 'package:cinema_flt/screens/tv_screen.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
+
+import 'tv/tv_screen.dart';
 
 class MainScreens extends StatefulWidget {
   static const routeName = '/';

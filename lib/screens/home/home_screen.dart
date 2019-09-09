@@ -1,4 +1,4 @@
-import 'package:cinema_flt/components/widgets/title_category.dart';
+import 'package:cinema_flt/components/widgets/container_category.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/screens/home/widgets/upcoming_movie_slider.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
@@ -15,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -93,39 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _upcomingMovie() {
-    return _containerCategory('Upcoming Movie', UpcomingMovieSlider());
+    return ContainerCategory('Upcoming Movie', UpcomingMovieSlider());
   }
 
   Widget _populerMovie() {
-    return _containerCategory('Populer Movie', PopulerMovieSlider());
+    return ContainerCategory('Populer Movie', PopulerMovieSlider());
   }
 
   Widget _trendingMovie() {
-    return _containerCategory('Trending Movie', TrendingMovie());
-  }
-
-  Widget _containerCategory(String title, Widget content) {
-    return Padding(
-      padding: EdgeInsets.only(top: 20),
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: TitleCategory(
-                title,
-                AppStyle.getColor(ThemeColor.blackText),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          content,
-        ],
-      ),
-    );
+    return ContainerCategory('Trending Movie', TrendingMovie());
   }
 
 }

@@ -66,7 +66,7 @@ class AppStyle {
     );
   }
 
-  static Text textTitleBoldItem([String title, Color textColor]) {
+  static Text textTitleBoldItem([String title, Color textColor, int line = 2]) {
     Color _textColor = getColor(ThemeColor.secondary);
     if (textColor != null) {
       _textColor = textColor;
@@ -79,7 +79,7 @@ class AppStyle {
         letterSpacing: -0.04,
         color: _textColor,
       ),
-      maxLines: 2,
+      maxLines: line,
       overflow: TextOverflow.ellipsis,
     );
   }

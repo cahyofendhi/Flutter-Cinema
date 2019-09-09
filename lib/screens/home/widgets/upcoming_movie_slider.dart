@@ -27,11 +27,14 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
       items: data.map((i) {
         return Builder(
           builder: (BuildContext context) {
-            return Stack(
-              children: <Widget>[
-                _imageView(screenWidth),
-                _contentView(contentHeight),
-              ],
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
+                children: <Widget>[
+                  _imageView(screenWidth),
+                  _contentView(contentHeight),
+                ],
+              ),
             );
           },
         );
@@ -45,7 +48,13 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
       margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              color: Colors.grey.withOpacity(0.6),
+              offset: Offset(1.0, 5.0),
+              blurRadius: 4.0),
+        ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
