@@ -1,9 +1,10 @@
 import 'package:cinema_flt/components/widgets/title_category.dart';
-import 'package:cinema_flt/screens/home/widgets/populer_movie_slider.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
-import 'package:cinema_flt/screens/home/widgets/upcoming_movie.dart';
+import 'package:cinema_flt/screens/home/widgets/upcoming_movie_slider.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
+
+import 'widgets/populer_movie.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -18,8 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             _headerView(),
-            _populerMovie(),
             _upcomingMovie(),
+            _populerMovie(),
             _trendingMovie(),
           ],
         ),
@@ -91,11 +92,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _populerMovie() {
+  Widget _upcomingMovie() {
     return _containerCategory('Upcoming Movie', UpcomingMovieSlider());
   }
 
-  Widget _upcomingMovie() {
+  Widget _populerMovie() {
     return _containerCategory('Populer Movie', PopulerMovieSlider());
   }
 
