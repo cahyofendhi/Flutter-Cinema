@@ -1,12 +1,13 @@
 import 'dart:math' as math;
 import 'package:cinema_flt/components/widgets/rating_result.dart';
+import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
 
 class TredingItem extends StatelessWidget {
-  final index;
+  final Movie movie;
 
-  TredingItem(this.index);
+  TredingItem(this.movie);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,6 @@ class TredingItem extends StatelessWidget {
               width: imageWidth,
               height: imageHeight,
               decoration: BoxDecoration(
-                color: Colors.amber,
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
@@ -37,10 +37,8 @@ class TredingItem extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                child: Image.asset(
-                  index % 2 == 0
-                      ? 'assets/images/sample_7.jpeg'
-                      : 'assets/images/sample_4.jpeg',
+                child: Image.network(
+                  movie.getPosterImage(),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -48,26 +46,27 @@ class TredingItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   AppStyle.textTitleBoldItem(
-                    'Avanger End Game',
+                    movie.originalTitle,
                     AppStyle.getColor(ThemeColor.blackText),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 7),
-                    child: RatingResult(format((3.7 + index - 0.4))),
+                    child: RatingResult(format(movie.voteAverage)),
                   ),
                   // RatingBarRestultItem(4.5),
+                  // AppStyle.textSubtitle(
+                  //   'Adventure, Action',
+                  //   AppStyle.getColor(ThemeColor.greyTextDesc),
+                  // ),
+                  // SizedBox(
+                  //   height: 3,
+                  // ),
                   AppStyle.textSubtitle(
-                    'Adventure, Action',
-                    AppStyle.getColor(ThemeColor.greyTextDesc),
-                  ),
-                  SizedBox(
-                    height: 3,
-                  ),
-                  AppStyle.textSubtitle(
-                    '2h 3min',
+                    movie.getReleaseDate(),
                     AppStyle.getColor(ThemeColor.greyTextDesc),
                   ),
                 ],

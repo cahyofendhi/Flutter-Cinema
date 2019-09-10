@@ -1,15 +1,20 @@
+import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:flutter/material.dart';
 
 import 'trending_item.dart';
 
 class TrendingMovie extends StatefulWidget {
+
+  final List<Movie> movies;
+
+  TrendingMovie(this.movies);
+
   @override
   _TrendingMovieState createState() => _TrendingMovieState();
 }
 
 class _TrendingMovieState extends State<TrendingMovie>
     with TickerProviderStateMixin {
-  final movies = [1, 2, 3, 4, 5];
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +22,9 @@ class _TrendingMovieState extends State<TrendingMovie>
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: movies.length,
+      itemCount: widget.movies.length,
       itemBuilder: (context, index) {
-        return TredingItem(index);
+        return TredingItem(widget.movies[index]);
       },
     );
   }

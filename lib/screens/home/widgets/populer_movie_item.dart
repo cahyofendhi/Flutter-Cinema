@@ -1,12 +1,12 @@
+import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 
-
-
 class PopulerMovieItem extends StatelessWidget {
   final index;
+  final Movie movie;
 
-  PopulerMovieItem(this.index);
+  PopulerMovieItem(this.index, this.movie);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,6 @@ class PopulerMovieItem extends StatelessWidget {
             width: screenWidth / 3,
             height: screenWidth / 2.7,
             decoration: BoxDecoration(
-              color: Colors.amber,
               borderRadius: BorderRadius.circular(10),
               boxShadow: <BoxShadow>[
                 BoxShadow(
@@ -32,10 +31,8 @@ class PopulerMovieItem extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.asset(
-                index % 2 == 0
-                    ? 'assets/images/sample_7.jpeg'
-                    : 'assets/images/sample_4.jpeg',
+              child: Image.network(
+                movie.getPosterImage(),
                 fit: BoxFit.cover,
               ),
             ),
@@ -44,23 +41,23 @@ class PopulerMovieItem extends StatelessWidget {
             height: 15,
           ),
           AppStyle.textTitleBoldItem(
-            'Avanged End Game',
+            movie.originalTitle,
             AppStyle.getColor(ThemeColor.blackText),
           ),
           // RatingResult(4.0),
           // RatingBarRestultItem(4.5),
+          // SizedBox(
+          //   height: 7,
+          // ),
+          // AppStyle.textSubtitle(
+          //   'Adventure, Action',
+          //   AppStyle.getColor(ThemeColor.greyTextDesc),
+          // ),
           SizedBox(
             height: 7,
           ),
           AppStyle.textSubtitle(
-            'Adventure, Action',
-            AppStyle.getColor(ThemeColor.greyTextDesc),
-          ),
-          SizedBox(
-            height: 7,
-          ),
-          AppStyle.textSubtitle(
-            '2h 3min',
+            movie.getReleaseDate(),
             AppStyle.getColor(ThemeColor.greyTextDesc),
           ),
         ],
