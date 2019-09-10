@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 
 
 class Movie {
@@ -32,6 +34,20 @@ class Movie {
       this.overview,
       this.releaseDate});
 
+  String getPosterImage() {
+    return 'http://image.tmdb.org/t/p/w185/$posterPath';
+  }
+
+  String getReleaseDate() {
+    return releaseDate != null ? convertDate(releaseDate) : '';
+  }
+
+  String convertDate(String str){
+    DateTime date = DateTime.parse(str);
+    var formatter = new DateFormat('dd/MMM/yyyy');
+    return formatter.format(date);
+  }
+
   Movie.fromJson(Map<String, dynamic> json) {
     popularity = json['popularity'];
     voteCount = json['vote_count'];
@@ -44,7 +60,7 @@ class Movie {
     originalTitle = json['original_title'];
     genreIds = json['genre_ids'].cast<int>();
     title = json['title'];
-    voteAverage = json['vote_average'];
+    voteAverage = json['vote_average'].toDouble();
     overview = json['overview'];
     releaseDate = json['release_date'];
   }

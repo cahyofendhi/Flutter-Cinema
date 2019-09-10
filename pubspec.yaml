@@ -27,9 +27,11 @@ dependencies:
   flutter_swiper: ^1.1.6
   snaplist: ^0.1.8
   flutter_rating_bar: ^2.0.0+2
+  intl: ^0.16.0
 
   chopper: ^3.0.0
   provider: ^3.1.0
+  logging: ^0.11.3+2
   json_serializable: ^3.2.2
   json_annotation: ^3.0.0
 
