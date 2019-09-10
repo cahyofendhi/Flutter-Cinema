@@ -13,7 +13,7 @@ class TvVideo extends StatelessWidget {
       width: double.infinity,
       height: heightCard,
       child: SnapList(
-        padding: EdgeInsets.symmetric(horizontal: 25),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         sizeProvider: (index, data) => cardSize,
         separatorProvider: (index, data) => Size(15.0, 15.0),
         builder: (context, index, data) {

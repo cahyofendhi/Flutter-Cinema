@@ -13,7 +13,7 @@ class _TvPopulerState extends State<TvPopuler> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final heightCard = screenWidth / 1.9;
+    final heightCard = screenWidth / 2;
     final imageWidth = (screenWidth / 2) / 1.83;
     final imageHeight = imageWidth + (imageWidth / 2.5);
     final Size cardSize = Size(imageWidth, heightCard);
@@ -21,7 +21,7 @@ class _TvPopulerState extends State<TvPopuler> {
       width: double.infinity,
       height: heightCard,
       child: SnapList(
-        padding: EdgeInsets.symmetric(horizontal: 25),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         sizeProvider: (index, data) => cardSize,
         separatorProvider: (index, data) => Size(15.0, 15.0),
         builder: (context, index, data) {
