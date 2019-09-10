@@ -34,7 +34,7 @@ class AppStyle {
     }
   }
 
-  static Text textSubtitle([String title, Color textColor]) {
+  static Text textSubtitle([String title, Color textColor, int line = 2]) {
     Color _textColor = getColor(ThemeColor.greyText);
     if (textColor != null) {
       _textColor = textColor;
@@ -46,6 +46,7 @@ class AppStyle {
         letterSpacing: -0.04,
         color: _textColor,
       ),
+      maxLines: line,
     );
   }
 
