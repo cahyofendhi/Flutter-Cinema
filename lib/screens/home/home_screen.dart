@@ -56,8 +56,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
             ),
-            _populerMovie(),
-            _trendingMovie(),
+            StreamBuilder(
+              stream: _homeBloc.populerMovies,
+              builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
+                if (snapshot.data == null || snapshot.data.results.isEmpty) {
+                  return Container();
+                } else {
+                  return _populerMovie(snapshot.data.results);
+                }
+              },
+            ),
+            StreamBuilder(
+              stream: _homeBloc.trendingMovies,
+              builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
+                if (snapshot.data == null || snapshot.data.results.isEmpty) {
+                  return Container();
+                } else {
+                  return _trendingMovie(snapshot.data.results);
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -132,11 +150,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return ContainerCategory('Upcoming Movie', UpcomingMovieSlider(movies));
   }
 
-  Widget _populerMovie() {
-    return ContainerCategory('Populer Movie', PopulerMovieSlider());
+  Widget _populerMovie(List<Movie> movies) {
+    return ContainerCategory('Populer Movie', PopulerMovie(movies));
   }
 
-  Widget _trendingMovie() {
-    return ContainerCategory('Trending Movie', TrendingMovie());
+  Widget _trendingMovie(List<Movie> movies) {
+    return ContainerCategory('Top Rate Movie', TrendingMovie(movies));
   }
 }

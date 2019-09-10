@@ -1,16 +1,22 @@
+import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:flutter/material.dart';
 
 import 'package:snaplist/snaplist_view.dart';
 
 import 'populer_movie_item.dart';
 
-class PopulerMovieSlider extends StatefulWidget {
+class PopulerMovie extends StatefulWidget {
+
+  final List<Movie> movies;
+
+  PopulerMovie(this.movies);
+
   @override
-  _PopulerMovieSliderState createState() => _PopulerMovieSliderState();
+  _PopulerMovieState createState() => _PopulerMovieState();
 }
 
-class _PopulerMovieSliderState extends State<PopulerMovieSlider> {
-  final data = [1, 2, 3, 4, 5, 6, 7, 8];
+class _PopulerMovieState extends State<PopulerMovie> {
+  
   int _currentIndex = 0;
 
   @override
@@ -26,9 +32,9 @@ class _PopulerMovieSliderState extends State<PopulerMovieSlider> {
         sizeProvider: (index, data) => cardSize,
         separatorProvider: (index, data) => Size(15.0, 15.0),
         builder: (context, index, data) {
-          return PopulerMovieItem(index);
+          return PopulerMovieItem(index, widget.movies[index]);
         },
-        count: 5,
+        count: widget.movies.length,
       ),
     );
   }
