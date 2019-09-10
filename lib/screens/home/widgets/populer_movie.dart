@@ -4,7 +4,6 @@ import 'package:snaplist/snaplist_view.dart';
 
 import 'populer_movie_item.dart';
 
-
 class PopulerMovieSlider extends StatefulWidget {
   @override
   _PopulerMovieSliderState createState() => _PopulerMovieSliderState();
@@ -17,9 +16,9 @@ class _PopulerMovieSliderState extends State<PopulerMovieSlider> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final heightCard = screenWidth / 1.5;
+    final heightCard = screenWidth / 1.6;
     final Size cardSize = Size(screenWidth / 3, heightCard);
-    return SizedBox(
+    return Container(
       width: double.infinity,
       height: heightCard,
       child: SnapList(

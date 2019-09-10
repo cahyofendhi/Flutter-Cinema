@@ -1,8 +1,7 @@
-import 'package:cinema_flt/components/widgets/rating_result.dart';
-import 'package:cinema_flt/components/widgets/ratingbar_result_item.dart';
-import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:cinema_flt/utils/AppStyle.dart';
+
+
 
 class PopulerMovieItem extends StatelessWidget {
   final index;
@@ -42,7 +41,7 @@ class PopulerMovieItem extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 15,
           ),
           AppStyle.textTitleBoldItem(
             'Avanged End Game',
@@ -50,12 +49,15 @@ class PopulerMovieItem extends StatelessWidget {
           ),
           // RatingResult(4.0),
           // RatingBarRestultItem(4.5),
+          SizedBox(
+            height: 7,
+          ),
           AppStyle.textSubtitle(
             'Adventure, Action',
             AppStyle.getColor(ThemeColor.greyTextDesc),
           ),
           SizedBox(
-            height: 3,
+            height: 7,
           ),
           AppStyle.textSubtitle(
             '2h 3min',
