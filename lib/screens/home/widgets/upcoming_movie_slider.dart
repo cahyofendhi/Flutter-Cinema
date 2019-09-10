@@ -1,17 +1,23 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cinema_flt/components/widgets/text_dot_center.dart';
+import 'package:cinema_flt/models/movie/movie.dart';
+import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
 
-import 'package:snaplist/snaplist_view.dart';
 
 class UpcomingMovieSlider extends StatefulWidget {
+
+  final List<Movie> movies;
+
+  UpcomingMovieSlider(this.movies);
+
   @override
   _UpcomingMovieSliderState createState() => _UpcomingMovieSliderState();
 }
 
 class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
-  final data = [1, 2, 3, 4, 5, 6, 7, 8];
+  
   int _currentIndex = 0;
 
   @override
@@ -24,15 +30,15 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
       viewportFraction: 0.8,
       enlargeCenterPage: true,
       initialPage: 0,
-      items: data.map((i) {
+      items: widget.movies.map((i) {
         return Builder(
           builder: (BuildContext context) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Stack(
                 children: <Widget>[
-                  _imageView(screenWidth),
-                  _contentView(contentHeight),
+                  _imageView(screenWidth, i.getPosterImage()),
+                  _contentView(contentHeight, i),
                 ],
               ),
             );
@@ -42,7 +48,7 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
     );
   }
 
-  Widget _imageView(double screenWidth) {
+  Widget _imageView(double screenWidth, String poster) {
     return Container(
       width: screenWidth,
       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -58,15 +64,12 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
-        child: Image.asset(
-          'assets/images/sample_6.jpg',
-          fit: BoxFit.cover,
-        ),
+        child: Image.network(poster, fit: BoxFit.cover),
       ),
     );
   }
 
-  Widget _contentView(double contentHeight) {
+  Widget _contentView(double contentHeight, Movie movie) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -92,24 +95,24 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
               bottomRight: Radius.circular(10),
             ),
           ),
-          child: _titleContent(),
+          child: _titleContent(movie.originalTitle, movie.getReleaseDate()),
         ),
       ],
     );
   }
 
-  Widget _titleContent() {
+  Widget _titleContent(String title, String releaseDate) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          AppStyle.textTitleItem('Avanger End Game'),
+          AppStyle.textTitleItem(title),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              AppStyle.textSubtitle('2h 3m'),
+              AppStyle.textSubtitle('$releaseDate'),
             ],
           ),
         ],
