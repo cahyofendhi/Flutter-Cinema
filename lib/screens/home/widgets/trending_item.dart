@@ -43,33 +43,36 @@ class TredingItem extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  AppStyle.textTitleBoldItem(
-                    movie.originalTitle,
-                    AppStyle.getColor(ThemeColor.blackText),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 7),
-                    child: RatingResult(format(movie.voteAverage)),
-                  ),
-                  // RatingBarRestultItem(4.5),
-                  // AppStyle.textSubtitle(
-                  //   'Adventure, Action',
-                  //   AppStyle.getColor(ThemeColor.greyTextDesc),
-                  // ),
-                  // SizedBox(
-                  //   height: 3,
-                  // ),
-                  AppStyle.textSubtitle(
-                    movie.getReleaseDate(),
-                    AppStyle.getColor(ThemeColor.greyTextDesc),
-                  ),
-                ],
+            Flexible(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AppStyle.textTitleBoldItem(
+                      movie.originalTitle,
+                      AppStyle.getColor(ThemeColor.blackText),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 7),
+                      child: RatingResult(format(movie.voteAverage)),
+                    ),
+                    // RatingBarRestultItem(4.5),
+                    // AppStyle.textSubtitle(
+                    //   'Adventure, Action',
+                    //   AppStyle.getColor(ThemeColor.greyTextDesc),
+                    // ),
+                    // SizedBox(
+                    //   height: 3,
+                    // ),
+                    AppStyle.textSubtitle(
+                      movie.getReleaseDate(),
+                      AppStyle.getColor(ThemeColor.greyTextDesc),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
