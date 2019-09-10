@@ -1,7 +1,9 @@
 import 'dart:math' as math;
+import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/components/widgets/rating_result.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 
 class TredingItem extends StatelessWidget {
@@ -35,13 +37,7 @@ class TredingItem extends StatelessWidget {
                       blurRadius: 4.0),
                 ],
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image.network(
-                  movie.getPosterImage(),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              child: ImageNetwork(movie.getPosterImage()),
             ),
             Flexible(
               child: Container(
@@ -60,13 +56,13 @@ class TredingItem extends StatelessWidget {
                       child: RatingResult(format(movie.voteAverage)),
                     ),
                     // RatingBarRestultItem(4.5),
-                    // AppStyle.textSubtitle(
-                    //   'Adventure, Action',
-                    //   AppStyle.getColor(ThemeColor.greyTextDesc),
-                    // ),
-                    // SizedBox(
-                    //   height: 3,
-                    // ),
+                    AppStyle.textSubtitle(
+                      getGenreString(movie.genreIds),
+                      AppStyle.getColor(ThemeColor.greyTextDesc),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
                     AppStyle.textSubtitle(
                       movie.getReleaseDate(),
                       AppStyle.getColor(ThemeColor.greyTextDesc),
