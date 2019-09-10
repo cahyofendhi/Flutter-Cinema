@@ -1,4 +1,5 @@
 import 'package:cinema_flt/components/widgets/container_category.dart';
+import 'package:cinema_flt/repository/movie_repository.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/screens/home/widgets/upcoming_movie_slider.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
@@ -12,6 +13,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    MovieRepository().getUpcomingMovie(1);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
