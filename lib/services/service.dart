@@ -6,21 +6,9 @@ part 'service.chopper.dart';
 
 @ChopperApi(baseUrl: '$BASE_URL/3/')
 abstract class Service extends ChopperService {
+  static Service create([ChopperClient client]) => _$Service(client);
 
   @Get(path: 'movie/{category}')
-  Future<Response> getUpcomingMovie(@Path('category') String category,
-                                        @Query() String api_key,
-                                        @Query() int page);
-
-  static Service create() {
-    final client = ChopperClient(
-      baseUrl: BASE_URL,
-      services: [
-        _$Service(),
-      ],
-      converter: JsonConverter(),
-    );
-    return _$Service(client);
-  }
-
+  Future<Response> getMovieList(@Path('category') String category,
+      @Query() String api_key, @Query() int page);
 }

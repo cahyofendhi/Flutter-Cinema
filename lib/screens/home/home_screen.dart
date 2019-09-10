@@ -1,9 +1,13 @@
+import 'package:cinema_flt/bloc/home_block.dart';
 import 'package:cinema_flt/components/widgets/container_category.dart';
+import 'package:cinema_flt/models/movie/movie.dart';
+import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/repository/movie_repository.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/screens/home/widgets/upcoming_movie_slider.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/populer_movie.dart';
 
@@ -13,11 +17,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  HomeBloc _homeBloc;
 
   @override
-  void initState() {
-    MovieRepository().getUpcomingMovie(1);
-    super.initState();
+  void didChangeDependencies() {
+    _homeBloc = Provider.of<HomeBloc>(context, listen: false);
+    _homeBloc.getAllCategoryMovie();
+    super.didChangeDependencies();
+  }
+
+  void _requestUpcoming([int page = 1]) {
+    _homeBloc.getUpcomingMovie(page);
+  }
+
+  void _requestPopuler([int page = 1]) {
+    _homeBloc.getPopulerMovie(page);
+  }
+
+  void _requestTrending([int page = 1]) {
+    _homeBloc.getTrendingMovie(page);
   }
 
   @override
@@ -28,7 +46,16 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             _headerView(),
-            _upcomingMovie(),
+            StreamBuilder(
+              stream: _homeBloc.upcomingMovies,
+              builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
+                if (snapshot.data == null || snapshot.data.results.isEmpty) {
+                  return Container();
+                } else {
+                  return _upcomingMovie(snapshot.data.results);
+                }
+              },
+            ),
             _populerMovie(),
             _trendingMovie(),
           ],
@@ -101,8 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _upcomingMovie() {
-    return ContainerCategory('Upcoming Movie', UpcomingMovieSlider());
+  Widget _upcomingMovie(List<Movie> movies) {
+    return ContainerCategory('Upcoming Movie', UpcomingMovieSlider(movies));
   }
 
   Widget _populerMovie() {
@@ -112,5 +139,4 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _trendingMovie() {
     return ContainerCategory('Trending Movie', TrendingMovie());
   }
-
 }

@@ -14,7 +14,7 @@ class _$Service extends Service {
 
   final definitionType = Service;
 
-  Future<Response> getUpcomingMovie(String category, String api_key, int page) {
+  Future<Response> getMovieList(String category, String api_key, int page) {
     final $url = 'https://api.themoviedb.org/3/movie/${category}';
     final Map<String, dynamic> $params = {'api_key': api_key, 'page': page};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);

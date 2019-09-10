@@ -7,26 +7,46 @@ import 'package:flutter/material.dart';
 enum MovieCategory { Upcoming, TopRate, Populer }
 
 class MovieRepository {
-  // final Service _service;
+  final Service _service;
 
-  MovieRepository();
+  MovieRepository(@required service) : _service = service;
 
   Future<MoviesResult> getUpcomingMovie(int page) async {
-    Response response;
-    try {
-      final _service = Service.create();
-      response = await _service.getUpcomingMovie(
-          _getCategoryMovie(MovieCategory.Upcoming), API_KEY, 1);
-    } catch (e) {
-      print('Caught ${e.toString()}');
-    }
-    if (response == null) {
-      return null;
-    }
+    Response response = await getMovie(MovieCategory.Upcoming, 1);
+    if (response == null) return null;
     if (response.isSuccessful) {
       return MoviesResult.fromJson(response.body);
     }
     return null;
+  }
+
+  Future<MoviesResult> getPopulerMovie(int page) async {
+    Response response = await getMovie(MovieCategory.Populer, 1);
+    if (response == null) return null;
+    if (response.isSuccessful) {
+      return MoviesResult.fromJson(response.body);
+    }
+    return null;
+  }
+
+  Future<MoviesResult> getTrendingMovie(int page) async {
+    Response response = await getMovie(MovieCategory.TopRate, 1);
+    if (response == null) return null;
+    if (response.isSuccessful) {
+      return MoviesResult.fromJson(response.body);
+    }
+    return null;
+  }
+
+  Future<Response> getMovie(MovieCategory category, int page) async {
+    Response response;
+    try {
+      response =
+          await _service.getMovieList(_getCategoryMovie(category), API_KEY, 1);
+    } catch (e) {
+      print('Caught ${e.toString()}');
+    }
+    return response;
   }
 
   String _getCategoryMovie(MovieCategory category) {
