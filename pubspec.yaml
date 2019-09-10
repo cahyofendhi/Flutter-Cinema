@@ -28,6 +28,10 @@ dependencies:
   snaplist: ^0.1.8
   flutter_rating_bar: ^2.0.0+2
 
+  chopper: ^3.0.0
+  json_serializable: ^3.2.2
+  json_annotation: ^3.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
