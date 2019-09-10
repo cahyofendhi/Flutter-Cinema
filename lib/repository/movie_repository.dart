@@ -54,7 +54,7 @@ class MovieRepository {
       case MovieCategory.Upcoming:
         return 'upcoming';
       case MovieCategory.Populer:
-        return 'populer';
+        return 'popular';
       case MovieCategory.TopRate:
         return 'top_rated';
       default:
