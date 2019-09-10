@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:cinema_flt/models/service_model.dart';
+import 'package:cinema_flt/utils/request_state.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:cinema_flt/models/movie/movies_result.dart';
@@ -7,14 +9,22 @@ import 'package:cinema_flt/repository/movie_repository.dart';
 class HomeBloc {
   final MovieRepository _movieRepository;
 
+  // movie controller
   final _upcomingController = StreamController<MoviesResult>.broadcast();
   final _populerController = StreamController<MoviesResult>.broadcast();
   final _trendingController = StreamController<MoviesResult>.broadcast();
+
+  // state controller
+  final _statePopuler = StreamController<UiState>.broadcast();
+
+  // state output
+  Stream<UiState> get statePopuler => _statePopuler.stream;
 
   // output
   Stream<MoviesResult> get upcomingMovies => _upcomingController.stream;
   Stream<MoviesResult> get populerMovies => _populerController.stream;
   Stream<MoviesResult> get trendingMovies => _trendingController.stream;
+  
 
   HomeBloc({@required movieRepository}) : _movieRepository = movieRepository;
 
@@ -26,18 +36,26 @@ class HomeBloc {
 
   void getUpcomingMovie([int page = 1]) async {
     try {
-      MoviesResult result = await _movieRepository.getUpcomingMovie(page);
-      _upcomingController.sink.add(result);
+      _setStatePopuler(UiState(RequestState.LOADING));
+      ServiceModel result = await _movieRepository.getUpcomingMovie(page);
+      if (result.isSuccess) {
+        _upcomingController.sink.add(result.model);
+      }
+      _setStatePopuler(UiState(RequestState.DONE));
     } catch (err) {
       print('Error : ${err.toString()}');
+      _setStatePopuler(UiState(RequestState.ERROR));
     }
+  }
+
+  void _setStatePopuler(UiState state) {
+    _statePopuler.sink.add(state);
   }
 
   void getPopulerMovie([int page = 1]) async {
     try {
-      MoviesResult result = await _movieRepository.getPopulerMovie(page);
-      print('Populer ${result.results.length}');
-      _populerController.sink.add(result);
+      ServiceModel result = await _movieRepository.getPopulerMovie(page);
+      _populerController.sink.add(result.model);
     } catch (err) {
       print('Error Populer : ${err.toString()}');
     }
@@ -45,8 +63,8 @@ class HomeBloc {
 
   void getTrendingMovie([int page = 1]) async {
     try {
-      MoviesResult result = await _movieRepository.getTrendingMovie(page);
-      _trendingController.sink.add(result);
+      ServiceModel result = await _movieRepository.getTrendingMovie(page);
+      _trendingController.sink.add(result.model);
     } catch (err) {
       print('Error : ${err.toString()}');
     }

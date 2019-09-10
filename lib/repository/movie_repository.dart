@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:cinema_flt/data/env.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
+import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/services/service.dart';
 import 'package:flutter/material.dart';
 
@@ -11,42 +12,30 @@ class MovieRepository {
 
   MovieRepository(@required service) : _service = service;
 
-  Future<MoviesResult> getUpcomingMovie(int page) async {
-    Response response = await getMovie(MovieCategory.Upcoming, 1);
-    if (response == null) return null;
-    if (response.isSuccessful) {
-      return MoviesResult.fromJson(response.body);
-    }
-    return null;
+  Future<ServiceModel> getUpcomingMovie(int page) async {
+    return await getMovie(MovieCategory.Upcoming, page);
   }
 
-  Future<MoviesResult> getPopulerMovie(int page) async {
-    Response response = await getMovie(MovieCategory.Populer, 1);
-    if (response == null) return null;
-    if (response.isSuccessful) {
-      return MoviesResult.fromJson(response.body);
-    }
-    return null;
+  Future<ServiceModel> getPopulerMovie(int page) async {
+    return await getMovie(MovieCategory.Populer, page);
   }
 
-  Future<MoviesResult> getTrendingMovie(int page) async {
-    Response response = await getMovie(MovieCategory.TopRate, 1);
-    if (response == null) return null;
-    if (response.isSuccessful) {
-      return MoviesResult.fromJson(response.body);
-    }
-    return null;
+  Future<ServiceModel> getTrendingMovie(int page) async {
+    return await getMovie(MovieCategory.TopRate, page);
   }
 
-  Future<Response> getMovie(MovieCategory category, int page) async {
-    Response response;
+  Future<ServiceModel> getMovie(MovieCategory category, int page) async {
     try {
-      response =
-          await _service.getMovieList(_getCategoryMovie(category), API_KEY, 1);
+      Response response = await _service.getMovieList(_getCategoryMovie(category), API_KEY, 1);
+      if (response.isSuccessful) {
+        return ServiceModel(model: MoviesResult.fromJson(response.body));
+      } else {
+        return ServiceModel(errorMessage: response.error.toString());
+      }
     } catch (e) {
       print('Caught ${e.toString()}');
+      return ServiceModel(errorMessage: e.toString());
     }
-    return response;
   }
 
   String _getCategoryMovie(MovieCategory category) {
