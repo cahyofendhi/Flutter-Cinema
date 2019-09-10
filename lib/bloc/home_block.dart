@@ -36,9 +36,10 @@ class HomeBloc {
   void getPopulerMovie([int page = 1]) async {
     try {
       MoviesResult result = await _movieRepository.getPopulerMovie(page);
+      print('Populer ${result.results.length}');
       _populerController.sink.add(result);
     } catch (err) {
-      print('Error : ${err.toString()}');
+      print('Error Populer : ${err.toString()}');
     }
   }
 
