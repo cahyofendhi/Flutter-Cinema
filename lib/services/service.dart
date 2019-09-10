@@ -1,6 +1,6 @@
 import "dart:async";
 import 'package:chopper/chopper.dart';
-import 'package:cinema_flt/data/constant.dart';
+import 'package:cinema_flt/data/env.dart';
 
 part 'service.chopper.dart';
 

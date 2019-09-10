@@ -1,13 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/components/widgets/text_dot_center.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
 
-
 class UpcomingMovieSlider extends StatefulWidget {
-
   final List<Movie> movies;
 
   UpcomingMovieSlider(this.movies);
@@ -17,7 +16,6 @@ class UpcomingMovieSlider extends StatefulWidget {
 }
 
 class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
-  
   int _currentIndex = 0;
 
   @override
@@ -62,10 +60,7 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
               blurRadius: 4.0),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Image.network(poster, fit: BoxFit.cover),
-      ),
+      child: ImageNetwork(poster),
     );
   }
 
@@ -80,19 +75,14 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
             gradient: LinearGradient(
               colors: [
                 Colors.black.withOpacity(0.0),
-                Colors.black.withOpacity(0.1),
-                Colors.black.withOpacity(0.15),
-                Colors.black.withOpacity(0.25),
-                Colors.black.withOpacity(0.4),
+                Colors.black.withOpacity(0.2),
+                Colors.black.withOpacity(0.3),
                 Colors.black.withOpacity(0.5),
-                Colors.black.withOpacity(0.6),
-                Colors.black.withOpacity(0.7),
-                Colors.black.withOpacity(0.8),
-                Colors.black.withOpacity(0.9),
-                Colors.black,
               ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+              end: FractionalOffset(0.0, 1.0),
+              begin: FractionalOffset(0.0, 0.0),
+              // begin: Alignment.topCenter,
+              // end: Alignment.bottomCenter,
             ),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(10),

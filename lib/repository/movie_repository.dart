@@ -1,5 +1,5 @@
 import 'package:chopper/chopper.dart';
-import 'package:cinema_flt/data/constant.dart';
+import 'package:cinema_flt/data/env.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/services/service.dart';
 import 'package:flutter/material.dart';
