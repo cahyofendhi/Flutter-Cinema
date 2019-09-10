@@ -1,3 +1,4 @@
+import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
@@ -29,13 +30,7 @@ class PopulerMovieItem extends StatelessWidget {
                     blurRadius: 4.0),
               ],
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                movie.getPosterImage(),
-                fit: BoxFit.cover,
-              ),
-            ),
+            child: ImageNetwork(movie.getPosterImage()),
           ),
           SizedBox(
             height: 15,
@@ -46,15 +41,15 @@ class PopulerMovieItem extends StatelessWidget {
           ),
           // RatingResult(4.0),
           // RatingBarRestultItem(4.5),
-          // SizedBox(
-          //   height: 7,
-          // ),
+          SizedBox(
+            height: 5,
+          ),
           // AppStyle.textSubtitle(
-          //   'Adventure, Action',
-          //   AppStyle.getColor(ThemeColor.greyTextDesc),
+          //   getGenreString(movie.genreIds),
+          //   AppStyle.getColor(ThemeColor.greyTextDesc)
           // ),
           SizedBox(
-            height: 7,
+            height: 5,
           ),
           AppStyle.textSubtitle(
             movie.getReleaseDate(),
@@ -65,3 +60,5 @@ class PopulerMovieItem extends StatelessWidget {
     );
   }
 }
+
+
