@@ -1,6 +1,6 @@
-# cinema_flt
+# Flutter BLoC Architecture 
 
-flutter project built use BLoC architecture, this application implements api from themoviedb[themoviedb](http://themoviedb.org)
+flutter project built use BLoC architecture, this application implements api from [themoviedb](http://themoviedb.org)
 
 ![Screenshot](cinema.png)
 
