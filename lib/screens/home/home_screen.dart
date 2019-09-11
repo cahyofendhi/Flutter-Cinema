@@ -6,6 +6,7 @@ import 'package:cinema_flt/repository/movie_repository.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/screens/home/widgets/upcoming_movie_slider.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
+import 'package:cinema_flt/utils/request_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,47 +39,76 @@ class _HomeScreenState extends State<HomeScreen> {
     _homeBloc.getTrendingMovie(page);
   }
 
+  Future<void> onRefresh() async {
+    _homeBloc.getAllCategoryMovie();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            _headerView(),
-            StreamBuilder(
-              stream: _homeBloc.upcomingMovies,
-              builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-                if (snapshot.data == null || snapshot.data.results.isEmpty) {
-                  return Container();
-                } else {
-                  return _upcomingMovie(snapshot.data.results);
-                }
-              },
-            ),
-            StreamBuilder(
-              stream: _homeBloc.populerMovies,
-              builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-                if (snapshot.data == null || snapshot.data.results.isEmpty) {
-                  return Container();
-                } else {
-                  return _populerMovie(snapshot.data.results);
-                }
-              },
-            ),
-            StreamBuilder(
-              stream: _homeBloc.trendingMovies,
-              builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-                if (snapshot.data == null || snapshot.data.results.isEmpty) {
-                  return Container();
-                } else {
-                  return _trendingMovie(snapshot.data.results);
-                }
-              },
-            ),
-          ],
+        child: RefreshIndicator(
+          onRefresh: () => onRefresh(),
+          child: Column(
+            children: <Widget>[
+              _headerView(),
+              _categoryMovie()
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _categoryMovie() {
+    return Column(
+      children: <Widget>[
+        StreamBuilder(
+          stream: _homeBloc.upcomingMovies,
+          builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
+            if (snapshot.data == null || snapshot.data.results.isEmpty) {
+              return Container();
+            } else {
+              return _upcomingMovie(snapshot.data.results);
+            }
+          },
+        ),
+        StreamBuilder(
+          stream: _homeBloc.statePopuler,
+          builder: (ctx, AsyncSnapshot<UiState> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting ||
+                snapshot.data.state == RequestState.LOADING) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return SizedBox();
+            }
+          },
+        ),
+        StreamBuilder(
+          stream: _homeBloc.populerMovies,
+          builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
+            if (snapshot.data == null || snapshot.data.results.isEmpty) {
+              return Container();
+            } else {
+              return _populerMovie(snapshot.data.results);
+            }
+          },
+        ),
+        StreamBuilder(
+          stream: _homeBloc.trendingMovies,
+          builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
+            if (snapshot.data == null || snapshot.data.results.isEmpty) {
+              return Container();
+            } else {
+              return _trendingMovie(snapshot.data.results);
+            }
+          },
+        ),
+      ],
     );
   }
 
