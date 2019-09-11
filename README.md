@@ -6,7 +6,7 @@ flutter project built use BLoC architecture, this application implements api fro
 
 ## Getting Started
 
-start running this project
+to run this project
 
 `flutter pub get`
 
