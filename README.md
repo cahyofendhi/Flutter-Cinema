@@ -8,9 +8,12 @@ flutter project built use BLoC architecture, this application implements api fro
 
 to run this project
 
-```flutter pub get
+```
+  flutter pub get
 
-flutter run```
+  flutter run
+
+```
 
 
 For help getting started with Flutter, view flutter
