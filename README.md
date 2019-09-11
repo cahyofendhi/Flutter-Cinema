@@ -1,15 +1,17 @@
 # cinema_flt
 
-A new Flutter project.
+flutter project built use BLoC architecture, this application implements api from themoviedb[themoviedb](http://themoviedb.org)
+
+![Screenshot](cinema.png)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+start running this project
 
-A few resources to get you started if this is your first Flutter project:
+`flutter pub get`
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+`flutter run`
+
 
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
