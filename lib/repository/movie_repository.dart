@@ -35,12 +35,12 @@ class MovieRepository {
           await _service.getMovieList(_getCategoryMovie(category), API_KEY, 1);
       if (response.isSuccessful) {
         MoviesResult mResult = MoviesResult.fromJson(response.body);
+        result.model = mResult;
         await insertMovie(
             datas: mResult.results,
             isUpcoming: category == MovieCategory.Upcoming,
             isPopuler: category == MovieCategory.Populer,
             isTopRate: category == MovieCategory.TopRate);
-        await getMovieFromDb(category).then((dt) => result.model = dt);
       } else {
         result.errorMessage = response.error.toString();
         await getMovieFromDb(category).then((dt) => result.model = dt);
