@@ -41,27 +41,31 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
       bool isUpcoming = false,
       bool isToprate = false}) async {
     List<Movie> dataMovie = [];
-
     await getMovieList(
             isUpcoming: isUpcoming, isPopuler: isPopuler, isToprate: isToprate)
         .then((list) {
-      dataMovie = list.map((mv) {
-        Movie(
-            popularity: mv.popularity,
-            voteCount: mv.voteCount,
-            video: mv.video,
-            posterPath: mv.posterPath,
-            id: mv.idMovie,
-            adult: mv.adult,
-            backdropPath: mv.backdropPath,
-            originalLanguage: mv.originalLanguage,
-            originalTitle: mv.originalTitle,
-            genreIds: mv.genreIds.isEmpty ? [] : jsonDecode(mv.genreIds).cast<int>(),
-            title: mv.title,
-            voteAverage: mv.voteAverage,
-            overview: mv.overview,
-            releaseDate: mv.releaseDate);
-      }).toList();
+      list.forEach(
+        (mv) {
+          Movie movie = Movie(
+              popularity: mv.popularity,
+              voteCount: mv.voteCount,
+              video: mv.video,
+              posterPath: mv.posterPath,
+              id: mv.idMovie,
+              adult: mv.adult,
+              backdropPath: mv.backdropPath,
+              originalLanguage: mv.originalLanguage,
+              originalTitle: mv.originalTitle,
+              genreIds: mv.genreIds.isEmpty
+                  ? []
+                  : jsonDecode(mv.genreIds).cast<int>(),
+              title: mv.title,
+              voteAverage: mv.voteAverage,
+              overview: mv.overview,
+              releaseDate: mv.releaseDate);
+          dataMovie.add(movie);
+        },
+      );
     });
 
     return dataMovie;
@@ -72,7 +76,7 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
       bool isPopuler = false,
       bool isUpcoming = false,
       bool isTopRate = false}) async {
-    await datas.forEach((dt) {
+    datas.forEach((dt) {
       MoviesCompanion companion = MoviesCompanion(
           video: Value(dt.video),
           posterPath: Value(dt.posterPath),
