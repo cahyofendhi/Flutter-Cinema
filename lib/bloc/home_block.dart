@@ -43,7 +43,7 @@ class HomeBloc {
       }
       _setStatePopuler(UiState(RequestState.DONE));
     } catch (err) {
-      print('Error : ${err.toString()}');
+      print('Error Upcoming : ${err.toString()}');
       _setStatePopuler(UiState(RequestState.ERROR));
     }
   }
