@@ -36,41 +36,6 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
         .get();
   }
 
-  Future<List<Movie>> getMovie(
-      {bool isPopuler = false,
-      bool isUpcoming = false,
-      bool isToprate = false}) async {
-    List<Movie> dataMovie = [];
-    await getMovieList(
-            isUpcoming: isUpcoming, isPopuler: isPopuler, isToprate: isToprate)
-        .then((list) {
-      list.forEach(
-        (mv) {
-          Movie movie = Movie(
-              popularity: mv.popularity,
-              voteCount: mv.voteCount,
-              video: mv.video,
-              posterPath: mv.posterPath,
-              id: mv.idMovie,
-              adult: mv.adult,
-              backdropPath: mv.backdropPath,
-              originalLanguage: mv.originalLanguage,
-              originalTitle: mv.originalTitle,
-              genreIds: mv.genreIds.isEmpty
-                  ? []
-                  : jsonDecode(mv.genreIds).cast<int>(),
-              title: mv.title,
-              voteAverage: mv.voteAverage,
-              overview: mv.overview,
-              releaseDate: mv.releaseDate);
-          dataMovie.add(movie);
-        },
-      );
-    });
-
-    return dataMovie;
-  }
-
   Future<void> insertMovie(
       {List<Movie> datas,
       bool isPopuler = false,

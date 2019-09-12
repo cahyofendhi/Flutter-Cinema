@@ -180,7 +180,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _populerMovie(List<Movie> movies) {
-    return ContainerCategory('Populer Movie', PopulerMovie(movies));
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: ContainerCategory('Populer Movie', PopulerMovie(movies)),
+    );
   }
 
   Widget _trendingMovie(List<Movie> movies) {
