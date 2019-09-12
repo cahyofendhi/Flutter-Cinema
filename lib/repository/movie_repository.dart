@@ -59,8 +59,11 @@ class MovieRepository {
     //     isPopuler: isPopuler,
     //     isTopRate: isTopRate,
     //     isUpcoming: isUpcoming);
-    await _movieMoor.getMovieList(isToprate: true).then((list) {
-      print('Jumlah ${list.length}');
+    // await _movieMoor.getMovieList(isUpcoming: true).then((list) {
+    //   print('Jumlah ${list.length}');
+    // });
+    await _movieMoor.getMovie(isUpcoming: true).then((list) {
+      print('Final Result : ${list.length}');
     });
   }
 
