@@ -14,6 +14,9 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
   Future insertOrReplaceMovie(List<MoviesCompanion> data) =>
       into(movies).insertAll(data);
 
+  Future insertSingleMovie(MoviesCompanion data) =>
+      into(movies).insert(data, orReplace: true);
+
   Future<List<MovieEntry>> getMovieList(
       {bool isUpcoming = false,
       bool isPopuler = false,
@@ -25,14 +28,26 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
         .get();
   }
 
-  Future<void> insertMovie(
+  Future<MovieEntry> getDataMovie(
+      {int idMovie,
+      bool isUpcoming = false,
+      bool isPopuler = false,
+      bool isToprate = false}) {
+    return (select(movies)
+          ..where((t) => t.idMovie.equals(idMovie))
+          ..where((t) => t.upcoming.equals(isUpcoming))
+          ..where((t) => t.popular.equals(isPopuler))
+          ..where((t) => t.topRate.equals(isToprate)))
+        .getSingle();
+  }
+
+  void insertMovie(
       {List<Movie> datas,
       bool isPopuler = false,
       bool isUpcoming = false,
-      bool isTopRate = false}) async {
-    List<MoviesCompanion> dataMovie = [];
+      bool isTopRate = false}) {
     if (datas.isNotEmpty) {
-      datas.forEach((dt) {
+      datas.forEach((dt) async {
         MoviesCompanion companion = MoviesCompanion(
             video: Value(dt.video),
             posterPath: Value(dt.posterPath),
@@ -51,10 +66,17 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
             upcoming: Value(isUpcoming),
             popular: Value(isPopuler),
             topRate: Value(isTopRate));
-        dataMovie.add(companion);
-      });
-      insertOrReplaceMovie(dataMovie).catchError((err) {
-        print("Error Save : ${err.toString()}");
+
+        await getDataMovie(
+                idMovie: dt.id,
+                isPopuler: isPopuler,
+                isUpcoming: isUpcoming,
+                isToprate: isTopRate)
+            .then((dt) {
+          if (dt == null) {
+            insertSingleMovie(companion);
+          }
+        });
       });
     }
   }
