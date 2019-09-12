@@ -72,5 +72,8 @@ class HomeBloc {
 
   void dispose() {
     _upcomingController.close();
+    _populerController.close();
+    _trendingController.close();
+    _statePopuler.close();
   }
 }
