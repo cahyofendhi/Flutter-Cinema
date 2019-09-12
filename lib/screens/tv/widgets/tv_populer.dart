@@ -1,5 +1,4 @@
 import 'package:cinema_flt/screens/tv/widgets/tv_populer_item.dart';
-import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:snaplist/snaplist.dart';
 
