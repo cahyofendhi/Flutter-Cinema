@@ -20,10 +20,7 @@ class MovieRepository {
         _movieMoor = movieMoor;
 
   Future<ServiceModel> getUpcomingMovie(int page) async {
-    ServiceModel result = await getMovie(MovieCategory.Upcoming, page);
-    MoviesResult movies = result.model;
-    await insertMovie(datas: movies.results, isUpcoming: true);
-    return result;
+    return await getMovie(MovieCategory.Upcoming, page);
   }
 
   Future<ServiceModel> getPopulerMovie(int page) async {
@@ -35,18 +32,43 @@ class MovieRepository {
   }
 
   Future<ServiceModel> getMovie(MovieCategory category, int page) async {
+    final ServiceModel result = ServiceModel();
     try {
       Response response =
           await _service.getMovieList(_getCategoryMovie(category), API_KEY, 1);
       if (response.isSuccessful) {
-        return ServiceModel(model: MoviesResult.fromJson(response.body));
+        MoviesResult mResult = MoviesResult.fromJson(response.body);
+        result.isSuccess = true;
+        await insertMovie(
+            datas: mResult.results,
+            isUpcoming: category == MovieCategory.Upcoming,
+            isPopuler: category == MovieCategory.Populer,
+            isTopRate: category == MovieCategory.TopRate);
+        await getMovieDbList(category: category).then(
+          (dt) {
+            if (dt.length > 0) {
+              result.model = MoviesResult(results: dt);
+            }
+          },
+        );
       } else {
-        return ServiceModel(errorMessage: response.error.toString());
+        result.errorMessage = response.error.toString();
+        await getMovieDbList(category: category).then((dt) {
+          if (dt.length > 0) {
+            result.model = MoviesResult(results: dt);
+          }
+        });
       }
     } catch (e) {
+      result.errorMessage = e.toString();
       print('Caught ${e.toString()}');
-      return ServiceModel(errorMessage: e.toString());
+      await getMovieDbList(category: category).then((dt) {
+        if (dt.length > 0) {
+          result.model = MoviesResult(results: dt);
+        }
+      });
     }
+    return result;
   }
 
   Future<void> insertMovie(
@@ -54,17 +76,24 @@ class MovieRepository {
       bool isPopuler = false,
       bool isUpcoming = false,
       bool isTopRate = false}) async {
-    // await _movieMoor.insertMovie(
-    //     datas: datas,
-    //     isPopuler: isPopuler,
-    //     isTopRate: isTopRate,
-    //     isUpcoming: isUpcoming);
-    // await _movieMoor.getMovieList(isUpcoming: true).then((list) {
-    //   print('Jumlah ${list.length}');
-    // });
-    await _movieMoor.getMovie(isUpcoming: true).then((list) {
-      print('Final Result : ${list.length}');
+    _movieMoor.insertMovie(
+        datas: datas,
+        isPopuler: isPopuler,
+        isTopRate: isTopRate,
+        isUpcoming: isUpcoming);
+  }
+
+  Future<List<Movie>> getMovieDbList({MovieCategory category}) async {
+    List<Movie> dataMovie = [];
+    await _movieMoor
+        .getMovie(
+            isUpcoming: category == MovieCategory.Upcoming,
+            isPopuler: category == MovieCategory.Populer,
+            isToprate: category == MovieCategory.TopRate)
+        .then((list) {
+      dataMovie = list;
     });
+    return dataMovie;
   }
 
   String _getCategoryMovie(MovieCategory category) {
