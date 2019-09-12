@@ -47,14 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: RefreshIndicator(
-          onRefresh: () => onRefresh(),
-          child: Column(
-            children: <Widget>[
-              _headerView(),
-              _categoryMovie()
-            ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: RefreshIndicator(
+            onRefresh: () => onRefresh(),
+            child: Column(
+              children: <Widget>[_headerView(), _categoryMovie()],
+            ),
           ),
         ),
       ),
