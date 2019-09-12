@@ -18,14 +18,6 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
       {bool isPopuler = false,
       bool isUpcoming = false,
       bool isToprate = false}) {
-    // return (select(users)..where((user) => user.id.equals(id))).getSingle();
-    // return (select(movies)
-    //       ..where((mo) {
-    //         return mo.upcoming.equals(true);
-    //       },))
-    //     .get();
-
-    // return ((select(movies).get()));
     return (select(movies)
           ..where(
             (t) {
@@ -42,6 +34,37 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
             },
           ))
         .get();
+  }
+
+  Future<List<Movie>> getMovie(
+      {bool isPopuler = false,
+      bool isUpcoming = false,
+      bool isToprate = false}) async {
+    List<Movie> dataMovie = [];
+
+    await getMovieList(
+            isUpcoming: isUpcoming, isPopuler: isPopuler, isToprate: isToprate)
+        .then((list) {
+      dataMovie = list.map((mv) {
+        Movie(
+            popularity: mv.popularity,
+            voteCount: mv.voteCount,
+            video: mv.video,
+            posterPath: mv.posterPath,
+            id: mv.idMovie,
+            adult: mv.adult,
+            backdropPath: mv.backdropPath,
+            originalLanguage: mv.originalLanguage,
+            originalTitle: mv.originalTitle,
+            genreIds: mv.genreIds.isEmpty ? [] : jsonDecode(mv.genreIds).cast<int>(),
+            title: mv.title,
+            voteAverage: mv.voteAverage,
+            overview: mv.overview,
+            releaseDate: mv.releaseDate);
+      }).toList();
+    });
+
+    return dataMovie;
   }
 
   Future<void> insertMovie(
@@ -65,9 +88,9 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
           genreIds: Value(dt.genreIds.toString()),
           overview: Value(dt.overview),
           releaseDate: Value(dt.releaseDate),
-          upcoming: Value(true),
-          popular: Value(true),
-          topRate: Value(true));
+          upcoming: Value(isUpcoming),
+          popular: Value(isPopuler),
+          topRate: Value(isTopRate));
       insertOrReplaceMovie(companion).then((s) {
         print('Save success : $s');
       }).catchError((err) {
