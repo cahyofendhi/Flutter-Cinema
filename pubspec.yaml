@@ -35,6 +35,7 @@ dependencies:
   json_serializable: ^3.2.2
   json_annotation: ^3.0.0
   moor_flutter: ^1.7.0
+  rxdart: ^0.22.2
 
 dev_dependencies:
   flutter_test:

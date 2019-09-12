@@ -8,6 +8,7 @@ import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/services/service.dart';
 import 'package:flutter/material.dart';
 import 'package:moor_flutter/moor_flutter.dart';
+import 'package:rxdart/rxdart.dart';
 
 enum MovieCategory { Upcoming, TopRate, Populer }
 
@@ -44,29 +45,15 @@ class MovieRepository {
             isUpcoming: category == MovieCategory.Upcoming,
             isPopuler: category == MovieCategory.Populer,
             isTopRate: category == MovieCategory.TopRate);
-        await getMovieDbList(category: category).then(
-          (dt) {
-            if (dt.length > 0) {
-              result.model = MoviesResult(results: dt);
-            }
-          },
-        );
+        await getMovieFromDb(category).then((dt) => result.model = dt);
       } else {
         result.errorMessage = response.error.toString();
-        await getMovieDbList(category: category).then((dt) {
-          if (dt.length > 0) {
-            result.model = MoviesResult(results: dt);
-          }
-        });
+        await getMovieFromDb(category).then((dt) => result.model = dt);
       }
     } catch (e) {
       result.errorMessage = e.toString();
       print('Caught ${e.toString()}');
-      await getMovieDbList(category: category).then((dt) {
-        if (dt.length > 0) {
-          result.model = MoviesResult(results: dt);
-        }
-      });
+      await getMovieFromDb(category).then((dt) => result.model = dt);
     }
     return result;
   }
@@ -83,19 +70,6 @@ class MovieRepository {
         isUpcoming: isUpcoming);
   }
 
-  Future<List<Movie>> getMovieDbList({MovieCategory category}) async {
-    List<Movie> dataMovie = [];
-    await _movieMoor
-        .getMovie(
-            isUpcoming: category == MovieCategory.Upcoming,
-            isPopuler: category == MovieCategory.Populer,
-            isToprate: category == MovieCategory.TopRate)
-        .then((list) {
-      dataMovie = list;
-    });
-    return dataMovie;
-  }
-
   String _getCategoryMovie(MovieCategory category) {
     switch (category) {
       case MovieCategory.Upcoming:
@@ -107,5 +81,18 @@ class MovieRepository {
       default:
         return 'upcoming';
     }
+  }
+
+  Future<MoviesResult> getMovieFromDb(MovieCategory category) async {
+    List<Movie> data = [];
+    await _movieMoor
+        .getMovieList(
+            isUpcoming: category == MovieCategory.Upcoming,
+            isPopuler: category == MovieCategory.Populer,
+            isToprate: category == MovieCategory.TopRate)
+        .then((list) {
+      data = MoviesResult.fromDb(list);
+    });
+    return MoviesResult(results: data);
   }
 }
