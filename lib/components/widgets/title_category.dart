@@ -12,7 +12,7 @@ class TitleCategory extends StatelessWidget {
       title,
       style: TextStyle(
         color: color,
-        fontSize: 18,
+        fontSize: 16,
       ),
     );
   }

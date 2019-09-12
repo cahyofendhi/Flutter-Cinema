@@ -8,6 +8,6 @@ class ServiceModel<T> {
 
   ServiceModel(
       {this.model, this.errorMessage = '', this.message = ''}) {
-        this.isSuccess = errorMessage.isEmpty && model != null;
+        this.isSuccess = errorMessage.isEmpty || model != null;
       }
 }
