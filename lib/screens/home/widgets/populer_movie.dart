@@ -17,7 +17,6 @@ class PopulerMovie extends StatefulWidget {
 
 class _PopulerMovieState extends State<PopulerMovie> {
   
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,6 @@ import 'package:cinema_flt/bloc/home_block.dart';
 import 'package:cinema_flt/components/widgets/container_category.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
-import 'package:cinema_flt/repository/movie_repository.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/screens/home/widgets/upcoming_movie_slider.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
@@ -25,18 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _homeBloc = Provider.of<HomeBloc>(context, listen: false);
     _homeBloc.getAllCategoryMovie();
     super.didChangeDependencies();
-  }
-
-  void _requestUpcoming([int page = 1]) {
-    _homeBloc.getUpcomingMovie(page);
-  }
-
-  void _requestPopuler([int page = 1]) {
-    _homeBloc.getPopulerMovie(page);
-  }
-
-  void _requestTrending([int page = 1]) {
-    _homeBloc.getTrendingMovie(page);
   }
 
   Future<void> onRefresh() async {

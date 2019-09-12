@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 

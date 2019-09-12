@@ -10,5 +10,5 @@ abstract class Service extends ChopperService {
 
   @Get(path: 'movie/{category}')
   Future<Response> getMovieList(@Path('category') String category,
-      @Query() String api_key, @Query() int page);
+      @Query() String apiKey, @Query() int page);
 }

@@ -1,14 +1,10 @@
 import 'package:chopper/chopper.dart';
 import 'package:cinema_flt/data/env.dart';
-import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/db/movie_moor.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/services/service.dart';
-import 'package:flutter/material.dart';
-import 'package:moor_flutter/moor_flutter.dart';
-import 'package:rxdart/rxdart.dart';
 
 enum MovieCategory { Upcoming, TopRate, Populer }
 
@@ -16,7 +12,7 @@ class MovieRepository {
   final Service _service;
   final MovieMoor _movieMoor;
 
-  MovieRepository(@required service, @required movieMoor)
+  MovieRepository(service, movieMoor)
       : _service = service,
         _movieMoor = movieMoor;
 
@@ -39,12 +35,12 @@ class MovieRepository {
           await _service.getMovieList(_getCategoryMovie(category), API_KEY, 1);
       if (response.isSuccessful) {
         MoviesResult mResult = MoviesResult.fromJson(response.body);
+        result.model = mResult;
         await insertMovie(
             datas: mResult.results,
             isUpcoming: category == MovieCategory.Upcoming,
             isPopuler: category == MovieCategory.Populer,
             isTopRate: category == MovieCategory.TopRate);
-        await getMovieFromDb(category).then((dt) => result.model = dt);
       } else {
         result.errorMessage = response.error.toString();
         await getMovieFromDb(category).then((dt) => result.model = dt);

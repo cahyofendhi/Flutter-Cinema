@@ -2,7 +2,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:cinema_flt/data/env.dart';
 import 'package:cinema_flt/services/service.dart';
-import 'package:logging/logging.dart';
+// import 'package:logging/logging.dart';
 
 class NetworkClient {
   final ChopperClient chopperClient;
