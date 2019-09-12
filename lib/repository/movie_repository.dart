@@ -39,7 +39,6 @@ class MovieRepository {
           await _service.getMovieList(_getCategoryMovie(category), API_KEY, 1);
       if (response.isSuccessful) {
         MoviesResult mResult = MoviesResult.fromJson(response.body);
-        result.isSuccess = true;
         await insertMovie(
             datas: mResult.results,
             isUpcoming: category == MovieCategory.Upcoming,
