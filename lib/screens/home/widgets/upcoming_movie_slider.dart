@@ -1,8 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cinema_flt/components/widgets/image_network.dart';
-import 'package:cinema_flt/components/widgets/text_dot_center.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
-import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +14,7 @@ class UpcomingMovieSlider extends StatefulWidget {
 }
 
 class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
-  int _currentIndex = 0;
+  
 
   @override
   Widget build(BuildContext context) {

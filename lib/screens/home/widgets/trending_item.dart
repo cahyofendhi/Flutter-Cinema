@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/components/widgets/rating_result.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
