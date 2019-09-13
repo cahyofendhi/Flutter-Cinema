@@ -8,7 +8,11 @@ part 'service.chopper.dart';
 abstract class Service extends ChopperService {
   static Service create([ChopperClient client]) => _$Service(client);
 
-  @Get(path: 'movie/{category}')
-  Future<Response> getMovieList(@Path('category') String category,
-      @Query() String apiKey, @Query() int page);
+  @Get(path: 'movie/{group}')
+  Future<Response> getMovieList(@Path('group') String group,
+      @Query() String api_key, @Query() int page);
+
+  @Get(path: 'tv/{group}')
+  Future<Response> getTvList(@Path('group') String group,
+      @Query() String api_key, @Query() int page);
 }
