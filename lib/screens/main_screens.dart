@@ -25,13 +25,14 @@ class _MainScreensState extends State<MainScreens> {
       // appBar: AppBar(
       //   title: Text('Cinema'),
       // ),
-      body: IndexedStack(
-        index: _selectedPage,
-        children: _pagesView.map((t) {
-          Widget wg = t['page'];
-          return wg;
-        }).toList(),
-      ),
+      // body: IndexedStack(
+      //   index: _selectedPage,
+      //   children: _pagesView.map((t) {
+      //     Widget wg = t['page'];
+      //     return wg;
+      //   }).toList(),
+      // ),
+      body: _pagesView[_selectedPage]['page'],
       bottomNavigationBar: BottomNavigationBar(
         items: _getNavBarItems(),
         currentIndex: _selectedPage,

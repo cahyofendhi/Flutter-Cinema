@@ -1,8 +1,14 @@
+import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/screens/tv/widgets/tv_video_item.dart';
 import 'package:flutter/material.dart';
 import 'package:snaplist/snaplist.dart';
 
 class TvVideo extends StatelessWidget {
+
+  final List<Tv> movies;
+
+  TvVideo(this.movies);
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -17,9 +23,9 @@ class TvVideo extends StatelessWidget {
         sizeProvider: (index, data) => cardSize,
         separatorProvider: (index, data) => Size(15.0, 15.0),
         builder: (context, index, data) {
-          return TvVideoItem(index);
+          return TvVideoItem(movies[index]);
         },
-        count: 5,
+        count: movies.length,
       ),
     );
   }
