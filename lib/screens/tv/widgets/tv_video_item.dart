@@ -1,10 +1,12 @@
+import 'package:cinema_flt/components/widgets/image_network.dart';
+import 'package:cinema_flt/models/tv/tv.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 
 class TvVideoItem extends StatelessWidget {
+  final TvMovie movie;
 
-  final index;
-
-  TvVideoItem(this.index);
+  TvVideoItem(this.movie);
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +16,7 @@ class TvVideoItem extends StatelessWidget {
           width: double.infinity,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
-            child: Image.asset(
-              index % 2 == 0
-                  ? 'assets/images/sample_4.jpeg'
-                  : 'assets/images/sample_7.jpeg',
-              fit: BoxFit.cover,
-            ),
+            child: ImageNetwork(getImageTheMovie(movie.posterPath)),
           ),
         ),
         Center(

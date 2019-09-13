@@ -1,5 +1,6 @@
 import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 
@@ -19,7 +20,7 @@ class PopulerMovieItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            width: screenWidth / 3,
+            width: double.infinity,
             height: screenWidth / 2.7,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -30,7 +31,7 @@ class PopulerMovieItem extends StatelessWidget {
                     blurRadius: 4.0),
               ],
             ),
-            child: ImageNetwork(movie.getPosterImage()),
+            child: ImageNetwork(getImageTheMovie(movie.posterPath)),
           ),
           SizedBox(
             height: 15,

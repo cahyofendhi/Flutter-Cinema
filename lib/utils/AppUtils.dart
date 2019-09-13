@@ -1,5 +1,3 @@
-
-
 Map<int, String> _genreMap = {
   28: 'Action',
   12: 'Adventure',
@@ -37,4 +35,8 @@ String getGenreString(List<int> genreIds) {
   StringBuffer buffer = StringBuffer();
   buffer.writeAll(getGenresForIds(genreIds), ", ");
   return buffer.toString();
+}
+
+String getImageTheMovie(String name) {
+  return 'http://image.tmdb.org/t/p/w185/$name';
 }
