@@ -27,11 +27,36 @@ class Movies extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-@UseMoor(tables: [Movies])
+@DataClassName('TvEntry')
+class Tv extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get idMovie => integer()();
+  TextColumn get originalName => text()();
+  TextColumn get name => text()();
+  RealColumn get popularity => real()();
+  IntColumn get voteCount => integer()();
+  RealColumn get voteAverage => real()();
+  TextColumn get firstAirDate => text()();
+  TextColumn get posterPath => text()();
+  TextColumn get originalLanguage => text()();
+  TextColumn get backdropPath => text()();
+  TextColumn get overview => text()();
+  TextColumn get genreIds => text()();
+  TextColumn get originCountry => text()();
+  BoolColumn get popular => boolean().withDefault(Constant(false))();
+  BoolColumn get onAir => boolean().withDefault(Constant(false))();
+  BoolColumn get topRate => boolean().withDefault(Constant(false))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@UseMoor(tables: [Movies, Tv])
 class MovieDb extends _$MovieDb {
-  MovieDb() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db.sqlite', logStatements: true));
+  MovieDb()
+      : super(FlutterQueryExecutor.inDatabaseFolder(
+            path: 'db.sqlite', logStatements: true));
 
   @override
   int get schemaVersion => 1;
-
 }

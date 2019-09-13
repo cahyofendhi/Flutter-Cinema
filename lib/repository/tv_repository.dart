@@ -1,0 +1,97 @@
+import 'package:chopper/chopper.dart';
+import 'package:cinema_flt/data/env.dart';
+import 'package:cinema_flt/db/movie_moor.dart';
+import 'package:cinema_flt/models/service_model.dart';
+import 'package:cinema_flt/models/tv/tv.dart';
+import 'package:cinema_flt/models/tv/tv_result.dart';
+import 'package:cinema_flt/services/service.dart';
+
+enum TvGroup {
+  TopRateTv,
+  PopulerTv,
+  LatestTv,
+  OnAir,
+}
+
+class TvRepository {
+  final Service _service;
+  final MovieMoor _movieMoor;
+
+  TvRepository(service, movieMoor)
+      : _service = service,
+        _movieMoor = movieMoor;
+
+  Future<ServiceModel> getPopullerTv({int page = 1}) async {
+    return await getTvList(TvGroup.PopulerTv, page);
+  }
+
+  Future<ServiceModel> getTopRateTv({int page = 1}) async {
+    return await getTvList(TvGroup.TopRateTv, page);
+  }
+
+  Future<ServiceModel> getOnAirTv({int page = 1}) async {
+    return await getTvList(TvGroup.OnAir, page);
+  }
+
+  Future<ServiceModel> getTvList(TvGroup group, int page) async {
+    final ServiceModel result = ServiceModel();
+    try {
+      Response response =
+          await _service.getTvList(_getTvGroup(group), API_KEY, 1);
+      if (response.isSuccessful) {
+        TvResult mResult = TvResult.fromJson(response.body);
+        result.model = mResult;
+        await insertTvMovie(
+            datas: mResult.results,
+            isOnAir: group == TvGroup.OnAir,
+            isPopuler: group == TvGroup.PopulerTv,
+            isTopRate: group == TvGroup.TopRateTv);
+      } else {
+        result.errorMessage = response.error.toString();
+        await getMovieFromDb(group).then((dt) => result.model = dt);
+      }
+    } catch (e) {
+      result.errorMessage = e.toString();
+      print('Caught ${e.toString()}');
+      await getMovieFromDb(group).then((dt) => result.model = dt);
+    }
+    return result;
+  }
+
+  Future<void> insertTvMovie(
+      {List<TvMovie> datas,
+      bool isPopuler = false,
+      bool isOnAir = false,
+      bool isTopRate = false}) async {
+    _movieMoor.insertMovieTv(
+        datas: datas, isOnAir: isOnAir, isPopuler: isPopuler, isTop: isTopRate);
+  }
+
+  Future<TvResult> getMovieFromDb(TvGroup group) async {
+    List<TvMovie> data = [];
+    await _movieMoor
+        .getMovieTvList(
+            isOnAir: group == TvGroup.OnAir,
+            isPopuler: group == TvGroup.PopulerTv,
+            isTop: group == TvGroup.TopRateTv)
+        .then((list) {
+      data = TvResult.fromDb(list);
+    });
+    return TvResult(results: data);
+  }
+
+  String _getTvGroup(TvGroup group) {
+    switch (group) {
+      case TvGroup.LatestTv:
+        return 'latest';
+      case TvGroup.PopulerTv:
+        return 'popular';
+      case TvGroup.TopRateTv:
+        return 'top_rated';
+      case TvGroup.OnAir:
+        return 'on_the_air';
+      default:
+        return 'latest';
+    }
+  }
+}

@@ -1,20 +1,24 @@
+import 'package:cinema_flt/components/widgets/image_network.dart';
+import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 
 class TvPopulerItem extends StatelessWidget {
-  final index;
+
+  final TvMovie movie;
   final imageHeight;
 
-  TvPopulerItem(this.index, this.imageHeight);
+  TvPopulerItem(this.movie, this.imageHeight);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Container(
+          width: double.infinity,
           height: imageHeight,
           decoration: BoxDecoration(
-            color: Colors.amber,
             borderRadius: BorderRadius.circular(10),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -25,19 +29,14 @@ class TvPopulerItem extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
-            child: Image.asset(
-              index % 2 == 0
-                  ? 'assets/images/sample_3.png'
-                  : 'assets/images/sample_5.jpeg',
-              fit: BoxFit.cover,
-            ),
+            child: ImageNetwork(getImageTheMovie(movie.posterPath)),
           ),
         ),
         SizedBox(
           height: 10,
         ),
         AppStyle.textTitleBoldItem(
-          '(Avanger) : Start War The Last kingdom on the world',
+          movie.originalName,
           AppStyle.getColor(ThemeColor.blackText),
         )
       ],
