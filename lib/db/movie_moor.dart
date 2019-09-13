@@ -115,7 +115,7 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
     if (datas.isNotEmpty) {
       datas.forEach((dt) async {
         TvCompanion companion = TvCompanion(
-            originalName: Value(dt.posterPath),
+            originalName: Value(dt.originalName),
             idMovie: Value(dt.id),
             voteCount: Value(dt.voteCount),
             popularity: Value(dt.popularity),
