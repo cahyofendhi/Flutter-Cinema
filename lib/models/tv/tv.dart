@@ -1,4 +1,4 @@
-class Tv {
+class TvMovie {
   String originalName;
   int id;
   String name;
@@ -13,7 +13,7 @@ class Tv {
   String overview;
   List<String> originCountry;
 
-  Tv(
+  TvMovie(
       {this.originalName,
       this.id,
       this.name,
@@ -28,7 +28,7 @@ class Tv {
       this.overview,
       this.originCountry});
 
-  Tv.fromJson(Map<String, dynamic> json) {
+  TvMovie.fromJson(Map<String, dynamic> json) {
     originalName = json['original_name'];
     id = json['id'];
     name = json['name'];

@@ -4,7 +4,7 @@ import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 
 class TvVideoItem extends StatelessWidget {
-  final Tv movie;
+  final TvMovie movie;
 
   TvVideoItem(this.movie);
 
