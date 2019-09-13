@@ -15,14 +15,14 @@ class _$Service extends Service {
   final definitionType = Service;
 
   Future<Response> getMovieList(String group, String api_key, int page) {
-    final $url = 'https://api.themoviedb.org/3/movie/$group';
+    final $url = 'https://api.themoviedb.org/3/movie/${group}';
     final Map<String, dynamic> $params = {'api_key': api_key, 'page': page};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
 
   Future<Response> getTvList(String group, String api_key, int page) {
-    final $url = 'https://api.themoviedb.org/3/tv/$group';
+    final $url = 'https://api.themoviedb.org/3/tv/${group}';
     final Map<String, dynamic> $params = {'api_key': api_key, 'page': page};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);

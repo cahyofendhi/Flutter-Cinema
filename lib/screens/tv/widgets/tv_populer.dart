@@ -5,7 +5,7 @@ import 'package:snaplist/snaplist.dart';
 
 class TvPopuler extends StatefulWidget {
 
-  final List<Tv> movies;
+  final List<TvMovie> movies;
 
   TvPopuler(this.movies);
 

@@ -34,8 +34,9 @@ List<SingleChildCloneableWidget> dependentServices = [
   ProxyProvider2<MovieMoor, Service, MovieRepository>(
       builder: (context, movieMoor, service, movieRepository) =>
           MovieRepository(service, movieMoor)),
-  ProxyProvider<Service, TvRepository>(
-    builder: (context, service, tvRepository) => TvRepository(service),
+  ProxyProvider2<MovieMoor, Service, TvRepository>(
+    builder: (context, movieMoor, service, tvRepository) =>
+        TvRepository(service, movieMoor),
   ),
 ];
 

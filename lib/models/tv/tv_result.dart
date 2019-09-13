@@ -1,10 +1,13 @@
+import 'dart:convert';
+
+import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
 
 class TvResult {
   int page;
   int totalResults;
   int totalPages;
-  List<Tv> results;
+  List<TvMovie> results;
 
   TvResult({this.page, this.totalResults, this.totalPages, this.results});
 
@@ -13,9 +16,9 @@ class TvResult {
     totalResults = json['total_results'];
     totalPages = json['total_pages'];
     if (json['results'] != null) {
-      results = new List<Tv>();
+      results = new List<TvMovie>();
       json['results'].forEach((v) {
-        results.add(Tv.fromJson(v));
+        results.add(TvMovie.fromJson(v));
       });
     }
   }
@@ -29,5 +32,32 @@ class TvResult {
       data['results'] = this.results.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  static List<TvMovie> fromDb(List<TvEntry> data) {
+    List<TvMovie> dataMovie = [];
+
+    data.forEach((mv) {
+      TvMovie movie = TvMovie(
+        popularity: mv.popularity,
+        voteCount: mv.voteCount,
+        posterPath: mv.posterPath,
+        id: mv.idMovie,
+        backdropPath: mv.backdropPath,
+        originalLanguage: mv.originalLanguage,
+        genreIds:
+            mv.genreIds.isEmpty ? [] : jsonDecode(mv.genreIds).cast<int>(),
+        name: mv.name,
+        voteAverage: mv.voteAverage,
+        overview: mv.overview,
+        firstAirDate: mv.firstAirDate,
+        originalName: mv.originalName,
+        originCountry:
+            mv.originCountry.isEmpty ? [] : jsonDecode(mv.originCountry).cast<String>(),
+      );
+      dataMovie.add(movie);
+    });
+
+    return dataMovie;
   }
 }

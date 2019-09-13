@@ -8,4 +8,5 @@ part of 'movie_moor.dart';
 
 mixin _$MovieMoorMixin on DatabaseAccessor<MovieDb> {
   $MoviesTable get movies => db.movies;
+  $TvTable get tv => db.tv;
 }

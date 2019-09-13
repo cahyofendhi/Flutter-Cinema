@@ -5,7 +5,7 @@ import 'package:snaplist/snaplist.dart';
 
 class TvVideo extends StatelessWidget {
 
-  final List<Tv> movies;
+  final List<TvMovie> movies;
 
   TvVideo(this.movies);
 

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class TvPopulerItem extends StatelessWidget {
 
-  final Tv movie;
+  final TvMovie movie;
   final imageHeight;
 
   TvPopulerItem(this.movie, this.imageHeight);
