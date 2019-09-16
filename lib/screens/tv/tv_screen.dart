@@ -53,17 +53,12 @@ class _TvScreenState extends State<TvScreen> {
         ),
       ),
       actions: <Widget>[
-        InkWell(
-          onTap: () {
-            print('search');
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.search,
-              color: AppStyle.getColor(ThemeColor.blackText),
-            ),
+        IconButton(
+          icon: Icon(
+            Icons.search,
+            color: AppStyle.getColor(ThemeColor.blackText),
           ),
+          onPressed: () {},
         ),
       ],
     );
