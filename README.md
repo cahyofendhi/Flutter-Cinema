@@ -17,12 +17,12 @@ to run this project
 
 
 # List of libraries in this project
-* [Provider] (https://pub.dev/packages/provider)
-* [Chopper] (https://pub.dev/packages/chopper)
-* [Moor] (https://pub.dev/packages/moor_flutter)
-* [Slider] (https://pub.dev/packages/carousel_slider)
-* [Snaplist] (https://pub.dev/packages/snaplist)
-* [Intl] (https://pub.dev/packages/intl)
+* [Provider](https://pub.dev/packages/provider)
+* [Chopper](https://pub.dev/packages/chopper)
+* [Moor](https://pub.dev/packages/moor_flutter)
+* [Slider](https://pub.dev/packages/carousel_slider)
+* [Snaplist](https://pub.dev/packages/snaplist)
+* [Intl](https://pub.dev/packages/intl)
 
 
 For help getting started with Flutter, view flutter
