@@ -67,6 +67,25 @@ class AppStyle {
     );
   }
 
+  static Text textTitleDetailBold([String title, Color textColor, int line = 2]) {
+    Color _textColor = getColor(ThemeColor.secondary);
+    if (textColor != null) {
+      _textColor = textColor;
+    }
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        letterSpacing: -0.04,
+        height: 1.5,
+        color: _textColor,
+      ),
+      maxLines: line,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
   static Text textTitleBoldItem([String title, Color textColor, int line = 2]) {
     Color _textColor = getColor(ThemeColor.secondary);
     if (textColor != null) {
@@ -86,4 +105,38 @@ class AppStyle {
     );
   }
 
+static Text textTitleSection([String title, Color textColor, int line = 2]) {
+    Color _textColor = getColor(ThemeColor.secondary);
+    if (textColor != null) {
+      _textColor = textColor;
+    }
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        letterSpacing: -0.04,
+        height: 1.5,
+        color: _textColor,
+      ),
+      maxLines: line,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  static Text textDescription([String title, Color textColor, int line = 2]) {
+    Color _textColor = getColor(ThemeColor.greyText);
+    if (textColor != null) {
+      _textColor = textColor;
+    }
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 12,
+        letterSpacing: -0.04,
+        color: _textColor,
+      ),
+      maxLines: line,
+    );
+  }
 }

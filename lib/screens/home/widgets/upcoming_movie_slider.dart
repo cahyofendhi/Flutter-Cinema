@@ -14,8 +14,6 @@ class UpcomingMovieSlider extends StatefulWidget {
 }
 
 class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
-  
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -29,14 +27,11 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
       items: widget.movies.map((i) {
         return Builder(
           builder: (BuildContext context) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Stack(
+            return Stack(
                 children: <Widget>[
-                  _imageView(screenWidth, i.getPosterImage()),
+                  _imageView(i.getPosterImage()),
                   _contentView(contentHeight, i),
                 ],
-              ),
             );
           },
         );
@@ -44,9 +39,9 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
     );
   }
 
-  Widget _imageView(double screenWidth, String poster) {
+  Widget _imageView(String poster) {
     return Container(
-      width: screenWidth,
+      width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: Colors.transparent,
