@@ -19,7 +19,6 @@ class _TrendingMovieState extends State<TrendingMovie>
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       itemCount: widget.movies.length,

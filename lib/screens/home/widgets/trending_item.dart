@@ -17,17 +17,15 @@ class TredingItem extends StatelessWidget {
     final imageWidth = screenWidth / 4;
     final imageHeight = imageWidth + (imageWidth / 3);
 
-// Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
-//                       arguments: product.id);
     return InkWell(
       onTap: () {
         Navigator.of(context)
-            .pushNamed(DetailMovie.routeName, arguments: movie);
+            .pushNamed(DetailMovie.routeName, arguments: '1');
       },
       child: Container(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

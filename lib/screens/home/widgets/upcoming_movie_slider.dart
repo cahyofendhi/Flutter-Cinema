@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
+import 'package:cinema_flt/screens/movie_detail/movie_detail.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
 
@@ -27,11 +28,15 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
       items: widget.movies.map((i) {
         return Builder(
           builder: (BuildContext context) {
-            return Stack(
+            return InkWell(
+              onTap: () => Navigator.of(context)
+                  .pushNamed(DetailMovie.routeName, arguments: '1'),
+              child: Stack(
                 children: <Widget>[
                   _imageView(i.getPosterImage()),
                   _contentView(contentHeight, i),
                 ],
+              ),
             );
           },
         );
