@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class RatingResult extends StatelessWidget {
   final rate;
+  double fontSize;
 
-  RatingResult(this.rate);
+  RatingResult([this.rate, this.fontSize = 10.0]);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class RatingResult extends StatelessWidget {
         ),
         child: Text(
           rate.toString(),
-          style: TextStyle(fontSize: 10, color: Colors.white),
+          style: TextStyle(fontSize: fontSize, color: Colors.white),
         ),
       ),
     );

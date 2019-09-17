@@ -28,6 +28,7 @@ dependencies:
   snaplist: ^0.1.8
   flutter_rating_bar: ^2.0.0+2
   intl: ^0.16.0
+  flutter_tags: ^0.4.3
 
   chopper: ^3.0.0
   provider: ^3.1.0
