@@ -29,6 +29,7 @@ dependencies:
   flutter_rating_bar: ^2.0.0+2
   intl: ^0.16.0
   flutter_tags: ^0.4.3
+  after_layout: ^1.0.7+2
 
   chopper: ^3.0.0
   provider: ^3.1.0

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    final arguments = settings.arguments;
     switch (settings.name) {
       case MainScreens.routeName:
         return MaterialPageRoute(
@@ -14,7 +15,7 @@ class Router {
         );
       case DetailMovie.routeName:
         return MaterialPageRoute(
-          builder: (ctx) => DetailMovie()
+          builder: (ctx) => DetailMovie(arguments)
         );
 
       default:

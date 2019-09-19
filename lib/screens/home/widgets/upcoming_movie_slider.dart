@@ -3,6 +3,7 @@ import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/screens/movie_detail/movie_detail.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 
 class UpcomingMovieSlider extends StatefulWidget {
@@ -25,16 +26,16 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
       viewportFraction: 0.8,
       enlargeCenterPage: true,
       initialPage: 0,
-      items: widget.movies.map((i) {
+      items: widget.movies.map((item) {
         return Builder(
           builder: (BuildContext context) {
             return InkWell(
               onTap: () => Navigator.of(context)
-                  .pushNamed(DetailMovie.routeName, arguments: '1'),
+                  .pushNamed(DetailMovie.routeName, arguments: item),
               child: Stack(
                 children: <Widget>[
-                  _imageView(i.getPosterImage()),
-                  _contentView(contentHeight, i),
+                  _imageView(getTheMovieImage(item.posterPath)),
+                  _contentView(contentHeight, item),
                 ],
               ),
             );

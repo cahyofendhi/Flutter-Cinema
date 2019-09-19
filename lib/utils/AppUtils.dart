@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 Map<int, String> _genreMap = {
   28: 'Action',
   12: 'Adventure',
@@ -39,4 +41,14 @@ String getGenreString(List<int> genreIds) {
 
 String getImageTheMovie(String name) {
   return 'http://image.tmdb.org/t/p/w185/$name';
+}
+
+String convertDate(String str) {
+  DateTime date = DateTime.parse(str);
+  var formatter = new DateFormat('dd/MMM/yyyy');
+  return formatter.format(date);
+}
+
+String getTheMovieImage(String path) {
+  return 'http://image.tmdb.org/t/p/w185/$path';
 }

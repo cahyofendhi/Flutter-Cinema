@@ -1,54 +1,41 @@
+import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/tag.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/content_detail.dart';
 
 class DetailMovie extends StatefulWidget {
   static const routeName = '/movie-detail';
 
+  Movie movie;
+
+  DetailMovie(this.movie);
+
   @override
   _DetailMovieState createState() => _DetailMovieState();
 }
 
 class _DetailMovieState extends State<DetailMovie> {
+  MovieDetailBloc _movieBloc;
+
   ScrollController scrollController;
-  final double expandedHight = 300.0;
-  final double heightHeader = 350.0;
+
+  final double expandedHeight = 350.0;
 
   @override
-  void initState() {
-    super.initState();
-    scrollController = new ScrollController();
-    scrollController.addListener(() => setState(() {}));
+  void didChangeDependencies() {
+    _movieBloc = Provider.of<MovieDetailBloc>(context);
+    _movieBloc.getMovieDetail(widget.movie.id);
+    _movieBloc.getMediaCredit(widget.movie.id);
+    _movieBloc.getSimilarMovie(widget.movie.id);
+    super.didChangeDependencies();
   }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  double get top {
-    double res = expandedHight;
-    if (scrollController.hasClients) {
-      double offset = scrollController.offset;
-      if (offset < (res - kToolbarHeight)) {
-        res -= offset;
-      } else {
-        res = kToolbarHeight;
-      }
-    }
-    return res;
-  }
-
-  Movie _movie;
 
   @override
   Widget build(BuildContext context) {
-    final s = ModalRoute.of(context).settings.arguments as String;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -72,12 +59,18 @@ class _DetailMovieState extends State<DetailMovie> {
 
   Widget _helperImage() {
     return Container(
-      height: heightHeader + 50,
+      height: expandedHeight + 50,
       width: double.infinity,
-      child: Image.asset(
-        'assets/images/sample_6.jpg',
-        fit: BoxFit.cover,
-      ),
+      child: StreamBuilder(
+          stream: _movieBloc.movie,
+          builder: (ctx, AsyncSnapshot<Movie> snapshot) {
+            return FadeInImage.assetNetwork(
+              image: getTheMovieImage(
+                  snapshot.data != null ? snapshot.data.posterPath : ''),
+              placeholder: 'assets/images/placeholder.png',
+              fit: BoxFit.cover,
+            );
+          }),
     );
   }
 
@@ -96,7 +89,7 @@ class _DetailMovieState extends State<DetailMovie> {
       ),
       elevation: 0,
       backgroundColor: Colors.transparent,
-      expandedHeight: heightHeader - 50,
+      expandedHeight: expandedHeight - 50,
       snap: false,
       pinned: false,
       flexibleSpace: FlexibleSpaceBar(
@@ -110,8 +103,9 @@ class _DetailMovieState extends State<DetailMovie> {
   Widget _contentSection() {
     return SliverList(
       delegate: SliverChildListDelegate(
-        [ContentDetail()],
+        [ContentDetail(widget.movie)],
       ),
     );
   }
+
 }
