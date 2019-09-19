@@ -16,7 +16,7 @@ class PopulerMovieItem extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () => Navigator.of(context)
-          .pushNamed(DetailMovie.routeName, arguments: '1'),
+          .pushNamed(DetailMovie.routeName, arguments: movie),
       child: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: Column(

@@ -20,7 +20,7 @@ class TredingItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context)
-            .pushNamed(DetailMovie.routeName, arguments: '1');
+            .pushNamed(DetailMovie.routeName, arguments: movie);
       },
       child: Container(
         width: double.infinity,
@@ -42,7 +42,7 @@ class TredingItem extends StatelessWidget {
                         blurRadius: 4.0),
                   ],
                 ),
-                child: ImageNetwork(movie.getPosterImage()),
+                child: ImageNetwork(getTheMovieImage(movie.posterPath)),
               ),
               Flexible(
                 child: Container(

@@ -1,4 +1,4 @@
-import 'package:cinema_flt/bloc/home_block.dart';
+import 'package:cinema_flt/bloc/home_bloc.dart';
 import 'package:cinema_flt/components/widgets/container_category.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';

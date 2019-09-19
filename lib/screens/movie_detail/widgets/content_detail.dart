@@ -1,13 +1,36 @@
+import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
 import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/components/widgets/rating_result.dart';
+import 'package:cinema_flt/models/media_credit.dart';
+import 'package:cinema_flt/models/movie/movie.dart';
+import 'package:cinema_flt/models/similar_result.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/tag.dart';
+import 'package:provider/provider.dart';
 
 import 'cast_detail_item.dart';
+import 'similiar_movie.dart';
 
-class ContentDetail extends StatelessWidget {
-  final List<String> _items = ['action', 'comedy', 'family'];
+class ContentDetail extends StatefulWidget {
+  Movie movie;
+
+  ContentDetail(this.movie);
+
+  @override
+  _ContentDetailState createState() => _ContentDetailState();
+}
+
+class _ContentDetailState extends State<ContentDetail> {
+  MovieDetailBloc _movieBloc;
+  Movie _dataMovie;
+
+  @override
+  void didChangeDependencies() {
+    _movieBloc = Provider.of<MovieDetailBloc>(context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +48,26 @@ class ContentDetail extends StatelessWidget {
   }
 
   Widget _contentBody() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _contentTitle(),
-        _contentCast(),
-      ],
-    );
+    return StreamBuilder(
+        stream: _movieBloc.movie,
+        builder: (context, AsyncSnapshot<Movie> snapshot) {
+          snapshot.data != null
+              ? _dataMovie = snapshot.data
+              : _dataMovie = widget.movie;
+          print('DATA NYA = ${_dataMovie.budget}');
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _contentTitle(_dataMovie),
+              _contentCast(),
+              _contentSimiliarMovie()
+            ],
+          );
+        });
   }
 
-  Widget _contentTitle() {
+  Widget _contentTitle(Movie movie) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 20,
@@ -52,7 +84,7 @@ class ContentDetail extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: Text(
-                  'Alita: Battle Angle',
+                  movie.originalTitle, //? title
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
@@ -64,7 +96,7 @@ class ContentDetail extends StatelessWidget {
             ],
           ),
           SizedBox(height: 7),
-          _genreMovies(),
+          _genreMovies(getGenresForIds(movie.genreIds)),
           SizedBox(height: 10),
           _contentAbout(),
           SizedBox(height: 10),
@@ -74,7 +106,7 @@ class ContentDetail extends StatelessWidget {
           ),
           SizedBox(height: 7),
           Text(
-            "27 years after overcoming the malevolent supernatural entity Pennywise, the former members of the Losers' Club, who have grown up and moved away from Derry, are brought back together by a devastating phone call.",
+            movie.overview, //? overview
             style: TextStyle(
               fontSize: 12,
               color: Colors.grey,
@@ -88,24 +120,32 @@ class ContentDetail extends StatelessWidget {
   }
 
   Widget _contentCast() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: AppStyle.textTitleSection(
-            'Full Cast',
-            AppStyle.getColor(ThemeColor.blackText),
-          ),
-        ),
-        SizedBox(height: 10),
-        CastDetailItem()
-      ],
-    );
+    return StreamBuilder(
+        stream: _movieBloc.movieCredit,
+        builder: (context, AsyncSnapshot<MediaCredit> snapshot) {
+          if (snapshot.data != null) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: AppStyle.textTitleSection(
+                    'Full Cast',
+                    AppStyle.getColor(ThemeColor.blackText),
+                  ),
+                ),
+                SizedBox(height: 10),
+                CastDetailItem(snapshot.data)
+              ],
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        });
   }
 
-  Widget _genreMovies() {
+  Widget _genreMovies(List<String> _items) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Tags(
@@ -142,19 +182,23 @@ class ContentDetail extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _contentDescriptionAbout('Status', 'Released'),
-              _contentDescriptionAbout('Runtime', '2h 50m'),
-              _contentDescriptionAbout('Premiere', 'December 15, 1995'),
-              _contentDescriptionAbout('Budget', '\$60,000,000,000'),
-              _contentDescriptionAbout('Revenue', '\$187,234,355,000'),
+              if (_dataMovie.status != null)
+                _contentDescriptionAbout('Status', _dataMovie.status),
+              if (_dataMovie.runtime != null)
+                _contentDescriptionAbout('Runtime', '${_dataMovie.runtime}'),
+              _contentDescriptionAbout('Premiere', _dataMovie.getReleaseDate()),
+              if (_dataMovie.budget != null)
+                _contentDescriptionAbout('Budget', '\$${_dataMovie.budget}'),
+              if (_dataMovie.revenue != null)
+                _contentDescriptionAbout('Revenue', '\$${_dataMovie.revenue}'),
             ],
           ),
-          Container(
-            width: 80,
-            height: 125,
-            child: ImageNetwork(
-                'http://image.tmdb.org/t/p/w185//tZ55C7gPExwzvBLCsZMqFZMbB2I.jpg'),
-          ),
+          if (_dataMovie.backdropPath != null)
+            Container(
+              width: 80,
+              height: 125,
+              child: ImageNetwork(getTheMovieImage(_dataMovie.backdropPath)),
+            ),
         ],
       ),
     );
@@ -185,8 +229,39 @@ class ContentDetail extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 10,)
+        SizedBox(
+          height: 10,
+        )
       ],
     );
+  }
+
+  Widget _contentSimiliarMovie() {
+    return StreamBuilder(
+        stream: _movieBloc.movieSimilar,
+        builder: (context, AsyncSnapshot<SimilarResult> snapshot) {
+          if (snapshot.data != null) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  child: AppStyle.textTitleSection(
+                    'Similiar',
+                    AppStyle.getColor(ThemeColor.blackText),
+                  ),
+                ),
+                SimiliarMovie(snapshot.data),
+              ],
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 }

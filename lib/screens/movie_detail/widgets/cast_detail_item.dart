@@ -1,6 +1,13 @@
+import 'package:cinema_flt/models/media_credit.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 
 class CastDetailItem extends StatelessWidget {
+
+  MediaCredit media;
+
+  CastDetailItem(this.media);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -9,6 +16,7 @@ class CastDetailItem extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (ctx, index) {
           final leftMargin = index == 0 ? 15.0 : 5.0;
+          Cast item = media.cast[index];
           return Container(
             width: 100,
             child: Padding(
@@ -23,8 +31,7 @@ class CastDetailItem extends StatelessWidget {
                       Radius.circular(10),
                     ),
                     child: FadeInImage.assetNetwork(
-                      image:
-                          'http://image.tmdb.org/t/p/w185//yOwYh9R4LFulxWb1GdwO7Z1mjLe.jpg',
+                      image: getTheMovieImage(item.profilePath),
                       placeholder: 'assets/images/placeholder.jpg',
                       height: 80,
                       width: 80,
@@ -36,7 +43,7 @@ class CastDetailItem extends StatelessWidget {
                   ),
                   Flexible(
                     child: Text(
-                      'Steven Arnold Efendhi',
+                      item.name,
                       style: TextStyle(fontSize: 10.0),
                       textAlign: TextAlign.center,
                       maxLines: 2,
@@ -48,7 +55,7 @@ class CastDetailItem extends StatelessWidget {
             ),
           );
         },
-        itemCount: 10,
+        itemCount: media.cast.length,
       ),
     );
   }
