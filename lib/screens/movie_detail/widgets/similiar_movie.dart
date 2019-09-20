@@ -1,10 +1,10 @@
+import 'package:cinema_flt/components/widgets/placeholder/similiar_item_placeholder.dart';
 import 'package:cinema_flt/models/similar_result.dart';
 import 'package:flutter/material.dart';
 
 import 'similiar_movie_item.dart';
 
 class SimiliarMovie extends StatelessWidget {
-
   SimilarResult _similiarMovie;
 
   SimiliarMovie(this._similiarMovie);
@@ -26,8 +26,22 @@ class SimiliarMovie extends StatelessWidget {
         crossAxisCount: isPortrait ? 3 : 7,
         childAspectRatio: 0.6,
         shrinkWrap: true,
-        children: _similiarMovie.results.map((item) => SimiliarMovieItem(item)).toList(),
+        children: getGridViewItem(),
       ),
     );
+  }
+
+  List<Widget> getGridViewItem() {
+    if (_similiarMovie != null) {
+      return _similiarMovie.results
+          .map((item) => SimiliarMovieItem(item))
+          .toList();
+    } else {
+      List<Widget> list = List<Widget>();
+      for (var i = 0; i < 10; i++) {
+        list.add(SimiliarItemPlaceholder());
+      }
+      return list;
+    }
   }
 }

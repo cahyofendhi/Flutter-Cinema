@@ -53,7 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
         StreamBuilder(
           stream: _homeBloc.upcomingMovies,
           builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-            if (snapshot.data == null || snapshot.data.results.isEmpty) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return _upcomingMovie(null);
+            } else if (snapshot.data == null || snapshot.data.results.isEmpty) {
               return Container();
             } else {
               return _upcomingMovie(snapshot.data.results);
@@ -61,23 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         StreamBuilder(
-          stream: _homeBloc.statePopuler,
-          builder: (ctx, AsyncSnapshot<UiState> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting ||
-                snapshot.data.state == RequestState.LOADING) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return SizedBox();
-            }
-          },
-        ),
-        StreamBuilder(
           stream: _homeBloc.populerMovies,
           builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-            if (snapshot.data == null || snapshot.data.results.isEmpty) {
+             if (snapshot.connectionState == ConnectionState.waiting) {
+              return _populerMovie(null);
+            } else if (snapshot.data == null || snapshot.data.results.isEmpty) {
               return Container();
             } else {
               return _populerMovie(snapshot.data.results);
@@ -87,7 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
         StreamBuilder(
           stream: _homeBloc.trendingMovies,
           builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-            if (snapshot.data == null || snapshot.data.results.isEmpty) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return _trendingMovie(null);
+            } else if (snapshot.data == null || snapshot.data.results.isEmpty) {
               return Container();
             } else {
               return _trendingMovie(snapshot.data.results);
