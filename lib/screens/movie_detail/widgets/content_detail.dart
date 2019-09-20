@@ -54,7 +54,6 @@ class _ContentDetailState extends State<ContentDetail> {
           snapshot.data != null
               ? _dataMovie = snapshot.data
               : _dataMovie = widget.movie;
-          print('DATA NYA = ${_dataMovie.budget}');
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,25 +122,31 @@ class _ContentDetailState extends State<ContentDetail> {
     return StreamBuilder(
         stream: _movieBloc.movieCredit,
         builder: (context, AsyncSnapshot<MediaCredit> snapshot) {
-          if (snapshot.data != null) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: AppStyle.textTitleSection(
-                    'Full Cast',
-                    AppStyle.getColor(ThemeColor.blackText),
-                  ),
-                ),
-                SizedBox(height: 10),
-                CastDetailItem(snapshot.data)
-              ],
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
+          Widget cardItem = Container();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            print('waiting');
+            cardItem = CastDetailItem(null);
+          } else if ((snapshot.connectionState == ConnectionState.active ||
+                  snapshot.connectionState == ConnectionState.done) &&
+              snapshot.data != null) {
+            print('done');
+            cardItem = CastDetailItem(snapshot.data);
           }
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: AppStyle.textTitleSection(
+                  'Full Cast',
+                  AppStyle.getColor(ThemeColor.blackText),
+                ),
+              ),
+              SizedBox(height: 10),
+              cardItem,
+            ],
+          );
         });
   }
 
@@ -240,28 +245,32 @@ class _ContentDetailState extends State<ContentDetail> {
     return StreamBuilder(
         stream: _movieBloc.movieSimilar,
         builder: (context, AsyncSnapshot<SimilarResult> snapshot) {
-          if (snapshot.data != null) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  child: AppStyle.textTitleSection(
-                    'Similiar',
-                    AppStyle.getColor(ThemeColor.blackText),
-                  ),
-                ),
-                SimiliarMovie(snapshot.data),
-              ],
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+          Widget cardItem = Container();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            print('waiting');
+            cardItem = SimiliarMovie(null);
+          } else if ((snapshot.connectionState == ConnectionState.active ||
+                  snapshot.connectionState == ConnectionState.done) &&
+              snapshot.data != null) {
+            print('done');
+            cardItem = SimiliarMovie(snapshot.data);
           }
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: AppStyle.textTitleSection(
+                  'Similiar',
+                  AppStyle.getColor(ThemeColor.blackText),
+                ),
+              ),
+              cardItem,
+            ],
+          );
         });
   }
 }

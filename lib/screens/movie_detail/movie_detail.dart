@@ -64,9 +64,9 @@ class _DetailMovieState extends State<DetailMovie> {
       child: StreamBuilder(
           stream: _movieBloc.movie,
           builder: (ctx, AsyncSnapshot<Movie> snapshot) {
+            String path = snapshot.data != null ? snapshot.data.posterPath : widget.movie.posterPath;
             return FadeInImage.assetNetwork(
-              image: getTheMovieImage(
-                  snapshot.data != null ? snapshot.data.posterPath : ''),
+              image: getTheMovieImage(path),
               placeholder: 'assets/images/placeholder.png',
               fit: BoxFit.cover,
             );

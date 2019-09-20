@@ -1,3 +1,4 @@
+import 'package:cinema_flt/components/widgets/placeholder/populer_item_placeholder.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,6 @@ import 'package:snaplist/snaplist_view.dart';
 import 'populer_movie_item.dart';
 
 class PopulerMovie extends StatefulWidget {
-
   final List<Movie> movies;
 
   PopulerMovie(this.movies);
@@ -16,8 +16,6 @@ class PopulerMovie extends StatefulWidget {
 }
 
 class _PopulerMovieState extends State<PopulerMovie> {
-  
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -31,9 +29,11 @@ class _PopulerMovieState extends State<PopulerMovie> {
         sizeProvider: (index, data) => cardSize,
         separatorProvider: (index, data) => Size(15.0, 15.0),
         builder: (context, index, data) {
-          return PopulerMovieItem(index, widget.movies[index]);
+          return widget.movies == null
+              ? PopulerItemPlaceholder()
+              : PopulerMovieItem(index, widget.movies[index]);
         },
-        count: widget.movies.length,
+        count: widget.movies == null ? 5 : widget.movies.length,
       ),
     );
   }

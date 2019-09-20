@@ -15,7 +15,7 @@ class SimiliarMovieItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => {},
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           AspectRatio(
