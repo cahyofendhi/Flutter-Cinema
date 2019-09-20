@@ -1,27 +1,50 @@
 import "dart:async";
-import 'package:chopper/chopper.dart';
 import 'package:cinema_flt/data/env.dart';
+import 'package:dio/dio.dart';
 
-part 'service.chopper.dart';
+class Service {
+  static final SUCCESS = 200;
+  static final SUCCESS_CREATE = 201;
+  static final ERROR_NOT_FOUND = 404;
 
-@ChopperApi(baseUrl: '$BASE_URL/3/')
-abstract class Service extends ChopperService {
-  static Service create([ChopperClient client]) => _$Service(client);
+  Dio dio;
 
-  @Get(path: 'movie/{group}')
-  Future<Response> getMovieList(@Path('group') String group,
-      @Query() String api_key, @Query() int page);
+  Service(this.dio);
 
-  @Get(path: 'movie/{movieId}')
-  Future<Response> getMovieDetail([@Path('movieId') int movieId, @Query() String api_key = API_KEY]);
+  Future<Response> getMovieList(
+      [String group, int page, String apiKey = API_KEY]) async {
+    return await dio.get('movie/$group', queryParameters: {
+      'api_key': apiKey,
+      'page': page,
+    });
+  }
 
-  @Get(path: 'movie/{movieId}/credits')
-  Future<Response> getMovieMediaCredit([@Path('movieId') int movieId, @Query() String api_key = API_KEY]);
+  Future<Response> getMovieDetail(
+      [int movieId, String apiKey = API_KEY]) async {
+    return await dio.get('movie/$movieId', queryParameters: {
+      'api_key': apiKey,
+    });
+  }
 
-  @Get(path: 'movie/{movieId}/similar')
-  Future<Response> getMovieSimilar([@Path('movieId') int movieId, @Query() String api_key = API_KEY]);
+  Future<Response> getMovieMediaCredit(
+      [int movieId, String apiKey = API_KEY]) async {
+    return await dio.get('movie/$movieId/credits', queryParameters: {
+      'api_key': apiKey,
+    });
+  }
 
-  @Get(path: 'tv/{group}')
-  Future<Response> getTvList(@Path('group') String group,
-      @Query() String api_key, @Query() int page);
+  Future<Response> getMovieSimilar(
+      [int movieId, String apiKey = API_KEY]) async {
+    return await dio.get('movie/$movieId/similar', queryParameters: {
+      'api_key': apiKey,
+    });
+  }
+
+  Future<Response> getTvList(
+      [String group, int page, String apiKey = API_KEY]) async {
+    return await dio.get('tv/$group', queryParameters: {
+      'api_key': apiKey,
+      'page': page,
+    });
+  }
 }
