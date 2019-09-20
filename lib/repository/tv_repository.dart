@@ -1,10 +1,9 @@
-import 'package:chopper/chopper.dart';
-import 'package:cinema_flt/data/env.dart';
 import 'package:cinema_flt/db/movie_moor.dart';
 import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/models/tv/tv_result.dart';
 import 'package:cinema_flt/services/service.dart';
+import 'package:dio/dio.dart';
 
 enum TvGroup {
   TopRateTv,
@@ -37,9 +36,9 @@ class TvRepository {
     final ServiceModel result = ServiceModel();
     try {
       Response response =
-          await _service.getTvList(_getTvGroup(group), API_KEY, 1);
-      if (response.isSuccessful) {
-        TvResult mResult = TvResult.fromJson(response.body);
+          await _service.getTvList(_getTvGroup(group), 1);
+      if (response.statusCode == Service.SUCCESS) {
+        TvResult mResult = TvResult.fromJson(response.data);
         result.model = mResult;
         await insertTvMovie(
             datas: mResult.results,
@@ -47,7 +46,7 @@ class TvRepository {
             isPopuler: group == TvGroup.PopulerTv,
             isTopRate: group == TvGroup.TopRateTv);
       } else {
-        result.errorMessage = response.error.toString();
+        result.errorMessage = response.statusMessage.toString();
         await getMovieFromDb(group).then((dt) => result.model = dt);
       }
     } catch (e) {

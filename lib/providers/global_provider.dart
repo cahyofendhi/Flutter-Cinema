@@ -25,8 +25,7 @@ List<SingleChildCloneableWidget> independentServices = [
 
 List<SingleChildCloneableWidget> dependentServices = [
   ProxyProvider<NetworkClient, Service>(
-    builder: (context, client, service) => Service.create(client.chopperClient),
-    dispose: (context, service) => service.client.dispose(),
+    builder: (context, client, service) => Service(client.dio),
   ),
   ProxyProvider<MovieDb, MovieMoor>(
       builder: (context, movieDb, movieMorr) => MovieMoor(movieDb)),
