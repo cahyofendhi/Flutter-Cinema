@@ -35,7 +35,12 @@ class PopulerMovieItem extends StatelessWidget {
                       blurRadius: 4.0),
                 ],
               ),
-              child: ImageNetwork(getImageTheMovie(movie.posterPath)),
+              child: Hero(
+                tag: 'populer-image-${movie.id}',
+                child: ImageNetwork(
+                  getImageTheMovie(movie.posterPath),
+                ),
+              ),
             ),
             SizedBox(
               height: 15,
@@ -44,15 +49,9 @@ class PopulerMovieItem extends StatelessWidget {
               movie.originalTitle,
               AppStyle.getColor(ThemeColor.blackText),
             ),
-            // RatingResult(4.0),
-            // RatingBarRestultItem(4.5),
             SizedBox(
               height: 5,
             ),
-            // AppStyle.textSubtitle(
-            //   getGenreString(movie.genreIds),
-            //   AppStyle.getColor(ThemeColor.greyTextDesc)
-            // ),
             SizedBox(
               height: 5,
             ),

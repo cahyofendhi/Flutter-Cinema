@@ -64,11 +64,16 @@ class _DetailMovieState extends State<DetailMovie> {
       child: StreamBuilder(
           stream: _movieBloc.movie,
           builder: (ctx, AsyncSnapshot<Movie> snapshot) {
-            String path = snapshot.data != null ? snapshot.data.posterPath : widget.movie.posterPath;
-            return FadeInImage.assetNetwork(
-              image: getTheMovieImage(path),
-              placeholder: 'assets/images/placeholder.png',
-              fit: BoxFit.cover,
+            String path = snapshot.data != null
+                ? snapshot.data.posterPath
+                : widget.movie.posterPath;
+            return Hero(
+              tag: 'image-${widget.movie.id}',
+              child: FadeInImage.assetNetwork(
+                image: getTheMovieImage(path),
+                placeholder: 'assets/images/placeholder.png',
+                fit: BoxFit.cover,
+              ),
             );
           }),
     );
@@ -107,5 +112,4 @@ class _DetailMovieState extends State<DetailMovie> {
       ),
     );
   }
-
 }

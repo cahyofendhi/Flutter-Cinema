@@ -47,7 +47,10 @@ class SliderItem extends StatelessWidget {
               blurRadius: 4.0),
         ],
       ),
-      child: ImageNetwork(poster),
+      child: Hero(
+        tag: 'upcoming-image-${movie.id}',
+        child: ImageNetwork(poster),
+      ),
     );
   }
 
