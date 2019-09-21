@@ -1,10 +1,12 @@
-import 'package:chopper/chopper.dart';
 import 'package:cinema_flt/data/env.dart';
 import 'package:cinema_flt/db/movie_moor.dart';
+import 'package:cinema_flt/models/media_credit.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/models/service_model.dart';
+import 'package:cinema_flt/models/similar_result.dart';
 import 'package:cinema_flt/services/service.dart';
+import 'package:dio/dio.dart';
 
 enum MovieCategory { Upcoming, TopRate, Populer }
 
@@ -32,9 +34,10 @@ class MovieRepository {
     final ServiceModel result = ServiceModel();
     try {
       Response response =
-          await _service.getMovieList(_getCategoryMovie(category), API_KEY, 1);
-      if (response.isSuccessful) {
-        MoviesResult mResult = MoviesResult.fromJson(response.body);
+          await _service.getMovieList(_getCategoryMovie(category), 1);
+      print('MOVIE : $response');
+      if (response.statusCode == Service.SUCCESS) {
+        MoviesResult mResult = MoviesResult.fromJson(response.data);
         result.model = mResult;
         await insertMovie(
             datas: mResult.results,
@@ -42,7 +45,7 @@ class MovieRepository {
             isPopuler: category == MovieCategory.Populer,
             isTopRate: category == MovieCategory.TopRate);
       } else {
-        result.errorMessage = response.error.toString();
+        result.errorMessage = response.statusMessage;
         await getMovieFromDb(category).then((dt) => result.model = dt);
       }
     } catch (e) {
@@ -90,4 +93,63 @@ class MovieRepository {
     });
     return MoviesResult(results: data);
   }
+
+  //! ================ movie detail =================
+  Future<ServiceModel> getMovieDetail(int movieId) async {
+    final ServiceModel result = ServiceModel();
+    try {
+      Response response =
+          await _service.getMovieDetail(movieId);
+      if (response.statusCode == Service.SUCCESS) {
+        Movie mResult = Movie.fromDetailJson(response.data);
+        result.model = mResult;
+      } else {
+        print("Error : ${response}");
+        result.errorMessage = response.statusMessage.toString();
+      }
+    } catch (e) {
+      print('Error - : ${e.toString()}');
+      result.errorMessage = e.toString();
+    }
+    return result;
+  }
+
+  Future<ServiceModel> getMovieMediaCredit(int movieId) async {
+    final ServiceModel result = ServiceModel();
+    try {
+      Response response =
+          await _service.getMovieMediaCredit(movieId);
+      if (response.statusCode == Service.SUCCESS) {
+        MediaCredit mResult = MediaCredit.fromJson(response.data);
+        result.model = mResult;
+      } else {
+        print("Error : ${response.statusMessage}");
+        result.errorMessage = response.statusMessage.toString();
+      }
+    } catch (e) {
+      print('Error - : ${e.toString()}');
+      result.errorMessage = e.toString();
+    }
+    return result;
+  }
+
+  Future<ServiceModel> getMovieSimilar(int movieId) async {
+    final ServiceModel result = ServiceModel();
+    try {
+      Response response =
+          await _service.getMovieSimilar(movieId);
+      if (response.statusCode == Service.SUCCESS) {
+        SimilarResult mResult = SimilarResult.fromJson(response.data);
+        result.model = mResult;
+      } else {
+        print("Error Similar : ${response.statusMessage}");
+        result.errorMessage = response.statusMessage.toString();
+      }
+    } catch (e) {
+      print('Error Similar - : ${e.toString()}');
+      result.errorMessage = e.toString();
+    }
+    return result;
+  }
+
 }

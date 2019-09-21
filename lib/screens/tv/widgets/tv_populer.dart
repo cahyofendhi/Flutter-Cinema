@@ -1,10 +1,10 @@
+import 'package:cinema_flt/components/widgets/placeholder/tv_populer_item_placeholder.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/screens/tv/widgets/tv_populer_item.dart';
 import 'package:flutter/material.dart';
 import 'package:snaplist/snaplist.dart';
 
 class TvPopuler extends StatefulWidget {
-
   final List<TvMovie> movies;
 
   TvPopuler(this.movies);
@@ -29,9 +29,11 @@ class _TvPopulerState extends State<TvPopuler> {
         sizeProvider: (index, data) => cardSize,
         separatorProvider: (index, data) => Size(15.0, 15.0),
         builder: (context, index, data) {
-          return TvPopulerItem(widget.movies[index], imageHeight);
+          return widget.movies == null
+              ? TvPopulerItemPlaceholder(imageHeight)
+              : TvPopulerItem(widget.movies[index], imageHeight);
         },
-        count: widget.movies.length,
+        count: widget.movies == null ? 5 : widget.movies.length,
       ),
     );
   }

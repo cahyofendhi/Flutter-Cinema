@@ -1,20 +1,22 @@
-import 'package:chopper/chopper.dart';
 import 'package:cinema_flt/data/env.dart';
-import 'package:cinema_flt/services/service.dart';
-// import 'package:logging/logging.dart';
+import 'package:dio/dio.dart';
 
 class NetworkClient {
-  final ChopperClient chopperClient;
+  static final CONNECTION_TIME_OUT = 5 * 1000;
+  static final RECEIVE_TIME_OUT = 3 * 1000;
 
-  NetworkClient()
-      : chopperClient = ChopperClient(
-            baseUrl: BASE_URL,
-            services: [Service.create()],
-            // interceptors: [HttpLoggingInterceptor()],
-            converter: JsonConverter()); 
-  //   Logger.root.level = Level.INFO;
-  //   Logger.root.onRecord.listen((rec) {
-  //     print('${rec.level.name}: ${rec.time}: ${rec.message}');
-  //   });
-  // }
+  Dio dio;
+
+  NetworkClient() {
+    dio = Dio(optionRequest());
+    dio.interceptors.add(LogInterceptor());
+  }
+
+  static BaseOptions optionRequest() {
+    return new BaseOptions(
+      baseUrl: BASE_URL,
+      connectTimeout: CONNECTION_TIME_OUT,
+      receiveTimeout: RECEIVE_TIME_OUT,
+    );
+  }
 }
