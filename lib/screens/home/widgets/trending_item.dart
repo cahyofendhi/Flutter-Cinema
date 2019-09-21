@@ -42,7 +42,12 @@ class TredingItem extends StatelessWidget {
                         blurRadius: 4.0),
                   ],
                 ),
-                child: ImageNetwork(getTheMovieImage(movie.posterPath)),
+                child: Hero(
+                  tag: 'image-${movie.id}',
+                  child: ImageNetwork(
+                    getTheMovieImage(movie.posterPath),
+                  ),
+                ),
               ),
               Flexible(
                 child: Container(
