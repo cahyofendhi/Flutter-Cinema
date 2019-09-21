@@ -1,4 +1,5 @@
-import 'package:cinema_flt/bloc/home_block.dart';
+import 'package:cinema_flt/bloc/home_bloc.dart';
+import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
 import 'package:cinema_flt/bloc/tv_bloc.dart';
 import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/db/movie_moor.dart';
@@ -24,8 +25,7 @@ List<SingleChildCloneableWidget> independentServices = [
 
 List<SingleChildCloneableWidget> dependentServices = [
   ProxyProvider<NetworkClient, Service>(
-    builder: (context, client, service) => Service.create(client.chopperClient),
-    dispose: (context, service) => service.client.dispose(),
+    builder: (context, client, service) => Service(client.dio),
   ),
   ProxyProvider<MovieDb, MovieMoor>(
       builder: (context, movieDb, movieMorr) => MovieMoor(movieDb)),
@@ -50,5 +50,10 @@ List<SingleChildCloneableWidget> uiConsumableProviders = [
     builder: (context, tvRepository, tvBloc) =>
         TvBloc(tvRepository: tvRepository),
     dispose: (context, tvBloc) => tvBloc.dispose(),
+  ),
+  ProxyProvider<MovieRepository, MovieDetailBloc>(
+    builder: (context, movieRepository, movieDetailBloc) =>
+        MovieDetailBloc(movieRepository: movieRepository),
+    dispose: (context, movieDetailBloc) => movieDetailBloc.dispose(),
   ),
 ];
