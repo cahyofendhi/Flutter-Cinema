@@ -18,11 +18,12 @@ to run this project
 
 ## List of libraries in this project
 * [Provider](https://pub.dev/packages/provider)
-* [Chopper](https://pub.dev/packages/chopper)
+* [Dio](https://pub.dev/packages/dio)
 * [Moor](https://pub.dev/packages/moor_flutter)
 * [Slider](https://pub.dev/packages/carousel_slider)
 * [Snaplist](https://pub.dev/packages/snaplist)
 * [Intl](https://pub.dev/packages/intl)
+* [Shimmer](https://pub.dev/packages/shimmer)
 
 
 For help getting started with Flutter, view flutter
