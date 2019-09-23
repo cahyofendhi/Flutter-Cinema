@@ -92,7 +92,7 @@ class _MovieSearchState extends State<MovieSearch> {
                   if (page == 1) {
                     movies = result;
                   } else {
-                    movies.insertAll(movies.length - 1, result);
+                    movies.insertAll(movies.length, result);
                   }
                   return _contentList();
                 } else {
@@ -116,16 +116,8 @@ class _MovieSearchState extends State<MovieSearch> {
       footer: CustomFooter(
         builder: (BuildContext context, LoadStatus mode) {
           Widget body;
-          if (mode == LoadStatus.idle) {
-            body = Text("pull up load");
-          } else if (mode == LoadStatus.loading) {
+          if (mode == LoadStatus.loading) {
             body = CupertinoActivityIndicator();
-          } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed!Click retry!");
-          } else if (mode == LoadStatus.canLoading) {
-            body = Text("release to load more");
-          } else {
-            body = Text("No more Data");
           }
           return Container(
             height: 50.0,
@@ -189,4 +181,5 @@ class _MovieSearchState extends State<MovieSearch> {
       ),
     );
   }
+
 }

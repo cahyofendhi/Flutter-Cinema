@@ -1,4 +1,3 @@
-import 'package:cinema_flt/data/env.dart';
 import 'package:cinema_flt/db/movie_moor.dart';
 import 'package:cinema_flt/models/media_credit.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
@@ -109,7 +108,7 @@ class MovieRepository {
         MoviesResult mResult = MoviesResult.fromJson(response.data);
         result.model = mResult;
       } else {
-        print("Error Search : ${response}");
+        print("Error Search : $response");
         result.errorMessage = response.statusMessage.toString();
       }
     } catch (err) {
@@ -128,7 +127,7 @@ class MovieRepository {
         Movie mResult = Movie.fromDetailJson(response.data);
         result.model = mResult;
       } else {
-        print("Error : ${response}");
+        print("Error : $response");
         result.errorMessage = response.statusMessage.toString();
       }
     } catch (e) {
