@@ -8,6 +8,8 @@ import 'package:cinema_flt/models/similar_result.dart';
 import 'package:cinema_flt/services/service.dart';
 import 'package:dio/dio.dart';
 
+import 'group.dart';
+
 enum MovieCategory { Upcoming, TopRate, Populer }
 
 class MovieRepository {
@@ -94,12 +96,34 @@ class MovieRepository {
     return MoviesResult(results: data);
   }
 
+  // search movie
+  Future<ServiceModel> getSearchMovie(String query, int page) async {
+    final ServiceModel result = ServiceModel();
+    try {
+      Response response = await _service.getSearchMovieList(
+        query,
+        page,
+        getRequestType(RequestType.Movie),
+      );
+      if (response.statusCode == Service.SUCCESS) {
+        MoviesResult mResult = MoviesResult.fromJson(response.data);
+        result.model = mResult;
+      } else {
+        print("Error Search : ${response}");
+        result.errorMessage = response.statusMessage.toString();
+      }
+    } catch (err) {
+      print("Error Catch Search : ${err.toString()}");
+      result.errorMessage = err.toString();
+    }
+    return result;
+  }
+
   //! ================ movie detail =================
   Future<ServiceModel> getMovieDetail(int movieId) async {
     final ServiceModel result = ServiceModel();
     try {
-      Response response =
-          await _service.getMovieDetail(movieId);
+      Response response = await _service.getMovieDetail(movieId);
       if (response.statusCode == Service.SUCCESS) {
         Movie mResult = Movie.fromDetailJson(response.data);
         result.model = mResult;
@@ -117,8 +141,7 @@ class MovieRepository {
   Future<ServiceModel> getMovieMediaCredit(int movieId) async {
     final ServiceModel result = ServiceModel();
     try {
-      Response response =
-          await _service.getMovieMediaCredit(movieId);
+      Response response = await _service.getMovieMediaCredit(movieId);
       if (response.statusCode == Service.SUCCESS) {
         MediaCredit mResult = MediaCredit.fromJson(response.data);
         result.model = mResult;
@@ -136,8 +159,7 @@ class MovieRepository {
   Future<ServiceModel> getMovieSimilar(int movieId) async {
     final ServiceModel result = ServiceModel();
     try {
-      Response response =
-          await _service.getMovieSimilar(movieId);
+      Response response = await _service.getMovieSimilar(movieId);
       if (response.statusCode == Service.SUCCESS) {
         SimilarResult mResult = SimilarResult.fromJson(response.data);
         result.model = mResult;
@@ -151,5 +173,4 @@ class MovieRepository {
     }
     return result;
   }
-
 }
