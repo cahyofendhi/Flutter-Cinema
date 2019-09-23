@@ -1,3 +1,4 @@
+import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
 import 'package:cinema_flt/bloc/movie_search_bloc.dart';
 import 'package:cinema_flt/components/unknown_page.dart';
 import 'package:cinema_flt/repository/movie_repository.dart';
@@ -18,9 +19,15 @@ class Router {
           builder: (ctx) => MainScreens(),
         );
       case DetailMovie.routeName:
-        return FadeRoute(
-          page: DetailMovie(arguments),
-        );
+        final _page = (BuildContext context, _, __) {
+          return ProxyProvider<MovieRepository, MovieDetailBloc>(
+            builder: (context, movieRepository, movieDetailBloc) =>
+                MovieDetailBloc(movieRepository: movieRepository),
+            dispose: (context, movieDetailBloc) => movieDetailBloc.dispose(),
+            child: DetailMovie(arguments),
+          );
+        };
+        return FadeRoute(page: null, pageBuilder: _page);
       case MovieSearch.routeName:
         return MaterialPageRoute(
           builder: (ctx) => ProxyProvider<MovieRepository, MovieSearchBloc>(
@@ -30,7 +37,7 @@ class Router {
             child: MovieSearch(),
           ),
         );
-        
+
       default:
         return MaterialPageRoute(
           builder: (_) => UnkownPage(settings.name),
