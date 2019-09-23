@@ -1,10 +1,13 @@
 import 'package:cinema_flt/bloc/movie_search_bloc.dart';
+import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/plugin/searchbar/flutter_search_bar_base.dart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MovieSearch extends StatefulWidget {
   static const routeName = '/search-page';
@@ -15,10 +18,16 @@ class MovieSearch extends StatefulWidget {
 
 class _MovieSearchState extends State<MovieSearch> {
   SearchBar searchBar;
-  String titleSearch = 'Movie Search';
+  static final defaultTitle = 'Movie Search';
+  String titleSearch = defaultTitle;
   String querySearch = '';
 
   MovieSearchBloc _movieSearchBloc;
+  List<Movie> movies = [];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  int totalPage = 0;
+  int page = 1;
 
   void onSubmitted(String value) {
     setState(() {
@@ -39,7 +48,9 @@ class _MovieSearchState extends State<MovieSearch> {
       setState: setState,
       onSubmitted: onSubmitted,
       onClosed: () {
-        print("closed");
+        setState(() {
+          titleSearch = defaultTitle;
+        });
       },
     );
   }
@@ -72,9 +83,18 @@ class _MovieSearchState extends State<MovieSearch> {
                 );
               } else if (snapshot.connectionState == ConnectionState.active &&
                   snapshot.data != null) {
-                final data = snapshot.data.results;
-                if (data.isNotEmpty) {
-                  return TrendingMovie(snapshot.data.results);
+                MoviesResult data = snapshot.data;
+                totalPage = data.totalPages;
+                page = data.page;
+                final result = data.results;
+                _refreshController.loadComplete();
+                if (result.isNotEmpty) {
+                  if (page == 1) {
+                    movies = result;
+                  } else {
+                    movies.insertAll(movies.length - 1, result);
+                  }
+                  return _contentList();
                 } else {
                   return _emptyView();
                 }
@@ -88,7 +108,57 @@ class _MovieSearchState extends State<MovieSearch> {
         ));
   }
 
+  Widget _contentList() {
+    return SmartRefresher(
+      enablePullDown: false,
+      enablePullUp: true,
+      header: WaterDropHeader(),
+      footer: CustomFooter(
+        builder: (BuildContext context, LoadStatus mode) {
+          Widget body;
+          if (mode == LoadStatus.idle) {
+            body = Text("pull up load");
+          } else if (mode == LoadStatus.loading) {
+            body = CupertinoActivityIndicator();
+          } else if (mode == LoadStatus.failed) {
+            body = Text("Load Failed!Click retry!");
+          } else if (mode == LoadStatus.canLoading) {
+            body = Text("release to load more");
+          } else {
+            body = Text("No more Data");
+          }
+          return Container(
+            height: 50.0,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(child: body),
+            ),
+          );
+        },
+      ),
+      controller: _refreshController,
+      onLoading: _onLoading,
+      child: TrendingMovie(movies),
+    );
+  }
+
+  void _onLoading() {
+    _movieSearchBloc.getMovie(querySearch, page + 1);
+  }
+
   Widget _emptyView() {
+    return _blankPage(
+        'assets/images/icon_not_found.png', 'No search results found');
+  }
+
+  Widget _initializeView() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 300),
+      child: _blankPage('assets/images/icon_movie.png', 'Movie Search Page'),
+    );
+  }
+
+  Widget _blankPage(String icon, String name) {
     return Container(
       height: MediaQuery.of(context).size.height,
       child: Center(
@@ -98,14 +168,14 @@ class _MovieSearchState extends State<MovieSearch> {
               height: 50,
               width: 50,
               child: Image.asset(
-                'assets/images/icon_not_found.png',
+                icon,
                 fit: BoxFit.contain,
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
               child: Text(
-                'No search results found',
+                name,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w300,
@@ -115,41 +185,6 @@ class _MovieSearchState extends State<MovieSearch> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _initializeView() {
-    return Container(
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 300),
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 50,
-                width: 50,
-                child: Image.asset(
-                  'assets/images/icon_movie.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                child: Text(
-                  'Movie Search Page',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w300,
-                    color: AppStyle.getColor(ThemeColor.blackText),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
