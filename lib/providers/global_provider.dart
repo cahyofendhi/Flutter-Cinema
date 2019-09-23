@@ -1,5 +1,6 @@
 import 'package:cinema_flt/bloc/home_bloc.dart';
 import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
+import 'package:cinema_flt/bloc/movie_search_bloc.dart';
 import 'package:cinema_flt/bloc/tv_bloc.dart';
 import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/db/movie_moor.dart';
@@ -41,16 +42,21 @@ List<SingleChildCloneableWidget> dependentServices = [
 ];
 
 List<SingleChildCloneableWidget> uiConsumableProviders = [
+  //? home bloc
   ProxyProvider<MovieRepository, HomeBloc>(
     builder: (context, movieRepository, homeBloc) =>
         HomeBloc(movieRepository: movieRepository),
     dispose: (context, homeBloc) => homeBloc.dispose(),
   ),
+
+  //? tv bloc
   ProxyProvider<TvRepository, TvBloc>(
     builder: (context, tvRepository, tvBloc) =>
         TvBloc(tvRepository: tvRepository),
     dispose: (context, tvBloc) => tvBloc.dispose(),
   ),
+
+  //? movie detail bloc
   ProxyProvider<MovieRepository, MovieDetailBloc>(
     builder: (context, movieRepository, movieDetailBloc) =>
         MovieDetailBloc(movieRepository: movieRepository),

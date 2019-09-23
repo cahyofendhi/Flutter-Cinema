@@ -11,6 +11,15 @@ class Service {
 
   Service(this.dio);
 
+  Future<Response> getSearchMovieList(
+      [String query, int page, String group, String apiKey = API_KEY]) async {
+    return await dio.get('/search/$group/', queryParameters: {
+      'api_key': apiKey,
+      'query': query,
+      'page': page,
+    });
+  }
+
   Future<Response> getMovieList(
       [String group, int page, String apiKey = API_KEY]) async {
     return await dio.get('movie/$group', queryParameters: {
