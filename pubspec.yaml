@@ -44,8 +44,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner:
-  chopper_generator: ^3.0.0
   moor_generator: ^1.7.0
+  mockito: ^4.1.1
+  test: ^1.5.3
+
 
 
 # For information on the generic Dart part of this file, see the
@@ -64,6 +66,7 @@ flutter:
    - assets/images/placeholder.png
    - assets/images/icon_movie.png
    - assets/images/icon_not_found.png
+   - assets/images/logo_cinema.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

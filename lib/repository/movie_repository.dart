@@ -36,7 +36,6 @@ class MovieRepository {
     try {
       Response response =
           await _service.getMovieList(_getCategoryMovie(category), 1);
-      print('MOVIE : $response');
       if (response.statusCode == Service.SUCCESS) {
         MoviesResult mResult = MoviesResult.fromJson(response.data);
         result.model = mResult;
@@ -158,14 +157,18 @@ class MovieRepository {
   Future<ServiceModel> getMovieSimilar(int movieId) async {
     final ServiceModel result = ServiceModel();
     try {
-      Response response = await _service.getMovieSimilar(movieId);
-      if (response.statusCode == Service.SUCCESS) {
-        SimilarResult mResult = SimilarResult.fromJson(response.data);
-        result.model = mResult;
-      } else {
-        print("Error Similar : ${response.statusMessage}");
-        result.errorMessage = response.statusMessage.toString();
-      }
+      await _service.getMovieSimilar(movieId).then((response) {
+        print('DATA MOVIE : $response');
+        if (response.statusCode == Service.SUCCESS) {
+          SimilarResult mResult = SimilarResult.fromJson(response.data);
+          result.model = mResult;
+        } else {
+          print("Error Similar : ${response.statusMessage}");
+          result.errorMessage = response.statusMessage.toString();
+        }
+      }).catchError((err) {
+        result.errorMessage = err.toString();
+      });
     } catch (e) {
       print('Error Similar - : ${e.toString()}');
       result.errorMessage = e.toString();
