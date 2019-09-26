@@ -43,6 +43,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
   build_runner:
   moor_generator: ^1.7.0
   mockito: ^4.1.1
