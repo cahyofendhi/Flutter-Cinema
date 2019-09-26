@@ -9,13 +9,11 @@ void main() {
     });
 
     final homeSearchView = find.byValueKey('home_search_view');
-    final textTitleCategory = find.byValueKey('text_test');
-
-    String titleName = '';
+    
     test('verify the text on home screen', () async {
       await driver.waitFor(homeSearchView);
-      titleName = await driver.getText(textTitleCategory);
-      expect(titleName, 'Test display');
+      await driver.tap(homeSearchView);
+      print('SearchView clicked');
     });
 
     tearDownAll(() async {
@@ -23,5 +21,30 @@ void main() {
         driver.close();
       }
     });
+  
   });
+
+  group('Movie Detail Screen Test', () {
+    FlutterDriver driver;
+    setUpAll(() async {
+      driver = await FlutterDriver.connect();
+    });
+
+    final textMovieName = 'text_cast_item_1';
+
+    test('credit profile name', () async {
+      await driver.waitForAbsent(find.text(textMovieName));
+      String name = await driver.getText(find.byValueKey(textMovieName));
+      print('TESTING $name');
+      expect(name, isNotEmpty);
+    });
+
+    tearDownAll(() async {
+      if (driver != null) {
+        driver.close();
+      }
+    });
+
+  });
+
 }
