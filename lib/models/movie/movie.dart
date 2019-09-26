@@ -58,7 +58,7 @@ class Movie {
       this.genreIds});
 
   String getReleaseDate() {
-    return releaseDate != null ? convertDate(releaseDate) : '';
+    return releaseDate != null && releaseDate.isNotEmpty ? convertDate(releaseDate) : '';
   }
 
   Movie.fromDetailJson(Map<String, dynamic> json) {

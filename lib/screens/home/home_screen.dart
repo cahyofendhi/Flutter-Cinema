@@ -4,8 +4,8 @@ import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/screens/home/widgets/upcoming_movie_slider.dart';
+import 'package:cinema_flt/screens/search/movie_search.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
-import 'package:cinema_flt/utils/request_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: RefreshIndicator(
             onRefresh: () => onRefresh(),
             child: Column(
-              children: <Widget>[_headerView(), _categoryMovie()],
+              children: <Widget>[_headerView(), 
+              Text('Test display', key: Key('text_test'),),
+              _categoryMovie()],
             ),
           ),
         ),
@@ -65,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
         StreamBuilder(
           stream: _homeBloc.populerMovies,
           builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-             if (snapshot.connectionState == ConnectionState.waiting) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return _populerMovie(null);
             } else if (snapshot.data == null || snapshot.data.results.isEmpty) {
               return Container();
@@ -106,9 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
       child: InkWell(
-        onTap: () {
-          print("click search");
-        },
+        key: Key('home_search_view'),
+        onTap: () => Navigator.of(context).pushNamed(MovieSearch.routeName),
         child: Container(
           height: 50,
           alignment: Alignment.centerLeft,

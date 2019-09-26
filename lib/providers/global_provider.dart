@@ -41,19 +41,17 @@ List<SingleChildCloneableWidget> dependentServices = [
 ];
 
 List<SingleChildCloneableWidget> uiConsumableProviders = [
+  //? home bloc
   ProxyProvider<MovieRepository, HomeBloc>(
     builder: (context, movieRepository, homeBloc) =>
         HomeBloc(movieRepository: movieRepository),
     dispose: (context, homeBloc) => homeBloc.dispose(),
   ),
+
+  //? tv bloc
   ProxyProvider<TvRepository, TvBloc>(
     builder: (context, tvRepository, tvBloc) =>
         TvBloc(tvRepository: tvRepository),
     dispose: (context, tvBloc) => tvBloc.dispose(),
-  ),
-  ProxyProvider<MovieRepository, MovieDetailBloc>(
-    builder: (context, movieRepository, movieDetailBloc) =>
-        MovieDetailBloc(movieRepository: movieRepository),
-    dispose: (context, movieDetailBloc) => movieDetailBloc.dispose(),
   ),
 ];

@@ -1,4 +1,3 @@
-import 'package:cinema_flt/data/env.dart';
 import 'package:cinema_flt/db/movie_moor.dart';
 import 'package:cinema_flt/models/media_credit.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
@@ -7,6 +6,8 @@ import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/models/similar_result.dart';
 import 'package:cinema_flt/services/service.dart';
 import 'package:dio/dio.dart';
+
+import 'group.dart';
 
 enum MovieCategory { Upcoming, TopRate, Populer }
 
@@ -35,7 +36,6 @@ class MovieRepository {
     try {
       Response response =
           await _service.getMovieList(_getCategoryMovie(category), 1);
-      print('MOVIE : $response');
       if (response.statusCode == Service.SUCCESS) {
         MoviesResult mResult = MoviesResult.fromJson(response.data);
         result.model = mResult;
@@ -94,17 +94,39 @@ class MovieRepository {
     return MoviesResult(results: data);
   }
 
+  // search movie
+  Future<ServiceModel> getSearchMovie(String query, int page) async {
+    final ServiceModel result = ServiceModel();
+    try {
+      Response response = await _service.getSearchMovieList(
+        query,
+        page,
+        getRequestType(RequestType.Movie),
+      );
+      if (response.statusCode == Service.SUCCESS) {
+        MoviesResult mResult = MoviesResult.fromJson(response.data);
+        result.model = mResult;
+      } else {
+        print("Error Search : $response");
+        result.errorMessage = response.statusMessage.toString();
+      }
+    } catch (err) {
+      print("Error Catch Search : ${err.toString()}");
+      result.errorMessage = err.toString();
+    }
+    return result;
+  }
+
   //! ================ movie detail =================
   Future<ServiceModel> getMovieDetail(int movieId) async {
     final ServiceModel result = ServiceModel();
     try {
-      Response response =
-          await _service.getMovieDetail(movieId);
+      Response response = await _service.getMovieDetail(movieId);
       if (response.statusCode == Service.SUCCESS) {
         Movie mResult = Movie.fromDetailJson(response.data);
         result.model = mResult;
       } else {
-        print("Error : ${response}");
+        print("Error : $response");
         result.errorMessage = response.statusMessage.toString();
       }
     } catch (e) {
@@ -117,8 +139,7 @@ class MovieRepository {
   Future<ServiceModel> getMovieMediaCredit(int movieId) async {
     final ServiceModel result = ServiceModel();
     try {
-      Response response =
-          await _service.getMovieMediaCredit(movieId);
+      Response response = await _service.getMovieMediaCredit(movieId);
       if (response.statusCode == Service.SUCCESS) {
         MediaCredit mResult = MediaCredit.fromJson(response.data);
         result.model = mResult;
@@ -136,20 +157,22 @@ class MovieRepository {
   Future<ServiceModel> getMovieSimilar(int movieId) async {
     final ServiceModel result = ServiceModel();
     try {
-      Response response =
-          await _service.getMovieSimilar(movieId);
-      if (response.statusCode == Service.SUCCESS) {
-        SimilarResult mResult = SimilarResult.fromJson(response.data);
-        result.model = mResult;
-      } else {
-        print("Error Similar : ${response.statusMessage}");
-        result.errorMessage = response.statusMessage.toString();
-      }
+      await _service.getMovieSimilar(movieId).then((response) {
+        print('DATA MOVIE : $response');
+        if (response.statusCode == Service.SUCCESS) {
+          SimilarResult mResult = SimilarResult.fromJson(response.data);
+          result.model = mResult;
+        } else {
+          print("Error Similar : ${response.statusMessage}");
+          result.errorMessage = response.statusMessage.toString();
+        }
+      }).catchError((err) {
+        result.errorMessage = err.toString();
+      });
     } catch (e) {
       print('Error Similar - : ${e.toString()}');
       result.errorMessage = e.toString();
     }
     return result;
   }
-
 }
