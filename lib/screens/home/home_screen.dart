@@ -39,7 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: RefreshIndicator(
             onRefresh: () => onRefresh(),
             child: Column(
-              children: <Widget>[_headerView(), _categoryMovie()],
+              children: <Widget>[_headerView(), 
+              Text('Test display', key: Key('text_test'),),
+              _categoryMovie()],
             ),
           ),
         ),
@@ -106,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
       child: InkWell(
+        key: Key('home_search_view'),
         onTap: () => Navigator.of(context).pushNamed(MovieSearch.routeName),
         child: Container(
           height: 50,

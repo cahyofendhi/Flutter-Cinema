@@ -9,7 +9,7 @@ class NetworkClient {
 
   NetworkClient() {
     dio = Dio(optionRequest());
-    dio.interceptors.add(LogInterceptor());
+    // dio.interceptors.add(LogInterceptor());
   }
 
   static BaseOptions optionRequest() {
