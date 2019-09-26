@@ -1635,7 +1635,7 @@ class $TvTable extends Tv with TableInfo<$TvTable, TvEntry> {
 }
 
 abstract class _$MovieDb extends GeneratedDatabase {
-  _$MovieDb(QueryExecutor e) : super(const SqlTypeSystem.withDefaults(), e);
+  _$MovieDb(QueryExecutor e) : super(SqlTypeSystem.withDefaults(), e);
   $MoviesTable _movies;
   $MoviesTable get movies => _movies ??= $MoviesTable(this);
   $TvTable _tv;

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/models/tv/tv_result.dart';
 import 'package:cinema_flt/repository/tv_repository.dart';
 import 'package:cinema_flt/utils/request_state.dart';
