@@ -14,9 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 FLUTTER_EXPORT
 @interface FlutterPluginAppLifeCycleDelegate : NSObject
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
-                                               <UNUserNotificationCenterDelegate>
-#endif
 
 /**
  * Registers `delegate` to receive life cycle callbacks via this FlutterPluginAppLifecycleDelegate
@@ -72,6 +69,15 @@ FLUTTER_EXPORT
     API_DEPRECATED(
         "See -[UIApplicationDelegate application:didReceiveLocalNotification:] deprecation",
         ios(4.0, 10.0));
+
+/**
+ * Calls all plugins registered for `UNUserNotificationCenterDelegate` callbacks.
+ */
+- (void)userNotificationCenter:(UNUserNotificationCenter*)center
+       willPresentNotification:(UNNotification*)notification
+         withCompletionHandler:
+             (void (^)(UNNotificationPresentationOptions options))completionHandler
+    API_AVAILABLE(ios(10));
 
 /**
  * Calls all plugins registered for `UIApplicationDelegate` callbacks in order of registration until

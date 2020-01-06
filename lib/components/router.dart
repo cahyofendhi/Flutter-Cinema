@@ -5,6 +5,7 @@ import 'package:cinema_flt/repository/movie_repository.dart';
 import 'package:cinema_flt/screens/main_screens.dart';
 import 'package:cinema_flt/screens/movie_detail/movie_detail.dart';
 import 'package:cinema_flt/screens/search/movie_search.dart';
+import 'package:cinema_flt/screens/splash_screen.dart';
 import 'package:cinema_flt/utils/transition/fade_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,12 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
     switch (settings.name) {
-      case MainScreens.routeName:
+      case SplashScreen.routeName:
         return MaterialPageRoute(
-          builder: (ctx) => MainScreens(),
+          builder: (ctx) => SplashScreen(),
         );
+      case MainScreens.routeName:
+        return FadeRoute(MainScreens());
       case DetailMovie.routeName:
         final _page = (BuildContext context, _, __) {
           return ProxyProvider<MovieRepository, MovieDetailBloc>(
@@ -27,7 +30,7 @@ class Router {
             child: DetailMovie(arguments),
           );
         };
-        return FadeRoute(page: null, pageBuilder: _page);
+        return FadeRoute(null, _page);
       case MovieSearch.routeName:
         return MaterialPageRoute(
           builder: (ctx) => ProxyProvider<MovieRepository, MovieSearchBloc>(
