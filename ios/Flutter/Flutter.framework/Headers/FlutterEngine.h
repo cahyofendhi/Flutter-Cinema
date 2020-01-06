@@ -16,8 +16,6 @@
 
 @class FlutterViewController;
 
-NS_ASSUME_NONNULL_BEGIN
-
 /**
  * The FlutterEngine class coordinates a single instance of execution for a
  * `FlutterDartProject`.  It may have zero or one `FlutterViewController` at a
@@ -58,9 +56,9 @@ FLUTTER_EXPORT
  * @param labelPrefix The label prefix used to identify threads for this instance. Should
  *   be unique across FlutterEngine instances, and is used in instrumentation to label
  *   the threads used by this FlutterEngine.
- * @param project The `FlutterDartProject` to run.
+ * @param projectOrNil The `FlutterDartProject` to run.
  */
-- (instancetype)initWithName:(NSString*)labelPrefix project:(nullable FlutterDartProject*)project;
+- (instancetype)initWithName:(NSString*)labelPrefix project:(FlutterDartProject*)projectOrNil;
 
 /**
  * Initialize this FlutterEngine with a `FlutterDartProject`.
@@ -75,12 +73,12 @@ FLUTTER_EXPORT
  * @param labelPrefix The label prefix used to identify threads for this instance. Should
  *   be unique across FlutterEngine instances, and is used in instrumentation to label
  *   the threads used by this FlutterEngine.
- * @param project The `FlutterDartProject` to run.
+ * @param projectOrNil The `FlutterDartProject` to run.
  * @param allowHeadlessExecution Whether or not to allow this instance to continue
  *   running after passing a nil `FlutterViewController` to `-setViewController:`.
  */
 - (instancetype)initWithName:(NSString*)labelPrefix
-                     project:(nullable FlutterDartProject*)project
+                     project:(FlutterDartProject*)projectOrNil
       allowHeadlessExecution:(BOOL)allowHeadlessExecution NS_DESIGNATED_INITIALIZER;
 
 /**
@@ -105,7 +103,7 @@ FLUTTER_EXPORT
  *   tree-shaken by the Dart compiler.
  * @return YES if the call succeeds in creating and running a Flutter Engine instance; NO otherwise.
  */
-- (BOOL)runWithEntrypoint:(nullable NSString*)entrypoint;
+- (BOOL)runWithEntrypoint:(NSString*)entrypoint;
 
 /**
  * Runs a Dart program on an Isolate using the specified entrypoint and Dart library,
@@ -122,7 +120,7 @@ FLUTTER_EXPORT
  *   this will default to the same library as the `main()` function in the Dart program.
  * @return YES if the call succeeds in creating and running a Flutter Engine instance; NO otherwise.
  */
-- (BOOL)runWithEntrypoint:(nullable NSString*)entrypoint libraryURI:(nullable NSString*)uri;
+- (BOOL)runWithEntrypoint:(NSString*)entrypoint libraryURI:(NSString*)uri;
 
 /**
  * Destroy running context for an engine.
@@ -179,14 +177,10 @@ FLUTTER_EXPORT
 /**
  * The `FlutterMethodChannel` used for localization related platform messages, such as
  * setting the locale.
- *
- * Can be nil after `destroyContext` is called.
  */
-@property(nonatomic, readonly, nullable) FlutterMethodChannel* localizationChannel;
+@property(nonatomic, readonly) FlutterMethodChannel* localizationChannel;
 /**
  * The `FlutterMethodChannel` used for navigation related platform messages.
- *
- * Can be nil after `destroyContext` is called.
  *
  * @see [Navigation
  * Channel](https://docs.flutter.io/flutter/services/SystemChannels/navigation-constant.html)
@@ -197,16 +191,12 @@ FLUTTER_EXPORT
 /**
  * The `FlutterMethodChannel` used for core platform messages, such as
  * information about the screen orientation.
- *
- * Can be nil after `destroyContext` is called.
  */
 @property(nonatomic, readonly) FlutterMethodChannel* platformChannel;
 
 /**
  * The `FlutterMethodChannel` used to communicate text input events to the
  * Dart Isolate.
- *
- * Can be nil after `destroyContext` is called.
  *
  * @see [Text Input
  * Channel](https://docs.flutter.io/flutter/services/SystemChannels/textInput-constant.html)
@@ -217,8 +207,6 @@ FLUTTER_EXPORT
  * The `FlutterBasicMessageChannel` used to communicate app lifecycle events
  * to the Dart Isolate.
  *
- * Can be nil after `destroyContext` is called.
- *
  * @see [Lifecycle
  * Channel](https://docs.flutter.io/flutter/services/SystemChannels/lifecycle-constant.html)
  */
@@ -228,8 +216,6 @@ FLUTTER_EXPORT
  * The `FlutterBasicMessageChannel` used for communicating system events, such as
  * memory pressure events.
  *
- * Can be nil after `destroyContext` is called.
- *
  * @see [System
  * Channel](https://docs.flutter.io/flutter/services/SystemChannels/system-constant.html)
  */
@@ -238,8 +224,6 @@ FLUTTER_EXPORT
 /**
  * The `FlutterBasicMessageChannel` used for communicating user settings such as
  * clock format and text scale.
- *
- * Can be nil after `destroyContext` is called.
  */
 @property(nonatomic, readonly) FlutterBasicMessageChannel* settingsChannel;
 
@@ -250,7 +234,7 @@ FLUTTER_EXPORT
  * observatory service is ready. In release mode or before the observatory has
  * started, it returns `nil`.
  */
-@property(nonatomic, readonly, nullable) NSURL* observatoryUrl;
+@property(nonatomic, readonly) NSURL* observatoryUrl;
 
 /**
  * The `FlutterBinaryMessenger` associated with this FlutterEngine (used for communicating with
@@ -263,10 +247,8 @@ FLUTTER_EXPORT
  *
  * This property will be nil if the engine is not running.
  */
-@property(nonatomic, readonly, copy, nullable) NSString* isolateId;
+@property(nonatomic, readonly, copy) NSString* isolateId;
 
 @end
-
-NS_ASSUME_NONNULL_END
 
 #endif  // FLUTTER_FLUTTERENGINE_H_

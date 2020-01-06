@@ -26,6 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didChangeDependencies();
   }
 
+  injectBLoCForTest(HomeBloc homeBloc) {
+    _homeBloc = homeBloc;
+  }
+
   Future<void> onRefresh() async {
     _homeBloc.getAllCategoryMovie();
   }
