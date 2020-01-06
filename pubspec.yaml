@@ -27,7 +27,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   snaplist: ^0.1.8
   flutter_rating_bar: ^2.0.0+2
-  intl: ^0.15.8
+  intl: ^0.16.0
   flutter_tags: ^0.4.3
   shimmer: ^1.0.1
   rxdart: ^0.22.2
