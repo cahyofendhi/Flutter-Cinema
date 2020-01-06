@@ -1,7 +1,7 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=/Users/rumahulya/Development/tools/flutter
 FLUTTER_APPLICATION_PATH=/Users/rumahulya/Documents/Sample/FlutterApp/Flutter-Cinema
-FLUTTER_TARGET=/Users/rumahulya/Documents/Sample/FlutterApp/Flutter-Cinema/test_driver/main.dart
+FLUTTER_TARGET=/Users/rumahulya/Documents/Sample/FlutterApp/Flutter-Cinema/lib/main.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
 FLUTTER_FRAMEWORK_DIR=/Users/rumahulya/Development/tools/flutter/bin/cache/artifacts/engine/ios
