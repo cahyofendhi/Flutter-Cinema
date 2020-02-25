@@ -2,6 +2,7 @@ import 'package:cinema_flt/models/media_credit.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 
+
 class CastItem extends StatelessWidget {
   const CastItem({
     Key key,
@@ -17,7 +18,8 @@ class CastItem extends StatelessWidget {
     return Container(
       width: 100,
       child: Padding(
-        padding: EdgeInsets.only(left: leftMargin, bottom: 5, right: 5, top: 5),
+        padding: EdgeInsets.only(
+            left: leftMargin, bottom: 5, right: 5, top: 5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,7 +46,6 @@ class CastItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                key: Key('text_cast_item_${item.castId}'),
               ),
             ),
           ],
