@@ -39,7 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: RefreshIndicator(
             onRefresh: () => onRefresh(),
             child: Column(
-              children: <Widget>[_headerView(), _categoryMovie()],
+              children: <Widget>[_headerView(), 
+              Text('Test display', key: Key('text_test'),),
+              _categoryMovie()],
             ),
           ),
         ),

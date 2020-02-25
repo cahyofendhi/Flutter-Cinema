@@ -158,6 +158,7 @@ class MovieRepository {
     final ServiceModel result = ServiceModel();
     try {
       await _service.getMovieSimilar(movieId).then((response) {
+        print('DATA MOVIE : $response');
         if (response.statusCode == Service.SUCCESS) {
           SimilarResult mResult = SimilarResult.fromJson(response.data);
           result.model = mResult;

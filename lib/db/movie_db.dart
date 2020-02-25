@@ -55,7 +55,7 @@ class Tv extends Table {
 class MovieDb extends _$MovieDb {
   MovieDb()
       : super(FlutterQueryExecutor.inDatabaseFolder(
-            path: 'db.sqlite', logStatements: false));
+            path: 'db.sqlite', logStatements: true));
 
   @override
   int get schemaVersion => 1;
