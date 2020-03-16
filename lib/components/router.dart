@@ -24,7 +24,7 @@ class Router {
       case DetailMovie.routeName:
         final _page = (BuildContext context, _, __) {
           return ProxyProvider<MovieRepository, MovieDetailBloc>(
-            builder: (context, movieRepository, movieDetailBloc) =>
+            update: (context, movieRepository, movieDetailBloc) =>
                 MovieDetailBloc(movieRepository: movieRepository),
             dispose: (context, movieDetailBloc) => movieDetailBloc.dispose(),
             child: DetailMovie(arguments),
@@ -34,7 +34,7 @@ class Router {
       case MovieSearch.routeName:
         return MaterialPageRoute(
           builder: (ctx) => ProxyProvider<MovieRepository, MovieSearchBloc>(
-            builder: (context, movieRepository, movieSearchBloc) =>
+            update: (context, movieRepository, movieSearchBloc) =>
                 MovieSearchBloc(movieRepository: movieRepository),
             dispose: (context, movieSearchBloc) => movieSearchBloc.dispose(),
             child: MovieSearch(),
@@ -57,9 +57,6 @@ class CustomMaterialRouter<T> extends MaterialPageRoute<T> {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    if (settings.isInitialRoute) {
-      return child;
-    }
     return FadeTransition(opacity: animation, child: child);
   }
 }
