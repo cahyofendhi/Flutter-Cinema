@@ -1,5 +1,4 @@
 import 'package:cinema_flt/bloc/home_bloc.dart';
-import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
 import 'package:cinema_flt/bloc/tv_bloc.dart';
 import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/db/movie_moor.dart';
@@ -25,7 +24,7 @@ List<SingleChildCloneableWidget> independentServices = [
 
 List<SingleChildCloneableWidget> dependentServices = [
   ProxyProvider<NetworkClient, Service>(
-    builder: (context, client, service) => Service(client.dio),
+    builder: (context, client, service) => Service(client),
   ),
   ProxyProvider<MovieDb, MovieMoor>(
       builder: (context, movieDb, movieMoor) => MovieMoor(movieDb)),
