@@ -6,7 +6,7 @@ part of 'movie_db.dart';
 // MoorGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class MovieEntry extends DataClass implements Insertable<MovieEntry> {
   final int id;
   final bool video;
@@ -89,7 +89,8 @@ class MovieEntry extends DataClass implements Insertable<MovieEntry> {
     );
   }
   factory MovieEntry.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
     return MovieEntry(
       id: serializer.fromJson<int>(json['id']),
       video: serializer.fromJson<bool>(json['video']),
@@ -112,9 +113,9 @@ class MovieEntry extends DataClass implements Insertable<MovieEntry> {
     );
   }
   @override
-  Map<String, dynamic> toJson(
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return {
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'video': serializer.toJson<bool>(video),
       'posterPath': serializer.toJson<String>(posterPath),
@@ -137,7 +138,7 @@ class MovieEntry extends DataClass implements Insertable<MovieEntry> {
   }
 
   @override
-  T createCompanion<T extends UpdateCompanion<MovieEntry>>(bool nullToAbsent) {
+  MoviesCompanion createCompanion(bool nullToAbsent) {
     return MoviesCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       video:
@@ -188,7 +189,7 @@ class MovieEntry extends DataClass implements Insertable<MovieEntry> {
       topRate: topRate == null && nullToAbsent
           ? const Value.absent()
           : Value(topRate),
-    ) as T;
+    );
   }
 
   MovieEntry copyWith(
@@ -296,27 +297,27 @@ class MovieEntry extends DataClass implements Insertable<MovieEntry> {
                                                                       topRate
                                                                           .hashCode))))))))))))))))));
   @override
-  bool operator ==(other) =>
+  bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is MovieEntry &&
-          other.id == id &&
-          other.video == video &&
-          other.posterPath == posterPath &&
-          other.idMovie == idMovie &&
-          other.voteCount == voteCount &&
-          other.popularity == popularity &&
-          other.adult == adult &&
-          other.backdropPath == backdropPath &&
-          other.originalLanguage == originalLanguage &&
-          other.originalTitle == originalTitle &&
-          other.title == title &&
-          other.voteAverage == voteAverage &&
-          other.genreIds == genreIds &&
-          other.overview == overview &&
-          other.releaseDate == releaseDate &&
-          other.popular == popular &&
-          other.upcoming == upcoming &&
-          other.topRate == topRate);
+          other.id == this.id &&
+          other.video == this.video &&
+          other.posterPath == this.posterPath &&
+          other.idMovie == this.idMovie &&
+          other.voteCount == this.voteCount &&
+          other.popularity == this.popularity &&
+          other.adult == this.adult &&
+          other.backdropPath == this.backdropPath &&
+          other.originalLanguage == this.originalLanguage &&
+          other.originalTitle == this.originalTitle &&
+          other.title == this.title &&
+          other.voteAverage == this.voteAverage &&
+          other.genreIds == this.genreIds &&
+          other.overview == this.overview &&
+          other.releaseDate == this.releaseDate &&
+          other.popular == this.popular &&
+          other.upcoming == this.upcoming &&
+          other.topRate == this.topRate);
 }
 
 class MoviesCompanion extends UpdateCompanion<MovieEntry> {
@@ -358,6 +359,37 @@ class MoviesCompanion extends UpdateCompanion<MovieEntry> {
     this.upcoming = const Value.absent(),
     this.topRate = const Value.absent(),
   });
+  MoviesCompanion.insert({
+    this.id = const Value.absent(),
+    this.video = const Value.absent(),
+    @required String posterPath,
+    @required int idMovie,
+    @required int voteCount,
+    @required double popularity,
+    this.adult = const Value.absent(),
+    @required String backdropPath,
+    @required String originalLanguage,
+    @required String originalTitle,
+    @required String title,
+    @required double voteAverage,
+    @required String genreIds,
+    @required String overview,
+    @required String releaseDate,
+    this.popular = const Value.absent(),
+    this.upcoming = const Value.absent(),
+    this.topRate = const Value.absent(),
+  })  : posterPath = Value(posterPath),
+        idMovie = Value(idMovie),
+        voteCount = Value(voteCount),
+        popularity = Value(popularity),
+        backdropPath = Value(backdropPath),
+        originalLanguage = Value(originalLanguage),
+        originalTitle = Value(originalTitle),
+        title = Value(title),
+        voteAverage = Value(voteAverage),
+        genreIds = Value(genreIds),
+        overview = Value(overview),
+        releaseDate = Value(releaseDate);
   MoviesCompanion copyWith(
       {Value<int> id,
       Value<bool> video,
@@ -645,51 +677,45 @@ class $MoviesTable extends Movies with TableInfo<$MoviesTable, MovieEntry> {
     final context = VerificationContext();
     if (d.id.present) {
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    } else if (id.isRequired && isInserting) {
-      context.missing(_idMeta);
     }
     if (d.video.present) {
       context.handle(
           _videoMeta, video.isAcceptableValue(d.video.value, _videoMeta));
-    } else if (video.isRequired && isInserting) {
-      context.missing(_videoMeta);
     }
     if (d.posterPath.present) {
       context.handle(_posterPathMeta,
           posterPath.isAcceptableValue(d.posterPath.value, _posterPathMeta));
-    } else if (posterPath.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_posterPathMeta);
     }
     if (d.idMovie.present) {
       context.handle(_idMovieMeta,
           idMovie.isAcceptableValue(d.idMovie.value, _idMovieMeta));
-    } else if (idMovie.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_idMovieMeta);
     }
     if (d.voteCount.present) {
       context.handle(_voteCountMeta,
           voteCount.isAcceptableValue(d.voteCount.value, _voteCountMeta));
-    } else if (voteCount.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_voteCountMeta);
     }
     if (d.popularity.present) {
       context.handle(_popularityMeta,
           popularity.isAcceptableValue(d.popularity.value, _popularityMeta));
-    } else if (popularity.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_popularityMeta);
     }
     if (d.adult.present) {
       context.handle(
           _adultMeta, adult.isAcceptableValue(d.adult.value, _adultMeta));
-    } else if (adult.isRequired && isInserting) {
-      context.missing(_adultMeta);
     }
     if (d.backdropPath.present) {
       context.handle(
           _backdropPathMeta,
           backdropPath.isAcceptableValue(
               d.backdropPath.value, _backdropPathMeta));
-    } else if (backdropPath.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_backdropPathMeta);
     }
     if (d.originalLanguage.present) {
@@ -697,7 +723,7 @@ class $MoviesTable extends Movies with TableInfo<$MoviesTable, MovieEntry> {
           _originalLanguageMeta,
           originalLanguage.isAcceptableValue(
               d.originalLanguage.value, _originalLanguageMeta));
-    } else if (originalLanguage.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_originalLanguageMeta);
     }
     if (d.originalTitle.present) {
@@ -705,56 +731,50 @@ class $MoviesTable extends Movies with TableInfo<$MoviesTable, MovieEntry> {
           _originalTitleMeta,
           originalTitle.isAcceptableValue(
               d.originalTitle.value, _originalTitleMeta));
-    } else if (originalTitle.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_originalTitleMeta);
     }
     if (d.title.present) {
       context.handle(
           _titleMeta, title.isAcceptableValue(d.title.value, _titleMeta));
-    } else if (title.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (d.voteAverage.present) {
       context.handle(_voteAverageMeta,
           voteAverage.isAcceptableValue(d.voteAverage.value, _voteAverageMeta));
-    } else if (voteAverage.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_voteAverageMeta);
     }
     if (d.genreIds.present) {
       context.handle(_genreIdsMeta,
           genreIds.isAcceptableValue(d.genreIds.value, _genreIdsMeta));
-    } else if (genreIds.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_genreIdsMeta);
     }
     if (d.overview.present) {
       context.handle(_overviewMeta,
           overview.isAcceptableValue(d.overview.value, _overviewMeta));
-    } else if (overview.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_overviewMeta);
     }
     if (d.releaseDate.present) {
       context.handle(_releaseDateMeta,
           releaseDate.isAcceptableValue(d.releaseDate.value, _releaseDateMeta));
-    } else if (releaseDate.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_releaseDateMeta);
     }
     if (d.popular.present) {
       context.handle(_popularMeta,
           popular.isAcceptableValue(d.popular.value, _popularMeta));
-    } else if (popular.isRequired && isInserting) {
-      context.missing(_popularMeta);
     }
     if (d.upcoming.present) {
       context.handle(_upcomingMeta,
           upcoming.isAcceptableValue(d.upcoming.value, _upcomingMeta));
-    } else if (upcoming.isRequired && isInserting) {
-      context.missing(_upcomingMeta);
     }
     if (d.topRate.present) {
       context.handle(_topRateMeta,
           topRate.isAcceptableValue(d.topRate.value, _topRateMeta));
-    } else if (topRate.isRequired && isInserting) {
-      context.missing(_topRateMeta);
     }
     return context;
   }
@@ -913,7 +933,8 @@ class TvEntry extends DataClass implements Insertable<TvEntry> {
     );
   }
   factory TvEntry.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
     return TvEntry(
       id: serializer.fromJson<int>(json['id']),
       idMovie: serializer.fromJson<int>(json['idMovie']),
@@ -935,9 +956,9 @@ class TvEntry extends DataClass implements Insertable<TvEntry> {
     );
   }
   @override
-  Map<String, dynamic> toJson(
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return {
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'idMovie': serializer.toJson<int>(idMovie),
       'originalName': serializer.toJson<String>(originalName),
@@ -959,7 +980,7 @@ class TvEntry extends DataClass implements Insertable<TvEntry> {
   }
 
   @override
-  T createCompanion<T extends UpdateCompanion<TvEntry>>(bool nullToAbsent) {
+  TvCompanion createCompanion(bool nullToAbsent) {
     return TvCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       idMovie: idMovie == null && nullToAbsent
@@ -1007,7 +1028,7 @@ class TvEntry extends DataClass implements Insertable<TvEntry> {
       topRate: topRate == null && nullToAbsent
           ? const Value.absent()
           : Value(topRate),
-    ) as T;
+    );
   }
 
   TvEntry copyWith(
@@ -1109,26 +1130,26 @@ class TvEntry extends DataClass implements Insertable<TvEntry> {
                                                                   topRate
                                                                       .hashCode)))))))))))))))));
   @override
-  bool operator ==(other) =>
+  bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is TvEntry &&
-          other.id == id &&
-          other.idMovie == idMovie &&
-          other.originalName == originalName &&
-          other.name == name &&
-          other.popularity == popularity &&
-          other.voteCount == voteCount &&
-          other.voteAverage == voteAverage &&
-          other.firstAirDate == firstAirDate &&
-          other.posterPath == posterPath &&
-          other.originalLanguage == originalLanguage &&
-          other.backdropPath == backdropPath &&
-          other.overview == overview &&
-          other.genreIds == genreIds &&
-          other.originCountry == originCountry &&
-          other.popular == popular &&
-          other.onAir == onAir &&
-          other.topRate == topRate);
+          other.id == this.id &&
+          other.idMovie == this.idMovie &&
+          other.originalName == this.originalName &&
+          other.name == this.name &&
+          other.popularity == this.popularity &&
+          other.voteCount == this.voteCount &&
+          other.voteAverage == this.voteAverage &&
+          other.firstAirDate == this.firstAirDate &&
+          other.posterPath == this.posterPath &&
+          other.originalLanguage == this.originalLanguage &&
+          other.backdropPath == this.backdropPath &&
+          other.overview == this.overview &&
+          other.genreIds == this.genreIds &&
+          other.originCountry == this.originCountry &&
+          other.popular == this.popular &&
+          other.onAir == this.onAir &&
+          other.topRate == this.topRate);
 }
 
 class TvCompanion extends UpdateCompanion<TvEntry> {
@@ -1168,6 +1189,37 @@ class TvCompanion extends UpdateCompanion<TvEntry> {
     this.onAir = const Value.absent(),
     this.topRate = const Value.absent(),
   });
+  TvCompanion.insert({
+    this.id = const Value.absent(),
+    @required int idMovie,
+    @required String originalName,
+    @required String name,
+    @required double popularity,
+    @required int voteCount,
+    @required double voteAverage,
+    @required String firstAirDate,
+    @required String posterPath,
+    @required String originalLanguage,
+    @required String backdropPath,
+    @required String overview,
+    @required String genreIds,
+    @required String originCountry,
+    this.popular = const Value.absent(),
+    this.onAir = const Value.absent(),
+    this.topRate = const Value.absent(),
+  })  : idMovie = Value(idMovie),
+        originalName = Value(originalName),
+        name = Value(name),
+        popularity = Value(popularity),
+        voteCount = Value(voteCount),
+        voteAverage = Value(voteAverage),
+        firstAirDate = Value(firstAirDate),
+        posterPath = Value(posterPath),
+        originalLanguage = Value(originalLanguage),
+        backdropPath = Value(backdropPath),
+        overview = Value(overview),
+        genreIds = Value(genreIds),
+        originCountry = Value(originCountry);
   TvCompanion copyWith(
       {Value<int> id,
       Value<int> idMovie,
@@ -1448,13 +1500,11 @@ class $TvTable extends Tv with TableInfo<$TvTable, TvEntry> {
     final context = VerificationContext();
     if (d.id.present) {
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    } else if (id.isRequired && isInserting) {
-      context.missing(_idMeta);
     }
     if (d.idMovie.present) {
       context.handle(_idMovieMeta,
           idMovie.isAcceptableValue(d.idMovie.value, _idMovieMeta));
-    } else if (idMovie.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_idMovieMeta);
     }
     if (d.originalName.present) {
@@ -1462,31 +1512,31 @@ class $TvTable extends Tv with TableInfo<$TvTable, TvEntry> {
           _originalNameMeta,
           originalName.isAcceptableValue(
               d.originalName.value, _originalNameMeta));
-    } else if (originalName.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_originalNameMeta);
     }
     if (d.name.present) {
       context.handle(
           _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
-    } else if (name.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (d.popularity.present) {
       context.handle(_popularityMeta,
           popularity.isAcceptableValue(d.popularity.value, _popularityMeta));
-    } else if (popularity.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_popularityMeta);
     }
     if (d.voteCount.present) {
       context.handle(_voteCountMeta,
           voteCount.isAcceptableValue(d.voteCount.value, _voteCountMeta));
-    } else if (voteCount.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_voteCountMeta);
     }
     if (d.voteAverage.present) {
       context.handle(_voteAverageMeta,
           voteAverage.isAcceptableValue(d.voteAverage.value, _voteAverageMeta));
-    } else if (voteAverage.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_voteAverageMeta);
     }
     if (d.firstAirDate.present) {
@@ -1494,13 +1544,13 @@ class $TvTable extends Tv with TableInfo<$TvTable, TvEntry> {
           _firstAirDateMeta,
           firstAirDate.isAcceptableValue(
               d.firstAirDate.value, _firstAirDateMeta));
-    } else if (firstAirDate.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_firstAirDateMeta);
     }
     if (d.posterPath.present) {
       context.handle(_posterPathMeta,
           posterPath.isAcceptableValue(d.posterPath.value, _posterPathMeta));
-    } else if (posterPath.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_posterPathMeta);
     }
     if (d.originalLanguage.present) {
@@ -1508,7 +1558,7 @@ class $TvTable extends Tv with TableInfo<$TvTable, TvEntry> {
           _originalLanguageMeta,
           originalLanguage.isAcceptableValue(
               d.originalLanguage.value, _originalLanguageMeta));
-    } else if (originalLanguage.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_originalLanguageMeta);
     }
     if (d.backdropPath.present) {
@@ -1516,19 +1566,19 @@ class $TvTable extends Tv with TableInfo<$TvTable, TvEntry> {
           _backdropPathMeta,
           backdropPath.isAcceptableValue(
               d.backdropPath.value, _backdropPathMeta));
-    } else if (backdropPath.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_backdropPathMeta);
     }
     if (d.overview.present) {
       context.handle(_overviewMeta,
           overview.isAcceptableValue(d.overview.value, _overviewMeta));
-    } else if (overview.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_overviewMeta);
     }
     if (d.genreIds.present) {
       context.handle(_genreIdsMeta,
           genreIds.isAcceptableValue(d.genreIds.value, _genreIdsMeta));
-    } else if (genreIds.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_genreIdsMeta);
     }
     if (d.originCountry.present) {
@@ -1536,26 +1586,20 @@ class $TvTable extends Tv with TableInfo<$TvTable, TvEntry> {
           _originCountryMeta,
           originCountry.isAcceptableValue(
               d.originCountry.value, _originCountryMeta));
-    } else if (originCountry.isRequired && isInserting) {
+    } else if (isInserting) {
       context.missing(_originCountryMeta);
     }
     if (d.popular.present) {
       context.handle(_popularMeta,
           popular.isAcceptableValue(d.popular.value, _popularMeta));
-    } else if (popular.isRequired && isInserting) {
-      context.missing(_popularMeta);
     }
     if (d.onAir.present) {
       context.handle(
           _onAirMeta, onAir.isAcceptableValue(d.onAir.value, _onAirMeta));
-    } else if (onAir.isRequired && isInserting) {
-      context.missing(_onAirMeta);
     }
     if (d.topRate.present) {
       context.handle(_topRateMeta,
           topRate.isAcceptableValue(d.topRate.value, _topRateMeta));
-    } else if (topRate.isRequired && isInserting) {
-      context.missing(_topRateMeta);
     }
     return context;
   }
@@ -1635,11 +1679,13 @@ class $TvTable extends Tv with TableInfo<$TvTable, TvEntry> {
 }
 
 abstract class _$MovieDb extends GeneratedDatabase {
-  _$MovieDb(QueryExecutor e) : super(SqlTypeSystem.withDefaults(), e);
+  _$MovieDb(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $MoviesTable _movies;
   $MoviesTable get movies => _movies ??= $MoviesTable(this);
   $TvTable _tv;
   $TvTable get tv => _tv ??= $TvTable(this);
   @override
-  List<TableInfo> get allTables => [movies, tv];
+  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities => [movies, tv];
 }
