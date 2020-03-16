@@ -7,7 +7,7 @@ import 'package:cinema_flt/models/similar_result.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/tag.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'package:provider/provider.dart';
 
 import 'cast_detail_item.dart';
