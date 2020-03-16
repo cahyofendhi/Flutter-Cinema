@@ -6,50 +6,53 @@ import 'package:cinema_flt/repository/movie_repository.dart';
 import 'package:cinema_flt/repository/tv_repository.dart';
 import 'package:cinema_flt/services/network_client.dart';
 import 'package:cinema_flt/services/service.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
-List<SingleChildCloneableWidget> globalProviders = [
+List<SingleChildWidget> globalProviders = [
   ...independentServices,
   ...dependentServices,
 ];
 
-List<SingleChildCloneableWidget> independentServices = [
-  Provider.value(
-    value: NetworkClient(),
+List<SingleChildWidget> independentServices = [
+  Provider(
+    create: (_) => NetworkClient()
   ),
-  Provider.value(
-    value: MovieDb(),
+  Provider(
+    create: (_) => MovieDb()
   )
 ];
 
-List<SingleChildCloneableWidget> dependentServices = [
+List<SingleChildWidget> dependentServices = [
   ProxyProvider<NetworkClient, Service>(
-    builder: (context, client, service) => Service(client),
+    update: (context, client, service) => Service(client),
   ),
   ProxyProvider<MovieDb, MovieMoor>(
-      builder: (context, movieDb, movieMoor) => MovieMoor(movieDb)),
+    update: (context, movieDb, movieMoor) => MovieMoor(movieDb),
+  ),
 
   //! ================= REPOSITORY ====================
   ProxyProvider2<MovieMoor, Service, MovieRepository>(
-      builder: (context, movieMoor, service, movieRepository) =>
+      update: (context, movieMoor, service, movieRepository) =>
           MovieRepository(service, movieMoor)),
   ProxyProvider2<MovieMoor, Service, TvRepository>(
-    builder: (context, movieMoor, service, tvRepository) =>
+    update: (context, movieMoor, service, tvRepository) =>
         TvRepository(service, movieMoor),
   ),
 ];
 
-List<SingleChildCloneableWidget> uiConsumableProviders = [
+List<SingleChildWidget> uiConsumableProviders = [
   //? home bloc
   ProxyProvider<MovieRepository, HomeBloc>(
-    builder: (context, movieRepository, homeBloc) =>
+    update: (context, movieRepository, homeBloc) =>
         HomeBloc(movieRepository: movieRepository),
     dispose: (context, homeBloc) => homeBloc.dispose(),
   ),
 
   //? tv bloc
   ProxyProvider<TvRepository, TvBloc>(
-    builder: (context, tvRepository, tvBloc) =>
+    update: (context, tvRepository, tvBloc) =>
         TvBloc(tvRepository: tvRepository),
     dispose: (context, tvBloc) => tvBloc.dispose(),
   ),
