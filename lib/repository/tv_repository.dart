@@ -39,7 +39,7 @@ class TvRepository {
           await _service.getTvList(_getTvGroup(group), 1);
       if (response.statusCode == Service.SUCCESS) {
         TvResult mResult = TvResult.fromJson(response.data);
-        result.model = mResult;
+        result.data = mResult;
         await insertTvMovie(
             datas: mResult.results,
             isOnAir: group == TvGroup.OnAir,
@@ -47,12 +47,12 @@ class TvRepository {
             isTopRate: group == TvGroup.TopRateTv);
       } else {
         result.errorMessage = response.statusMessage.toString();
-        await getMovieFromDb(group).then((dt) => result.model = dt);
+        await getMovieFromDb(group).then((dt) => result.data = dt);
       }
     } catch (e) {
       result.errorMessage = e.toString();
       print('Caught ${e.toString()}');
-      await getMovieFromDb(group).then((dt) => result.model = dt);
+      await getMovieFromDb(group).then((dt) => result.data = dt);
     }
     return result;
   }

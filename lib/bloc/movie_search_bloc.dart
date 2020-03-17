@@ -23,7 +23,7 @@ class MovieSearchBloc {
     try {
       ServiceModel result = await _movieRepository.getSearchMovie(query, page);
       if (result.isSuccess) {
-        setDataMovie(result.model);
+        setDataMovie(result.data);
       }
     } catch (err) {
       print('Error VM : ${err.toString()}');

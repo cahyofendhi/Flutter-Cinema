@@ -17,14 +17,15 @@ class SliderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _tag = 'slider-image-movie-${movie.id}';
     return Builder(
       builder: (BuildContext context) {
         return InkWell(
-          onTap: () => Navigator.of(context)
-              .pushNamed(DetailMovie.routeName, arguments: movie),
+          onTap: () => Navigator.of(context).pushNamed(DetailMovie.routeName,
+              arguments: {'movie': movie, 'tag': _tag}),
           child: Stack(
             children: <Widget>[
-              _imageView(getTheMovieImage(movie.posterPath)),
+              _imageView(getTheMovieImage(movie.posterPath), _tag),
               _contentView(contentHeight, movie),
             ],
           ),
@@ -33,7 +34,7 @@ class SliderItem extends StatelessWidget {
     );
   }
 
-  Widget _imageView(String poster) {
+  Widget _imageView(String poster, String _tag) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -47,10 +48,7 @@ class SliderItem extends StatelessWidget {
               blurRadius: 4.0),
         ],
       ),
-      child: Hero(
-        tag: 'upcoming-image-${movie.id}',
-        child: ImageNetwork(poster),
-      ),
+      child: ImageNetwork(poster),
     );
   }
 

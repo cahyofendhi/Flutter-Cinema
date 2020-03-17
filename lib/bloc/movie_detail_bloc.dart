@@ -37,7 +37,7 @@ class MovieDetailBloc {
     try {
       ServiceModel result = await _movieRepository.getMovieDetail(movieId);
       if (result.isSuccess) {
-        Movie mv = result.model;
+        Movie mv = result.data;
         print('Movie : ${mv.originalTitle}');
         setDataMovie(mv);
       }
@@ -52,7 +52,7 @@ class MovieDetailBloc {
     try {
       ServiceModel result = await _movieRepository.getMovieMediaCredit(movieId);
       if (result.isSuccess) {
-        MediaCredit data = result.model;
+        MediaCredit data = result.data;
         setMovieMedia(data);
       }
     } catch (err) {
@@ -64,7 +64,7 @@ class MovieDetailBloc {
     try {
       ServiceModel result = await _movieRepository.getMovieSimilar(movieId);
       if (result.isSuccess) {
-        SimilarResult data = result.model;
+        SimilarResult data = result.data;
         setSimilarMovie(data);
       }
     } catch (err) {
