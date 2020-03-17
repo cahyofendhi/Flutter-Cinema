@@ -16,11 +16,12 @@ class TredingItem extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final imageWidth = screenWidth / 4;
     final imageHeight = imageWidth + (imageWidth / 3);
+    final _tag = 'trending-image-movie-${movie.id}';
 
     return InkWell(
       onTap: () {
-        Navigator.of(context)
-            .pushNamed(DetailMovie.routeName, arguments: movie);
+        Navigator.of(context).pushNamed(DetailMovie.routeName,
+            arguments: {'movie': movie, 'tag': _tag});
       },
       child: Container(
         width: double.infinity,
@@ -42,11 +43,8 @@ class TredingItem extends StatelessWidget {
                         blurRadius: 4.0),
                   ],
                 ),
-                child: Hero(
-                  tag: 'image-${movie.id}',
-                  child: ImageNetwork(
-                    getTheMovieImage(movie.posterPath),
-                  ),
+                child: ImageNetwork(
+                  getTheMovieImage(movie.posterPath),
                 ),
               ),
               Flexible(

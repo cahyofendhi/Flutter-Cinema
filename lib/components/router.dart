@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final arguments = settings.arguments;
+    final arguments = settings.arguments as Map;
     switch (settings.name) {
       case SplashScreen.routeName:
         return MaterialPageRoute(
@@ -27,7 +27,7 @@ class Router {
             update: (context, movieRepository, movieDetailBloc) =>
                 MovieDetailBloc(movieRepository: movieRepository),
             dispose: (context, movieDetailBloc) => movieDetailBloc.dispose(),
-            child: DetailMovie(arguments),
+            child: DetailMovie(arguments['movie'], arguments['tag']),
           );
         };
         return FadeRoute(null, _page);

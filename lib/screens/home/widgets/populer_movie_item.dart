@@ -14,9 +14,10 @@ class PopulerMovieItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final _tag = 'popular-image-movie-${movie.id}';
     return InkWell(
-      onTap: () => Navigator.of(context)
-          .pushNamed(DetailMovie.routeName, arguments: movie),
+      onTap: () => Navigator.of(context).pushNamed(DetailMovie.routeName,
+          arguments: {'movie': movie, 'tag': _tag}),
       child: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: Column(
@@ -35,11 +36,8 @@ class PopulerMovieItem extends StatelessWidget {
                       blurRadius: 4.0),
                 ],
               ),
-              child: Hero(
-                tag: 'populer-image-${movie.id}',
-                child: ImageNetwork(
-                  getImageTheMovie(movie.posterPath),
-                ),
+              child: ImageNetwork(
+                getImageTheMovie(movie.posterPath),
               ),
             ),
             SizedBox(
