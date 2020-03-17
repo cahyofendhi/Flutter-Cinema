@@ -40,7 +40,7 @@ class HomeBloc {
       setStatePopuler(UiState(RequestState.LOADING));
       ServiceModel result = await _movieRepository.getUpcomingMovie(page);
       if (result.isSuccess) {
-        _upcomingController.sink.add(result.model);
+        _upcomingController.sink.add(result.data);
       }
       setStatePopuler(UiState(RequestState.DONE));
     } catch (err) {
@@ -52,7 +52,7 @@ class HomeBloc {
   void getPopulerMovie([int page = 1]) async {
     try {
       ServiceModel result = await _movieRepository.getPopulerMovie(page);
-      _populerController.sink.add(result.model);
+      _populerController.sink.add(result.data);
     } catch (err) {
       print('Error Populer : ${err.toString()}');
     }
@@ -61,7 +61,7 @@ class HomeBloc {
   void getTrendingMovie([int page = 1]) async {
     try {
       ServiceModel result = await _movieRepository.getTrendingMovie(page);
-      _trendingController.sink.add(result.model);
+      _trendingController.sink.add(result.data);
     } catch (err) {
       print('Error : ${err.toString()}');
     }

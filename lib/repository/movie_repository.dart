@@ -32,28 +32,23 @@ class MovieRepository {
   }
 
   Future<ServiceModel> getMovie(MovieCategory category, int page) async {
-    final ServiceModel result = ServiceModel();
+    final _serviceResult = ServiceModel();
     try {
-      Response response =
+      final response =
           await _service.getMovieList(_getCategoryMovie(category), 1);
-      if (response.statusCode == Service.SUCCESS) {
-        MoviesResult mResult = MoviesResult.fromJson(response.data);
-        result.model = mResult;
-        await insertMovie(
-            datas: mResult.results,
-            isUpcoming: category == MovieCategory.Upcoming,
-            isPopuler: category == MovieCategory.Populer,
-            isTopRate: category == MovieCategory.TopRate);
-      } else {
-        result.errorMessage = response.statusMessage;
-        await getMovieFromDb(category).then((dt) => result.model = dt);
-      }
+      final _result = MoviesResult.fromJson(response.data);
+      await insertMovie(
+          datas: _result.results,
+          isUpcoming: category == MovieCategory.Upcoming,
+          isPopuler: category == MovieCategory.Populer,
+          isTopRate: category == MovieCategory.TopRate);
+      _serviceResult.data = _result;
     } catch (e) {
-      result.errorMessage = e.toString();
-      print('Caught ${e.toString()}');
-      await getMovieFromDb(category).then((dt) => result.model = dt);
+      _serviceResult.errorMessage = e.toString();
+      final _resultDb = await getMovieFromDb(category);
+      _serviceResult.data = _resultDb;
     }
-    return result;
+    return _serviceResult;
   }
 
   Future<void> insertMovie(
@@ -96,83 +91,39 @@ class MovieRepository {
 
   // search movie
   Future<ServiceModel> getSearchMovie(String query, int page) async {
-    final ServiceModel result = ServiceModel();
-    try {
-      Response response = await _service.getSearchMovieList(
+    final data = await ServiceModel.fetch<MoviesResult>(() async {
+      final response = await _service.getSearchMovieList(
         query,
         page,
         getRequestType(RequestType.Movie),
       );
-      if (response.statusCode == Service.SUCCESS) {
-        MoviesResult mResult = MoviesResult.fromJson(response.data);
-        result.model = mResult;
-      } else {
-        print("Error Search : $response");
-        result.errorMessage = response.statusMessage.toString();
-      }
-    } catch (err) {
-      print("Error Catch Search : ${err.toString()}");
-      result.errorMessage = err.toString();
-    }
-    return result;
+      return MoviesResult.fromJson(response.data);
+    });
+    return data;
   }
 
   //! ================ movie detail =================
   Future<ServiceModel> getMovieDetail(int movieId) async {
-    final ServiceModel result = ServiceModel();
-    try {
-      Response response = await _service.getMovieDetail(movieId);
-      if (response.statusCode == Service.SUCCESS) {
-        Movie mResult = Movie.fromDetailJson(response.data);
-        result.model = mResult;
-      } else {
-        print("Error : $response");
-        result.errorMessage = response.statusMessage.toString();
-      }
-    } catch (e) {
-      print('Error - : ${e.toString()}');
-      result.errorMessage = e.toString();
-    }
-    return result;
+    final data = await ServiceModel.fetch<Movie>(() async {
+      final response = await _service.getMovieDetail(movieId);
+      return Movie.fromDetailJson(response.data);
+    });
+    return data;
   }
 
   Future<ServiceModel> getMovieMediaCredit(int movieId) async {
-    final ServiceModel result = ServiceModel();
-    try {
-      Response response = await _service.getMovieMediaCredit(movieId);
-      if (response.statusCode == Service.SUCCESS) {
-        MediaCredit mResult = MediaCredit.fromJson(response.data);
-        result.model = mResult;
-      } else {
-        print("Error : ${response.statusMessage}");
-        result.errorMessage = response.statusMessage.toString();
-      }
-    } catch (e) {
-      print('Error - : ${e.toString()}');
-      result.errorMessage = e.toString();
-    }
-    return result;
+    final data = await ServiceModel.fetch<MediaCredit>(() async {
+      final response = await _service.getMovieMediaCredit(movieId);
+      return MediaCredit.fromJson(response.data);
+    });
+    return data;
   }
 
   Future<ServiceModel> getMovieSimilar(int movieId) async {
-    final ServiceModel result = ServiceModel();
-    try {
-      await _service.getMovieSimilar(movieId).then((response) {
-        print('DATA MOVIE : $response');
-        if (response.statusCode == Service.SUCCESS) {
-          SimilarResult mResult = SimilarResult.fromJson(response.data);
-          result.model = mResult;
-        } else {
-          print("Error Similar : ${response.statusMessage}");
-          result.errorMessage = response.statusMessage.toString();
-        }
-      }).catchError((err) {
-        result.errorMessage = err.toString();
-      });
-    } catch (e) {
-      print('Error Similar - : ${e.toString()}');
-      result.errorMessage = e.toString();
-    }
-    return result;
+    final data = await ServiceModel.fetch<SimilarResult>(() async {
+      final response = await _service.getMovieSimilar(movieId);
+      return SimilarResult.fromJson(response.data);
+    });
+    return data;
   }
 }
