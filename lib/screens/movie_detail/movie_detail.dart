@@ -10,9 +10,10 @@ import 'widgets/content_detail.dart';
 class DetailMovie extends StatefulWidget {
   static const routeName = '/movie-detail';
 
-  Movie movie;
+  final Movie movie;
+  final String tag;
 
-  DetailMovie(this.movie);
+  DetailMovie(this.movie, this.tag);
 
   @override
   _DetailMovieState createState() => _DetailMovieState();
@@ -67,13 +68,10 @@ class _DetailMovieState extends State<DetailMovie> {
             String path = snapshot.data != null
                 ? snapshot.data.posterPath
                 : widget.movie.posterPath;
-            return Hero(
-              tag: 'image-${widget.movie.id}',
-              child: FadeInImage.assetNetwork(
-                image: getTheMovieImage(path),
-                placeholder: 'assets/images/placeholder.png',
-                fit: BoxFit.cover,
-              ),
+            return FadeInImage.assetNetwork(
+              image: getTheMovieImage(path),
+              placeholder: 'assets/images/placeholder.png',
+              fit: BoxFit.cover,
             );
           }),
     );

@@ -36,7 +36,7 @@ class TvBloc {
     try {
       await _tvRepository.getPopullerTv(page: page).then((response) {
         if (response.isSuccess) {
-          _populerController.sink.add(response.model);
+          _populerController.sink.add(response.data);
         }
       });
     } catch (err) {
@@ -48,7 +48,7 @@ class TvBloc {
     try {
       await _tvRepository.getTopRateTv(page: page).then((response) {
         if (response.isSuccess) {
-          _topController.sink.add(response.model);
+          _topController.sink.add(response.data);
         }
       });
     } catch (err) {
@@ -60,7 +60,7 @@ class TvBloc {
     try {
       await _tvRepository.getOnAirTv(page: page).then((response) {
         if (response.isSuccess) {
-          _onAirController.sink.add(response.model);
+          _onAirController.sink.add(response.data);
         }
       });
     } catch (err) {
