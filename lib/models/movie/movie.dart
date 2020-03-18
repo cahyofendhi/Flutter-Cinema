@@ -81,7 +81,7 @@ class Movie {
     originalLanguage = json['original_language'];
     originalTitle = json['original_title'];
     overview = json['overview'];
-    popularity = json['popularity'];
+    popularity = json['popularity'].toDouble();
     posterPath = json['poster_path'];
     if (json['production_companies'] != null) {
       productionCompanies = new List<ProductionCompanies>();
@@ -108,7 +108,7 @@ class Movie {
     tagline = json['tagline'];
     title = json['title'];
     video = json['video'];
-    voteAverage = json['vote_average'];
+    voteAverage = json['vote_average'].toDouble();
     voteCount = json['vote_count'];
   }
 
@@ -156,7 +156,7 @@ class Movie {
   }
 
   Movie.fromJson(Map<String, dynamic> json) {
-    popularity = json['popularity'];
+    popularity = json['popularity'].toDouble();
     voteCount = json['vote_count'];
     video = json['video'];
     posterPath = json['poster_path'];
