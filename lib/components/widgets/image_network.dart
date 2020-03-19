@@ -1,8 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-
 class ImageNetwork extends StatelessWidget {
-
   final String imageUrl;
 
   const ImageNetwork(this.imageUrl);
@@ -11,11 +10,23 @@ class ImageNetwork extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
-      child: FadeInImage.assetNetwork(
-        placeholder: 'assets/images/placeholder.png',
+      child: CachedNetworkImage(
+        imageUrl: imageUrl,
+        placeholder: (context, url) => _circleIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
         fit: BoxFit.cover,
-        image: imageUrl,
       ),
     );
   }
+
+  Widget _circleIndicator(){
+    return Center(
+      child: Container(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
 }

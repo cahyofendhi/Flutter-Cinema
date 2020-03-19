@@ -32,7 +32,7 @@ class MovieRepository {
   }
 
   Future<ServiceModel> getMovie(MovieCategory category, int page) async {
-    final _serviceResult = ServiceModel();
+    final _serviceResult = ServiceModel<MoviesResult>();
     try {
       final response =
           await _service.getMovieList(_getCategoryMovie(category), 1);
@@ -44,6 +44,7 @@ class MovieRepository {
           isTopRate: category == MovieCategory.TopRate);
       _serviceResult.data = _result;
     } catch (e) {
+      print('error movie = ${e.toString()}');
       _serviceResult.errorMessage = e.toString();
       final _resultDb = await getMovieFromDb(category);
       _serviceResult.data = _resultDb;
