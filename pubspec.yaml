@@ -32,6 +32,7 @@ dependencies:
   shimmer: ^1.1.0
   rxdart: ^0.23.1
   pull_to_refresh: ^1.5.8
+  cached_network_image: ^2.0.0
 
   provider: ^4.0.4
   logging: ^0.11.4
