@@ -351,3 +351,5 @@ build/
 android/cinema_flt.jks
 android/private_key.pepk
 android/readme
+ios/.symlinks/plugins/path_provider
+ios/.symlinks/plugins/path_provider_macos
