@@ -1,5 +1,9 @@
 # Flutter BLoC Architecture 
 
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" 
+      alt="Download from Google Play" 
+      height="80">](https://play.google.com/store/apps/details?id=com.bcr.cinema_flt)
+
 flutter project built use BLoC architecture, this application implements api from [themoviedb](http://themoviedb.org)
 
 ![Screenshot](cinema.png)
