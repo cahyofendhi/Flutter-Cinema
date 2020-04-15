@@ -4,6 +4,7 @@ import 'package:cinema_flt/components/widgets/rating_result.dart';
 import 'package:cinema_flt/models/media_credit.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/similar_result.dart';
+import 'package:cinema_flt/screens/widgets/genre_movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +96,7 @@ class _ContentDetailState extends State<ContentDetail> {
             ],
           ),
           SizedBox(height: 7),
-          _genreMovies(getGenresForIds(movie.genreIds)),
+          GenreMovie(items: getGenresForIds(movie.genreIds)),
           SizedBox(height: 10),
           _contentAbout(),
           SizedBox(height: 10),
@@ -148,32 +149,6 @@ class _ContentDetailState extends State<ContentDetail> {
             ],
           );
         });
-  }
-
-  Widget _genreMovies(List<String> _items) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Tags(
-        itemCount: _items.length, // required
-        itemBuilder: (int index) {
-          final item = _items[index];
-          return ItemTags(
-            key: Key(index.toString()),
-            index: index, // required
-            title: item,
-            active: false,
-            textStyle: TextStyle(fontSize: 12),
-            elevation: 0,
-            textColor: AppStyle.getColor(ThemeColor.primary),
-            border: Border.all(
-              color: AppStyle.getColor(ThemeColor.primary),
-            ),
-            pressEnabled: false,
-            onLongPressed: null,
-          );
-        },
-      ),
-    );
   }
 
   Widget _contentAbout() {

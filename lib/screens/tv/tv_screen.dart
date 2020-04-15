@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'widgets/tv_video.dart';
 
 class TvScreen extends StatefulWidget {
+
   @override
   _TvScreenState createState() => _TvScreenState();
 }
