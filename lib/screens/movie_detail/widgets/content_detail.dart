@@ -15,7 +15,7 @@ import 'cast_detail_item.dart';
 import 'similiar_movie.dart';
 
 class ContentDetail extends StatefulWidget {
-  Movie movie;
+  final Movie movie;
 
   ContentDetail(this.movie);
 

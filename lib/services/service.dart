@@ -57,4 +57,10 @@ class Service {
       'page': page,
     });
   }
+
+  Future<Response> getTvDetail([int tvId, String apiKey = API_KEY]) async {
+    return await client.get(url: '/tv/$tvId', parameters: {
+      'api_key': apiKey,
+    });
+  }
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class CastDetailItem extends StatelessWidget {
 
-  MediaCredit media;
+  final MediaCredit media;
 
   CastDetailItem([this.media]);
 

@@ -1,6 +1,8 @@
+import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/db/movie_moor.dart';
 import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
+import 'package:cinema_flt/models/tv/tv_detail.dart';
 import 'package:cinema_flt/models/tv/tv_result.dart';
 import 'package:cinema_flt/services/service.dart';
 import 'package:dio/dio.dart';
@@ -56,6 +58,24 @@ class TvRepository {
     }
     return result;
   }
+
+  Future<ServiceModel> getTvDetail(int tvId) async {
+    final ServiceModel result = ServiceModel<TV>();
+    try {
+      Response response = await _service.getTvDetail(tvId);
+      if (response.statusCode == Service.SUCCESS) {
+        TV mResult = TV.fromJson(response.data);
+        result.data = mResult;
+      } else {
+        result.errorMessage = response.statusMessage.toString();
+      }
+    }catch (e) {
+      print('error : $e');
+      result.errorMessage = e.toString();
+    }
+    return result;
+  }
+
 
   Future<void> insertTvMovie(
       {List<TvMovie> datas,

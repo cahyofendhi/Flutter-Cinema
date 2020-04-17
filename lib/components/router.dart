@@ -1,7 +1,9 @@
 import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
 import 'package:cinema_flt/bloc/movie_search_bloc.dart';
+import 'package:cinema_flt/bloc/tv_detail_bloc.dart';
 import 'package:cinema_flt/components/unknown_page.dart';
 import 'package:cinema_flt/repository/movie_repository.dart';
+import 'package:cinema_flt/repository/tv_repository.dart';
 import 'package:cinema_flt/screens/main_screens.dart';
 import 'package:cinema_flt/screens/movie_detail/movie_detail.dart';
 import 'package:cinema_flt/screens/search/movie_search.dart';
@@ -42,7 +44,14 @@ class Router {
           ),
         );
       case TvDetailScreen.routeName:
-        return MaterialPageRoute(builder: (ctx) => TvDetailScreen());
+        return MaterialPageRoute(
+          builder: (ctx) => ProxyProvider<TvRepository, TvDetailBloc>(
+            update: (context, tvRepository, tvDetailBloc) =>
+                TvDetailBloc(tvRepository: tvRepository),
+            dispose: (context, tvDetailBloc) => tvDetailBloc.dispose(),
+            child: TvDetailScreen(arguments['id']),
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => UnkownPage(settings.name),

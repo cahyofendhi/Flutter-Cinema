@@ -10,11 +10,11 @@ class TvPopulerItem extends StatelessWidget {
   final imageHeight;
 
   TvPopulerItem(this.movie, this.imageHeight);
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(TvDetailScreen.routeName),
+      onTap: () => Navigator.of(context)
+          .pushNamed(TvDetailScreen.routeName, arguments: {'id': movie.id}),
       child: Column(
         children: <Widget>[
           Container(
