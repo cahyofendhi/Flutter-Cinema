@@ -23,9 +23,9 @@ class TvDetailBloc {
 
   TvDetailBloc({@required tvRepository}) : _tvRepository = tvRepository;
   
-  Future<void> getTvDetail(int tvId) async {
+  Future<void> getTvDetail(TV tv) async {
     try {
-      ServiceModel result = await _tvRepository.getTvDetail(tvId);
+      ServiceModel result = await _tvRepository.getTvDetail(tv.id);
       if (result.isSuccess) {
         TV tv = result.data;
         setDataMovie(tv);

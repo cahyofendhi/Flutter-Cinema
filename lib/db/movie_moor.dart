@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
+import 'package:cinema_flt/models/tv/tv_detail.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
 import 'movie_db.dart';
@@ -108,7 +109,7 @@ class MovieMoor extends DatabaseAccessor<MovieDb> with _$MovieMoorMixin {
   }
 
   void insertMovieTv(
-      {List<TvMovie> datas,
+      {List<TV> datas,
       bool isOnAir = false,
       bool isPopuler = false,
       bool isTop = false}) {

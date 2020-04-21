@@ -1,11 +1,12 @@
 import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
+import 'package:cinema_flt/models/tv/tv_detail.dart';
 import 'package:cinema_flt/screens/tv/tv_detail_screen.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 
 class TvVideoItem extends StatelessWidget {
-  final TvMovie movie;
+  final TV movie;
 
   TvVideoItem(this.movie);
 
@@ -13,7 +14,7 @@ class TvVideoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.of(context)
-          .pushNamed(TvDetailScreen.routeName, arguments: {'id': movie.id}),
+          .pushNamed(TvDetailScreen.routeName, arguments: {'tv': movie}),
       child: Stack(
         children: <Widget>[
           Container(

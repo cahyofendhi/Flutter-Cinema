@@ -8,6 +8,7 @@ class TV {
   List<int> episodeRunTime;
   String firstAirDate;
   List<Genres> genres;
+  List<int> genreIds;
   String homepage;
   int id;
   bool inProduction;
@@ -38,6 +39,7 @@ class TV {
       this.episodeRunTime,
       this.firstAirDate,
       this.genres,
+      this.genreIds,
       this.homepage,
       this.id,
       this.inProduction,
@@ -63,7 +65,7 @@ class TV {
       this.voteCount});
 
   TV.fromJson(Map<String, dynamic> json) {
-    backdropPath = json['backdrop_path'] ?? '';
+    backdropPath = json['backdrop_path'] ?? 'sjdhsjdh';
     if (json['created_by'] != null) {
       createdBy = new List<Cast>();
       json['created_by'].forEach((v) {
@@ -80,6 +82,9 @@ class TV {
         genres.add(new Genres.fromJson(v));
       });
     }
+    if (json['genre_ids'] != null) {
+      genreIds = json['genre_ids'].cast<int>();
+    } 
     homepage = json['homepage'] ?? '';
     id = json['id'] ?? 0;
     inProduction = json['in_production'] ?? false;
@@ -105,7 +110,7 @@ class TV {
     originalLanguage = json['original_language'] ?? '';
     originalName = json['original_name'] ?? '';
     overview = json['overview'] ?? '';
-    popularity = json['popularity'] ?? 0.0;
+    popularity = json['popularity'].toDouble() ?? 0.0;
     posterPath = json['poster_path'] ?? '';
     if (json['production_companies'] != null) {
       productionCompanies = new List<ProductionCompanies>();
@@ -121,7 +126,7 @@ class TV {
     }
     status = json['status'] ?? '';
     type = json['type'] ?? '';
-    voteAverage = json['vote_average'] ?? 0.0;
+    voteAverage = json['vote_average'].toDouble() ?? 0.0;
     voteCount = json['vote_count'] ?? 0;
   }
 

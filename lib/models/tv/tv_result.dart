@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
+import 'package:cinema_flt/models/tv/tv_detail.dart';
 
 class TvResult {
   int page;
   int totalResults;
   int totalPages;
-  List<TvMovie> results;
+  List<TV> results;
 
   TvResult({this.page, this.totalResults, this.totalPages, this.results});
 
@@ -16,9 +17,9 @@ class TvResult {
     totalResults = json['total_results'];
     totalPages = json['total_pages'];
     if (json['results'] != null) {
-      results = new List<TvMovie>();
+      results = new List<TV>();
       json['results'].forEach((v) {
-        results.add(TvMovie.fromJson(v));
+        results.add(TV.fromJson(v));
       });
     }
   }
@@ -34,11 +35,11 @@ class TvResult {
     return data;
   }
 
-  static List<TvMovie> fromDb(List<TvEntry> data) {
-    List<TvMovie> dataMovie = [];
+  static List<TV> fromDb(List<TvEntry> data) {
+    List<TV> dataMovie = [];
 
     data.forEach((mv) {
-      TvMovie movie = TvMovie(
+      TV movie = TV(
         popularity: mv.popularity,
         voteCount: mv.voteCount,
         posterPath: mv.posterPath,

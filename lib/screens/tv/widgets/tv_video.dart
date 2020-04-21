@@ -1,11 +1,12 @@
 import 'package:cinema_flt/components/widgets/placeholder/tv_video_item_placeholder.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
+import 'package:cinema_flt/models/tv/tv_detail.dart';
 import 'package:cinema_flt/screens/tv/widgets/tv_video_item.dart';
 import 'package:flutter/material.dart';
 import 'package:snaplist/snaplist.dart';
 
 class TvVideo extends StatelessWidget {
-  final List<TvMovie> movies;
+  final List<TV> movies;
 
   TvVideo(this.movies);
 

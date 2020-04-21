@@ -49,7 +49,7 @@ class Router {
             update: (context, tvRepository, tvDetailBloc) =>
                 TvDetailBloc(tvRepository: tvRepository),
             dispose: (context, tvDetailBloc) => tvDetailBloc.dispose(),
-            child: TvDetailScreen(arguments['id']),
+            child: TvDetailScreen(arguments['tv']),
           ),
         );
       default:

@@ -78,7 +78,7 @@ class TvRepository {
 
 
   Future<void> insertTvMovie(
-      {List<TvMovie> datas,
+      {List<TV> datas,
       bool isPopuler = false,
       bool isOnAir = false,
       bool isTopRate = false}) async {
@@ -87,7 +87,7 @@ class TvRepository {
   }
 
   Future<TvResult> getMovieFromDb(TvGroup group) async {
-    List<TvMovie> data = [];
+    List<TV> data = [];
     await _movieMoor
         .getMovieTvList(
             isOnAir: group == TvGroup.OnAir,

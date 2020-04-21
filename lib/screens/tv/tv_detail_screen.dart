@@ -14,9 +14,9 @@ import 'package:provider/provider.dart';
 class TvDetailScreen extends StatefulWidget {
   static const routeName = '/tv-detail';
 
-  final int tvId;
+  final TV tv;
 
-  TvDetailScreen(this.tvId);
+  TvDetailScreen(this.tv);
 
   @override
   _TvDetailScreenState createState() => _TvDetailScreenState();
@@ -24,13 +24,14 @@ class TvDetailScreen extends StatefulWidget {
 
 class _TvDetailScreenState extends State<TvDetailScreen> {
   TvDetailBloc _tvDetailBloc;
+  TV _dataTV;
 
   final double expandedHeight = 250.0;
 
   @override
   void didChangeDependencies() {
     _tvDetailBloc = Provider.of<TvDetailBloc>(context);
-    _tvDetailBloc.getTvDetail(widget.tvId);
+    _tvDetailBloc.getTvDetail(widget.tv);
     super.didChangeDependencies();
   }
 
@@ -38,47 +39,41 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: _buildHeaderImage(),
-          ),
-          CustomScrollView(
-            slivers: <Widget>[_buildAppBar(), _buildContent()],
-          )
-        ],
-      ),
+      body: StreamBuilder<TV>(
+          stream: _tvDetailBloc.movie,
+          builder: (context, snapshot) {
+            _dataTV = snapshot.data == null ? widget.tv : snapshot.data;
+            return Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: _buildHeaderImage(_dataTV.backdropPath),
+                ),
+                CustomScrollView(
+                  slivers: <Widget>[_buildAppBar(), _buildContent(_dataTV)],
+                )
+              ],
+            );
+          }),
     );
   }
 
-  Widget _buildHeaderImage() {
-    return StreamBuilder<TV>(
-        stream: _tvDetailBloc.movie,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? CachedNetworkImage(
-                  imageBuilder: (context, imageProvider) => Container(
-                        height: expandedHeight + 50,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(30.0),
-                          ),
-                          image: DecorationImage(
-                              image: imageProvider, fit: BoxFit.cover),
-                        ),
-                      ),
-                  fit: BoxFit.cover,
-                  imageUrl: getImageTheMovie(snapshot.data.backdropPath))
-              : Container(
-                  height: expandedHeight + 50,
-                  width: double.infinity,
-                  color: Colors.blue,
-                );
-        });
+  Widget _buildHeaderImage(String imagePath) {
+    return CachedNetworkImage(
+        imageBuilder: (context, imageProvider) => Container(
+              height: expandedHeight + 50,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30.0),
+                ),
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
+            ),
+        fit: BoxFit.cover,
+        imageUrl: getImageTheMovie(imagePath));
   }
 
   Widget _buildAppBar() {
@@ -105,23 +100,24 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
     );
   }
 
-  Widget _buildContent() {
-    return SliverList(delegate: SliverChildListDelegate([_buildTvContent()]));
+  Widget _buildContent(TV movie) {
+    return SliverList(
+        delegate: SliverChildListDelegate([_buildTvContent(movie)]));
   }
 
-  Widget _buildTvContent() {
+  Widget _buildTvContent(TV movie) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _buildRateMovie(),
+        _buildRateMovie(movie),
         SizedBox(height: 45),
-        _buildDescription(),
+        _buildDescription(movie),
       ],
     );
   }
 
-  Widget _buildRateMovie() {
+  Widget _buildRateMovie(TV movie) {
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.white70, width: 1),
@@ -134,29 +130,21 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
       elevation: 3,
       margin: EdgeInsets.only(left: 30.0),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-        child: StreamBuilder<TV>(
-            stream: _tvDetailBloc.movie,
-            builder: (context, snapshot) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  _buildItemRate(
-                      title: 'Episode',
-                      value: snapshot.hasData
-                          ? snapshot.data.numberOfEpisodes.toDouble()
-                          : 0),
-                  _buildItemRate(
-                      title: 'Popularity',
-                      value: snapshot.hasData ? snapshot.data.popularity.toDouble() : 0),
-                  _buildItemRate(
-                      title: 'Rate',
-                      widget: RatingResult(snapshot.hasData ? snapshot.data.voteAverage: 0.0, 12.0))
-                ],
-              );
-            }),
-      ),
+          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              _buildItemRate(
+                  title: 'Episode',
+                  value: movie.numberOfEpisodes.toDouble() ?? 0),
+              _buildItemRate(
+                  title: 'Popularity', value: movie.popularity.toDouble() ?? 0),
+              _buildItemRate(
+                  title: 'Rate',
+                  widget: RatingResult(movie.voteAverage ?? 0.0, 12.0))
+            ],
+          )),
     );
   }
 
@@ -188,52 +176,46 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
     );
   }
 
-  Widget _buildDescription() {
-    return StreamBuilder<TV>(
-        stream: _tvDetailBloc.movie,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _buildTitle(snapshot.data.name ?? ''),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          _buildGenre(snapshot.data.genres),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          AppStyle.textTitleSection(
-                            'Overview',
-                            AppStyle.getColor(ThemeColor.blackText),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            snapshot.data.overview ?? '', //? overview
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w300,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    _buildCreateBy(snapshot.data.createdBy),
-                  ],
-                )
-              : Container();
-        });
+  Widget _buildDescription(TV movie) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildTitle(movie.name ?? ''),
+              SizedBox(
+                height: 10,
+              ),
+              movie.genres !=null ? _buildGenre(movie.genres) : Container(),
+              SizedBox(
+                height: 10,
+              ),
+              AppStyle.textTitleSection(
+                'Overview',
+                AppStyle.getColor(ThemeColor.blackText),
+              ),
+              SizedBox(height: 10),
+              Text(
+                movie.overview ?? '', //? overview
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w300,
+                  letterSpacing: 1,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 10),
+        _buildCreateBy(movie.createdBy),
+      ],
+    );
   }
 
   Widget _buildTitle(String title) {
