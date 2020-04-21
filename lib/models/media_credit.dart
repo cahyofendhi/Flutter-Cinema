@@ -55,14 +55,14 @@ class Cast {
       this.profilePath});
 
   Cast.fromJson(Map<String, dynamic> json) {
-    castId = json['cast_id'];
-    character = json['character'];
-    creditId = json['credit_id'];
-    gender = json['gender'];
-    id = json['id'];
-    name = json['name'];
-    order = json['order'];
-    profilePath = json['profile_path'];
+    castId = json['cast_id'] ?? 0;
+    character = json['character'] ?? '';
+    creditId = json['credit_id'] ?? 0;
+    gender = json['gender'] ?? 1;
+    id = json['id'] ?? 0;
+    name = json['name'] ?? '';
+    order = json['order'] ?? 0;
+    profilePath = json['profile_path'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
