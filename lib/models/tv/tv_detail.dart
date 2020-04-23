@@ -1,5 +1,3 @@
-
-
 import 'package:cinema_flt/models/media_credit.dart';
 
 class TV {
@@ -84,7 +82,7 @@ class TV {
     }
     if (json['genre_ids'] != null) {
       genreIds = json['genre_ids'].cast<int>();
-    } 
+    }
     homepage = json['homepage'] ?? '';
     id = json['id'] ?? 0;
     inProduction = json['in_production'] ?? false;
@@ -110,7 +108,8 @@ class TV {
     originalLanguage = json['original_language'] ?? '';
     originalName = json['original_name'] ?? '';
     overview = json['overview'] ?? '';
-    popularity = json['popularity'].toDouble() ?? 0.0;
+    if (json['popularity'] != null)
+      popularity = json['popularity'].toDouble() ?? 0.0;
     posterPath = json['poster_path'] ?? '';
     if (json['production_companies'] != null) {
       productionCompanies = new List<ProductionCompanies>();
@@ -126,7 +125,8 @@ class TV {
     }
     status = json['status'] ?? '';
     type = json['type'] ?? '';
-    voteAverage = json['vote_average'].toDouble() ?? 0.0;
+    if (json['vote_average'] != null)
+      voteAverage = json['vote_average'].toDouble() ?? 0.0;
     voteCount = json['vote_count'] ?? 0;
   }
 

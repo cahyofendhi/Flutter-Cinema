@@ -213,7 +213,7 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
           ),
         ),
         SizedBox(height: 10),
-        _buildCreateBy(movie.createdBy),
+        movie.createdBy != null ? _buildCreateBy(movie.createdBy) : Container(),
       ],
     );
   }
