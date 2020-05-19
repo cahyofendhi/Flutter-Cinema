@@ -2,12 +2,19 @@
 <Workspace
    version = "1.0">
    <FileRef
+<<<<<<< HEAD
       location = "group:/Users/rumahulya/Documents/Sample/FlutterApp/Flutter-Cinema/ios/Cinema Flt.xcodeproj">
+=======
+      location = "group:Runner.xcodeproj">
+>>>>>>> 4fe221436f3d625aa5438ec6b1a7654ffab506c6
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
+<<<<<<< HEAD
    <FileRef
       location = "group:Runner.xcodeproj">
    </FileRef>
+=======
+>>>>>>> 4fe221436f3d625aa5438ec6b1a7654ffab506c6
 </Workspace>
