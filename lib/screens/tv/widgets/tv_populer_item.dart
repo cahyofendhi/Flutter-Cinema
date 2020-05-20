@@ -1,6 +1,5 @@
 import 'package:cinema_flt/components/widgets/image_network.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
-import 'package:cinema_flt/models/tv/tv_detail.dart';
 import 'package:cinema_flt/screens/tv/tv_detail_screen.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';

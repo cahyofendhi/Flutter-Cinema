@@ -27,8 +27,9 @@ List<SingleChildWidget> dependentServices = [
   ProxyProvider2<DatabaseRepository, Service, MovieRepository>(
       update: (context, dbRepository, service, movieRepository) =>
           MovieRepository(service, dbRepository)),
-  ProxyProvider<Service, TvRepository>(
-    update: (context, service, tvRepository) => TvRepository(service),
+  ProxyProvider2<DatabaseRepository, Service, TvRepository>(
+    update: (context, dbRepository, service, tvRepository) =>
+        TvRepository(service, dbRepository),
   ),
 ];
 

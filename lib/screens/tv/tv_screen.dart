@@ -5,17 +5,19 @@ import 'package:cinema_flt/screens/tv/widgets/tv_populer.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'widgets/tv_video.dart';
 
 class TvScreen extends StatefulWidget {
-
   @override
   _TvScreenState createState() => _TvScreenState();
 }
 
 class _TvScreenState extends State<TvScreen> {
   TvBloc _tvBloc;
+
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   @override
   void didChangeDependencies() {
@@ -24,18 +26,30 @@ class _TvScreenState extends State<TvScreen> {
     super.didChangeDependencies();
   }
 
+  void _onRefresh() async{
+    await _tvBloc.getTvContent();
+    _refreshController.refreshCompleted();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            _tvVideo(),
-            _tvPopuler(),
-            _tvTopRate(),
-          ],
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: false,
+        controller: _refreshController,
+        header: WaterDropHeader(),
+        onRefresh: _onRefresh,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              _tvVideo(),
+              _tvPopuler(),
+              _tvTopRate(),
+            ],
+          ),
         ),
       ),
     );

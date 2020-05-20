@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cinema_flt/components/router.dart';
 import 'package:cinema_flt/data/constant.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
+import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/providers/global_provider.dart';
 import 'package:cinema_flt/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ void _initHive() async {
   final Directory appDirectory = await getApplicationDocumentsDirectory();
   Hive.init(appDirectory.path);
   Hive.registerAdapter(MovieAdapter());
+  Hive.registerAdapter(TVAdapter());
 }
 
 class MyApp extends StatelessWidget {

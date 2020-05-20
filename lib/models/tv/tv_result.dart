@@ -2,7 +2,6 @@ import 'dart:convert';
 
 // import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
-import 'package:cinema_flt/models/tv/tv_detail.dart';
 
 class TvResult {
   int page;
