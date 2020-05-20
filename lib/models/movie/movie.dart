@@ -1,32 +1,62 @@
-
 import 'package:cinema_flt/utils/AppUtils.dart';
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 
-class Movie {
+part 'movie.g.dart';
+
+@HiveType(typeId: 1)
+class Movie extends Equatable with HiveObject {
+  @HiveField(0)
   bool adult;
+  @HiveField(1)
   String backdropPath;
+  @HiveField(2)
   BelongsToCollection belongsToCollection;
+  @HiveField(3)
   int budget;
+  @HiveField(4)
   List<Genres> genres;
+  @HiveField(5)
   List<int> genreIds;
+  @HiveField(6)
   String homepage;
+  @HiveField(7)
   int id;
+  @HiveField(8)
   String imdbId;
+  @HiveField(9)
   String originalLanguage;
+  @HiveField(10)
   String originalTitle;
+  @HiveField(11)
   String overview;
+  @HiveField(12)
   double popularity;
+  @HiveField(13)
   String posterPath;
+  @HiveField(14)
   List<ProductionCompanies> productionCompanies;
+  @HiveField(15)
   List<ProductionCountries> productionCountries;
+  @HiveField(16)
   String releaseDate;
+  @HiveField(17)
   int revenue;
+  @HiveField(18)
   int runtime;
+  @HiveField(19)
   List<SpokenLanguages> spokenLanguages;
+  @HiveField(20)
   String status;
+  @HiveField(21)
   String tagline;
+  @HiveField(22)
   String title;
+  @HiveField(23)
   bool video;
+  @HiveField(24)
   double voteAverage;
+  @HiveField(25)
   int voteCount;
 
   Movie(
@@ -58,7 +88,9 @@ class Movie {
       this.genreIds});
 
   String getReleaseDate() {
-    return releaseDate != null && releaseDate.isNotEmpty ? convertDate(releaseDate) : '';
+    return releaseDate != null && releaseDate.isNotEmpty
+        ? convertDate(releaseDate)
+        : '';
   }
 
   Movie.fromDetailJson(Map<String, dynamic> json) {
@@ -191,6 +223,8 @@ class Movie {
     return data;
   }
 
+  @override
+  List<Object> get props => throw UnimplementedError();
 }
 
 class BelongsToCollection {

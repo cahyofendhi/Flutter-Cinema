@@ -8,7 +8,8 @@ import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/models/similar_result.dart';
 import 'package:cinema_flt/repository/movie_repository.dart';
 import 'package:cinema_flt/utils/request_state.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:flutter/foundation.dart';
+// import 'package:moor_flutter/moor_flutter.dart';
 
 class MovieDetailBloc {
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cinema_flt/db/movie_db.dart';
+// import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/models/tv/tv_detail.dart';
 
@@ -35,30 +35,30 @@ class TvResult {
     return data;
   }
 
-  static List<TV> fromDb(List<TvEntry> data) {
-    List<TV> dataMovie = [];
+  // static List<TV> fromDb(List<TvEntry> data) {
+  //   List<TV> dataMovie = [];
 
-    data.forEach((mv) {
-      TV movie = TV(
-        popularity: mv.popularity,
-        voteCount: mv.voteCount,
-        posterPath: mv.posterPath,
-        id: mv.idMovie,
-        backdropPath: mv.backdropPath,
-        originalLanguage: mv.originalLanguage,
-        genreIds:
-            mv.genreIds.isEmpty ? [] : jsonDecode(mv.genreIds).cast<int>(),
-        name: mv.name,
-        voteAverage: mv.voteAverage,
-        overview: mv.overview,
-        firstAirDate: mv.firstAirDate,
-        originalName: mv.originalName,
-        originCountry:
-            mv.originCountry.isEmpty ? [] : jsonDecode(mv.originCountry).cast<String>(),
-      );
-      dataMovie.add(movie);
-    });
+  //   data.forEach((mv) {
+  //     TV movie = TV(
+  //       popularity: mv.popularity,
+  //       voteCount: mv.voteCount,
+  //       posterPath: mv.posterPath,
+  //       id: mv.idMovie,
+  //       backdropPath: mv.backdropPath,
+  //       originalLanguage: mv.originalLanguage,
+  //       genreIds:
+  //           mv.genreIds.isEmpty ? [] : jsonDecode(mv.genreIds).cast<int>(),
+  //       name: mv.name,
+  //       voteAverage: mv.voteAverage,
+  //       overview: mv.overview,
+  //       firstAirDate: mv.firstAirDate,
+  //       originalName: mv.originalName,
+  //       originCountry:
+  //           mv.originCountry.isEmpty ? [] : jsonDecode(mv.originCountry).cast<String>(),
+  //     );
+  //     dataMovie.add(movie);
+  //   });
 
-    return dataMovie;
-  }
+  //   return dataMovie;
+  // }
 }

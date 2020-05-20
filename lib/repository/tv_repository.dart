@@ -1,5 +1,5 @@
-import 'package:cinema_flt/db/movie_db.dart';
-import 'package:cinema_flt/db/movie_moor.dart';
+// import 'package:cinema_flt/db/movie_db.dart';
+// import 'package:cinema_flt/db/movie_moor.dart';
 import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/models/tv/tv_detail.dart';
@@ -16,11 +16,10 @@ enum TvGroup {
 
 class TvRepository {
   final Service _service;
-  final MovieMoor _movieMoor;
+  // final MovieMoor _movieMoor;
 
-  TvRepository(service, movieMoor)
-      : _service = service,
-        _movieMoor = movieMoor;
+  TvRepository(service)
+      : _service = service;
 
   Future<ServiceModel> getPopullerTv({int page = 1}) async {
     return await getTvList(TvGroup.PopulerTv, page);
@@ -82,20 +81,20 @@ class TvRepository {
       bool isPopuler = false,
       bool isOnAir = false,
       bool isTopRate = false}) async {
-    _movieMoor.insertMovieTv(
-        datas: datas, isOnAir: isOnAir, isPopuler: isPopuler, isTop: isTopRate);
+    // _movieMoor.insertMovieTv(
+    //     datas: datas, isOnAir: isOnAir, isPopuler: isPopuler, isTop: isTopRate);
   }
 
   Future<TvResult> getMovieFromDb(TvGroup group) async {
     List<TV> data = [];
-    await _movieMoor
-        .getMovieTvList(
-            isOnAir: group == TvGroup.OnAir,
-            isPopuler: group == TvGroup.PopulerTv,
-            isTop: group == TvGroup.TopRateTv)
-        .then((list) {
-      data = TvResult.fromDb(list);
-    });
+    // await _movieMoor
+    //     .getMovieTvList(
+    //         isOnAir: group == TvGroup.OnAir,
+    //         isPopuler: group == TvGroup.PopulerTv,
+    //         isTop: group == TvGroup.TopRateTv)
+    //     .then((list) {
+    //   data = TvResult.fromDb(list);
+    // });
     return TvResult(results: data);
   }
 

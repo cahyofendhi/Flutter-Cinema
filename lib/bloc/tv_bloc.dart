@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:cinema_flt/models/tv/tv_result.dart';
 import 'package:cinema_flt/repository/tv_repository.dart';
 import 'package:cinema_flt/utils/request_state.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:flutter/foundation.dart';
+// import 'package:moor_flutter/moor_flutter.dart';
 
 class TvBloc {
   final TvRepository _tvRepository;
