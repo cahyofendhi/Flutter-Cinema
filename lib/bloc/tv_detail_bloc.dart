@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:cinema_flt/models/service_model.dart';
-import 'package:cinema_flt/models/tv/tv_detail.dart';
+import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/repository/tv_repository.dart';
 import 'package:cinema_flt/utils/request_state.dart';
 import 'package:flutter/material.dart';

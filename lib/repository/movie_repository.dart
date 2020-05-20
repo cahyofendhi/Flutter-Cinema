@@ -1,9 +1,10 @@
-import 'package:cinema_flt/db/movie_moor.dart';
+// import 'package:cinema_flt/db/movie_moor.dart';
 import 'package:cinema_flt/models/media_credit.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/models/similar_result.dart';
+import 'package:cinema_flt/repository/database_repository.dart';
 import 'package:cinema_flt/services/service.dart';
 import 'package:dio/dio.dart';
 
@@ -13,11 +14,11 @@ enum MovieCategory { Upcoming, TopRate, Populer }
 
 class MovieRepository {
   final Service _service;
-  final MovieMoor _movieMoor;
+  final DatabaseRepository _databaseRepository;
 
-  MovieRepository(service, movieMoor)
+  MovieRepository(service, databaseRepository)
       : _service = service,
-        _movieMoor = movieMoor;
+        _databaseRepository = databaseRepository;
 
   Future<ServiceModel> getUpcomingMovie(int page) async {
     return await getMovie(MovieCategory.Upcoming, page);
@@ -57,8 +58,8 @@ class MovieRepository {
       bool isPopuler = false,
       bool isUpcoming = false,
       bool isTopRate = false}) async {
-    _movieMoor.insertMovie(
-        datas: datas,
+    _databaseRepository.insertMovie(
+        movies: datas,
         isPopuler: isPopuler,
         isTopRate: isTopRate,
         isUpcoming: isUpcoming);
@@ -79,14 +80,16 @@ class MovieRepository {
 
   Future<MoviesResult> getMovieFromDb(MovieCategory category) async {
     List<Movie> data = [];
-    await _movieMoor
-        .getMovieList(
-            isUpcoming: category == MovieCategory.Upcoming,
-            isPopuler: category == MovieCategory.Populer,
-            isToprate: category == MovieCategory.TopRate)
-        .then((list) {
-      data = MoviesResult.fromDb(list);
-    });
+    try {
+      final dataDb = await _databaseRepository.getMovies(
+          isUpcoming: category == MovieCategory.Upcoming,
+          isPopuler: category == MovieCategory.Populer,
+          isTopRate: category == MovieCategory.TopRate);
+      data.addAll(dataDb);
+    } catch (er) {
+      print('Error Movie DB : ${er.toString()}');
+      throw er;
+    }
     return MoviesResult(results: data);
   }
 

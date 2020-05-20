@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cinema_flt/bloc/tv_detail_bloc.dart';
 import 'package:cinema_flt/components/widgets/rating_result.dart';
 import 'package:cinema_flt/models/media_credit.dart';
-import 'package:cinema_flt/models/tv/tv_detail.dart';
+import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/screens/movie_detail/widgets/cast_item.dart';
 import 'package:cinema_flt/screens/widgets/genre_movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
