@@ -23,7 +23,7 @@ to run this project
 ## List of libraries in this project
 * [Provider](https://pub.dev/packages/provider)
 * [Dio](https://pub.dev/packages/dio)
-* [Moor](https://pub.dev/packages/moor_flutter)
+* [Hive](https://docs.hivedb.dev/)
 * [Slider](https://pub.dev/packages/carousel_slider)
 * [Snaplist](https://pub.dev/packages/snaplist)
 * [Intl](https://pub.dev/packages/intl)

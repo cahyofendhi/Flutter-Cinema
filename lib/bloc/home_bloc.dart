@@ -25,7 +25,7 @@ class HomeBloc {
   Stream<MoviesResult> get upcomingMovies => _upcomingController.stream;
   Stream<MoviesResult> get populerMovies => _populerController.stream;
   Stream<MoviesResult> get trendingMovies => _trendingController.stream;
-  
+
   dynamic get changeUpcoming => _upcomingController.sink.add;
   dynamic get changePopular => _populerController.sink.add;
   dynamic get changeTrending => _trendingController.sink.add;
@@ -41,29 +41,44 @@ class HomeBloc {
   }
 
   /// get upcoming movie
-  void getUpcomingMovie([int page = 1]) {
+  void getUpcomingMovie([int page = 1]) async {
     setStatePopuler(UiState(RequestState.LOADING));
-    _movieRepository.getUpcomingMovie(page)
-    .then((value) =>  changeUpcoming(value.data))
-    .catchError((er) {
-      print('error = ${er.toString()}');
-      setStatePopuler(UiState(RequestState.ERROR));
-    })
-    .whenComplete(() => setStatePopuler(UiState(RequestState.DONE)));
+    try {
+      await for (ServiceModel result
+          in _movieRepository.getUpcomingMovie(page)) {
+            MoviesResult data = result.data;
+            print('Upcoming Total : ${data.results.length}');
+        changeUpcoming(result.data);
+      }
+      setStatePopuler(UiState(RequestState.DONE));
+    } catch (err) {
+      print('Error Upcoming : ${err.toString()}');
+      setStatePopuler(UiState(RequestState.DONE));
+    }
   }
 
   /// get popular movie
   void getPopulerMovie([int page = 1]) async {
-    _movieRepository.getPopulerMovie(page)
-    .then((value) => changePopular(value.data))
-    .catchError((err) => print('Error Populer : ${err.toString()}'));
+    try {
+      await for (ServiceModel result
+          in _movieRepository.getPopulerMovie(page)) {
+        changePopular(result.data);
+      }
+    } catch (err) {
+      print('Error Populer : ${err.toString()}');
+    }
   }
 
   /// get trending movie
   void getTrendingMovie([int page = 1]) async {
-    _movieRepository.getTrendingMovie(page)
-    .then((value) => changeTrending(value.data))
-    .catchError((err) => print('Error : ${err.toString()}'));
+    try {
+      await for (ServiceModel result
+          in _movieRepository.getTrendingMovie(page)) {
+        changeTrending(result.data);
+      }
+    } catch (err) {
+      print('Error Trending : ${err.toString()}');
+    }
   }
 
   /// dispose controller

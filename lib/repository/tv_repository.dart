@@ -1,5 +1,3 @@
-// import 'package:cinema_flt/db/movie_db.dart';
-// import 'package:cinema_flt/db/movie_moor.dart';
 import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/models/tv/tv_result.dart';
