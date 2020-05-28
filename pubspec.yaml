@@ -45,6 +45,9 @@ dependencies:
   equatable: ^1.1.1
   path_provider: ^1.6.8
 
+dependency_overrides:
+  path: ^1.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
