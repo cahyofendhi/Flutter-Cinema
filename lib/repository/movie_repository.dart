@@ -20,22 +20,33 @@ class MovieRepository {
       : _service = service,
         _databaseRepository = databaseRepository;
 
-  Future<ServiceModel> getUpcomingMovie(int page) async {
-    return await getMovie(MovieCategory.Upcoming, page);
+  Stream<ServiceModel> getUpcomingMovie(int page) async* {
+    await for (ServiceModel result in getMovie(MovieCategory.Upcoming, page)) {
+      yield result;
+    }
   }
 
-  Future<ServiceModel> getPopulerMovie(int page) async {
-    return await getMovie(MovieCategory.Populer, page);
+  Stream<ServiceModel> getPopulerMovie(int page) async* {
+    await for (ServiceModel result in getMovie(MovieCategory.Populer, page)) {
+      yield result;
+    }
   }
 
-  Future<ServiceModel> getTrendingMovie(int page) async {
-    return await getMovie(MovieCategory.TopRate, page);
+  Stream<ServiceModel> getTrendingMovie(int page) async* {
+    await for (ServiceModel result in getMovie(MovieCategory.TopRate, page)) {
+      yield result;
+    }
   }
 
-  Future<ServiceModel> getMovie(MovieCategory category, int page) async {
+  Stream<ServiceModel> getMovie(MovieCategory category, int page) async* {
     final _serviceResult = ServiceModel<MoviesResult>();
+    if (page == 1) {
+      final _resultDb = await getMovieFromDb(category);
+      _serviceResult.data = _resultDb;
+      yield _serviceResult;
+    }
     try {
-      final response =
+      final response =  
           await _service.getMovieList(_getCategoryMovie(category), 1);
       final _result = MoviesResult.fromJson(response.data);
       await insertMovie(
@@ -44,13 +55,15 @@ class MovieRepository {
           isPopuler: category == MovieCategory.Populer,
           isTopRate: category == MovieCategory.TopRate);
       _serviceResult.data = _result;
+      yield _serviceResult;
     } catch (e) {
-      print('error movie = ${e.toString()}');
       _serviceResult.errorMessage = e.toString();
-      final _resultDb = await getMovieFromDb(category);
-      _serviceResult.data = _resultDb;
+      if (page == 1) {
+        final _resultDb = await getMovieFromDb(category);
+        _serviceResult.data = _resultDb;
+      }
+      yield _serviceResult;
     }
-    return _serviceResult;
   }
 
   Future<void> insertMovie(
