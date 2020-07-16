@@ -5,6 +5,7 @@ import 'package:cinema_flt/screens/movie_detail/movie_detail.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class TredingItem extends StatelessWidget {
   final Movie movie;
@@ -14,14 +15,31 @@ class TredingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final _tag = 'trending-image-movie-${movie.id}';
+    return ResponsiveBuilder(
+      builder: (ctx, sizingInfo) {
+        switch (sizingInfo.deviceScreenType) {
+          case DeviceScreenType.desktop:
+            return buildSlide(context, _tag, DEKSTOP);
+            break;
+          case DeviceScreenType.tablet:
+            return buildSlide(context, _tag, TABLET);
+            break;
+          default:
+            return buildSlide(context, _tag, screenWidth);
+            break;
+        }
+      },
+    );
+  }
+
+  Widget buildSlide(BuildContext context, String tag, double screenWidth) {
     final imageWidth = screenWidth / 4;
     final imageHeight = imageWidth + (imageWidth / 3);
-    final _tag = 'trending-image-movie-${movie.id}';
-
     return InkWell(
       onTap: () {
         Navigator.of(context).pushNamed(DetailMovie.routeName,
-            arguments: {'movie': movie, 'tag': _tag});
+            arguments: {'movie': movie, 'tag': tag});
       },
       child: Container(
         width: double.infinity,
