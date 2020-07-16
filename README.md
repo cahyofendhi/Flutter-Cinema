@@ -4,7 +4,7 @@
       alt="Download from Google Play" 
       height="80">](https://play.google.com/store/apps/details?id=com.bcr.cinema_flt)
 
-Flutter project built use BLoC architecture, this application implements api from [themoviedb](http://themoviedb.org). this project responsive and support for web .
+Flutter project built use BLoC architecture, this application implements api from [themoviedb](http://themoviedb.org).
 
 <p><img src="mobile.png" width="1257"></p>
 <p><img src="web.png" width="1257"></p>
@@ -25,6 +25,8 @@ run for web
  flutter run -d chrome
 ```
  run `build/web` with local server using [dhttpd](https://pub.dev/packages/dhttpd).
+
+ The results of the flutter can be checked here [FLUTTER CINEMA](https://cahyofendhi.github.io/Flutter-Cinema/)
 
 
 
