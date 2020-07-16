@@ -13,6 +13,9 @@ enum ThemeColor {
 }
 
 class AppStyle {
+
+  static Color greyApp = Color(0xFFCCCCCC);
+
   static Color getColor([ThemeColor color = ThemeColor.primary]) {
     switch (color) {
       case ThemeColor.blackText:

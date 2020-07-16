@@ -1,5 +1,6 @@
 import 'package:cinema_flt/components/widgets/placeholder/similiar_item_placeholder.dart';
 import 'package:cinema_flt/models/similar_result.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'similiar_movie_item.dart';
@@ -12,7 +13,7 @@ class SimiliarMovie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
+        MediaQuery.of(context).orientation == Orientation.portrait || kIsWeb;
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: isPortrait ? 20 : 10,

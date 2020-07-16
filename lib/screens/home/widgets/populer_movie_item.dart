@@ -8,12 +8,12 @@ import 'package:cinema_flt/utils/AppStyle.dart';
 class PopulerMovieItem extends StatelessWidget {
   final index;
   final Movie movie;
+  final double screenWidth;
 
-  PopulerMovieItem(this.index, this.movie);
+  PopulerMovieItem(this.index, this.movie, this.screenWidth);
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final _tag = 'popular-image-movie-${movie.id}';
     return InkWell(
       onTap: () => Navigator.of(context).pushNamed(DetailMovie.routeName,

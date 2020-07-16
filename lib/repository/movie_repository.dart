@@ -1,4 +1,6 @@
 // import 'package:cinema_flt/db/movie_moor.dart';
+import 'dart:io';
+
 import 'package:cinema_flt/models/media_credit.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
@@ -7,6 +9,7 @@ import 'package:cinema_flt/models/similar_result.dart';
 import 'package:cinema_flt/repository/database_repository.dart';
 import 'package:cinema_flt/services/service.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import 'group.dart';
 
@@ -46,9 +49,10 @@ class MovieRepository {
       yield _serviceResult;
     }
     try {
-      final response =  
+      final response =
           await _service.getMovieList(_getCategoryMovie(category), 1);
       final _result = MoviesResult.fromJson(response.data);
+
       await insertMovie(
           datas: _result.results,
           isUpcoming: category == MovieCategory.Upcoming,
@@ -58,10 +62,6 @@ class MovieRepository {
       yield _serviceResult;
     } catch (e) {
       _serviceResult.errorMessage = e.toString();
-      if (page == 1) {
-        final _resultDb = await getMovieFromDb(category);
-        _serviceResult.data = _resultDb;
-      }
       yield _serviceResult;
     }
   }

@@ -1,6 +1,8 @@
 import 'package:cinema_flt/components/widgets/placeholder/populer_item_placeholder.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 import 'package:snaplist/snaplist_view.dart';
 
@@ -18,7 +20,25 @@ class PopulerMovie extends StatefulWidget {
 class _PopulerMovieState extends State<PopulerMovie> {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    return ResponsiveBuilder(
+      builder: (ctx, sizingInformation) {
+        switch (sizingInformation.deviceScreenType) {
+          case DeviceScreenType.desktop:
+            return buildBody(DEKSTOP);
+            break;
+          case DeviceScreenType.tablet:
+            return buildBody(TABLET);
+            break;
+          default:
+            final screenWidth = MediaQuery.of(context).size.width;
+            return buildBody(screenWidth);
+            break;
+        }
+      },
+    );
+  }
+
+  Widget buildBody(double screenWidth) {
     final heightCard = screenWidth / 1.6;
     final Size cardSize = Size(screenWidth / 3, heightCard);
     return Container(
@@ -31,10 +51,11 @@ class _PopulerMovieState extends State<PopulerMovie> {
         builder: (context, index, data) {
           return widget.movies == null
               ? PopulerItemPlaceholder()
-              : PopulerMovieItem(index, widget.movies[index]);
+              : PopulerMovieItem(index, widget.movies[index], screenWidth);
         },
         count: widget.movies == null ? 5 : widget.movies.length,
       ),
     );
   }
+
 }

@@ -52,3 +52,6 @@ String convertDate(String str) {
 String getTheMovieImage(String path) {
   return 'http://image.tmdb.org/t/p/w185/$path';
 }
+
+const DEKSTOP = 1254.0 / 3.5;
+const TABLET = 900.0 / 2.5;

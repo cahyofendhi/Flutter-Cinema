@@ -5,7 +5,8 @@ import 'package:cinema_flt/data/constant.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/providers/global_provider.dart';
-import 'package:cinema_flt/screens/splash_screen.dart';
+import 'package:cinema_flt/screens/splash/splash_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -20,10 +21,20 @@ Future<void> main() async {
 }
 
 void _initHive() async {
-  final Directory appDirectory = await getApplicationDocumentsDirectory();
-  Hive.init(appDirectory.path);
+  if (!kIsWeb) {
+    final Directory appDirectory = await getApplicationDocumentsDirectory();
+    Hive.init(appDirectory.path);
+  }
   Hive.registerAdapter(MovieAdapter());
   Hive.registerAdapter(TVAdapter());
+
+  Hive.openBox<Movie>(MOVIE_POPULAR);
+  Hive.openBox<Movie>(MOVIE_TOP_RATE);
+  Hive.openBox<Movie>(MOVIE_UPCOMING);
+
+  Hive.openBox<TV>(TV_ON_AIR);
+  Hive.openBox<TV>(TV_POPULAR);
+  Hive.openBox<TV>(TV_TOP_RATE);
 }
 
 class MyApp extends StatelessWidget {
@@ -42,6 +53,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: SplashScreen.routeName,
         onGenerateRoute: Router.generateRoute,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

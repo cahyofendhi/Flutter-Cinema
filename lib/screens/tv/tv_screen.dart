@@ -60,6 +60,7 @@ class _TvScreenState extends State<TvScreen> {
       elevation: 0.0,
       centerTitle: false,
       backgroundColor: Colors.white,
+      automaticallyImplyLeading: false,
       title: Text(
         'TV Cinema',
         style: TextStyle(
@@ -112,13 +113,6 @@ class _TvScreenState extends State<TvScreen> {
           }
         });
   }
-
-  // Widget _tvLatest() {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(top: 15),
-  //     child: ContainerCategory('Latest', TvPopuler()),
-  //   );
-  // }
 
   Widget _tvTopRate() {
     return StreamBuilder(

@@ -10,6 +10,7 @@ import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class TvDetailScreen extends StatefulWidget {
   static const routeName = '/tv-detail';
@@ -37,6 +38,41 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return ResponsiveBuilder(
+      builder: (ctx, sizingInformation) {
+        switch (sizingInformation.deviceScreenType) {
+          case DeviceScreenType.desktop:
+            return Scaffold(
+              backgroundColor: AppStyle.greyApp,
+              body: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: DEKSTOP,
+                  child: buildBody(),
+                ),
+              ),
+            );
+            break;
+          case DeviceScreenType.tablet:
+            return Scaffold(
+              backgroundColor: AppStyle.greyApp,
+              body: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: TABLET,
+                  child: buildBody(),
+                ),
+              ),
+            );
+            break;
+          default:
+            return buildBody();
+        }
+      },
+    );
+  }
+
+  Widget buildBody() {
     return Scaffold(
       backgroundColor: Colors.white,
       body: StreamBuilder<TV>(
