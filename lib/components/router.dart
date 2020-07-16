@@ -7,7 +7,7 @@ import 'package:cinema_flt/repository/tv_repository.dart';
 import 'package:cinema_flt/screens/main_screens.dart';
 import 'package:cinema_flt/screens/movie_detail/movie_detail.dart';
 import 'package:cinema_flt/screens/search/movie_search.dart';
-import 'package:cinema_flt/screens/splash_screen.dart';
+import 'package:cinema_flt/screens/splash/splash_screen.dart';
 import 'package:cinema_flt/screens/tv/tv_detail_screen.dart';
 import 'package:cinema_flt/utils/transition/fade_route.dart';
 import 'package:flutter/cupertino.dart';

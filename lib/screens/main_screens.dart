@@ -1,6 +1,8 @@
 import 'package:cinema_flt/screens/home/home_screen.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 import 'tv/tv_screen.dart';
 
@@ -21,10 +23,40 @@ class _MainScreensState extends State<MainScreens> {
 
   @override
   Widget build(BuildContext context) {
+    return ResponsiveBuilder(
+      builder: (context, sizingInformation) {
+        switch (sizingInformation.deviceScreenType) {
+          case DeviceScreenType.desktop:
+            return Scaffold(
+              backgroundColor: AppStyle.greyApp,
+              body: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: DEKSTOP,
+                  child: buildBody(),
+                ),
+              ),
+            );
+          case DeviceScreenType.tablet:
+            return Scaffold(
+              backgroundColor: AppStyle.greyApp,
+              body: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: TABLET,
+                  child: buildBody(),
+                ),
+              ),
+            );
+          default:
+            return buildBody();
+        }
+      },
+    );
+  }
+
+  Widget buildBody() {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Cinema'),
-      // ),
       body: IndexedStack(
         index: _selectedPage,
         children: _pagesView.map((t) {
@@ -32,7 +64,6 @@ class _MainScreensState extends State<MainScreens> {
           return wg;
         }).toList(),
       ),
-      // body: _pagesView[_selectedPage]['page'],
       bottomNavigationBar: BottomNavigationBar(
         items: _getNavBarItems(),
         currentIndex: _selectedPage,
@@ -59,8 +90,6 @@ class _MainScreensState extends State<MainScreens> {
   }
 
   void _selectPage(int page) {
-    setState(() {
-      _selectedPage = page;
-    });
+    setState(() => _selectedPage = page);
   }
 }

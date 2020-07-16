@@ -1,7 +1,9 @@
 import 'package:cinema_flt/components/widgets/placeholder/tv_populer_item_placeholder.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:cinema_flt/screens/tv/widgets/tv_populer_item.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:snaplist/snaplist.dart';
 
 class TvPopuler extends StatefulWidget {
@@ -16,7 +18,24 @@ class TvPopuler extends StatefulWidget {
 class _TvPopulerState extends State<TvPopuler> {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    return ResponsiveBuilder(
+      builder: (cxt, sizingInformation) {
+        switch (sizingInformation.deviceScreenType) {
+          case DeviceScreenType.tablet:
+            return buildBody(TABLET);
+            break;
+          case DeviceScreenType.desktop:
+            return buildBody(DEKSTOP);
+            break;
+          default:
+            final screenWidth = MediaQuery.of(context).size.width;
+            return buildBody(screenWidth);
+        }
+      },
+    );
+  }
+
+  Widget buildBody(double screenWidth) {
     final heightCard = screenWidth / 2;
     final imageWidth = (screenWidth / 2) / 1.83;
     final imageHeight = imageWidth + (imageWidth / 2.5);

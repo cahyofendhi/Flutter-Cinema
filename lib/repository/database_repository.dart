@@ -4,29 +4,14 @@ import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:hive/hive.dart';
 
 class DatabaseRepository {
-  Box<Movie> moviePopular;
-  Box<Movie> movieTopRate;
-  Box<Movie> movieUpcoming;
-
-  Box<TV> tvOnAir;
-  Box<TV> tvPopular;
-  Box<TV> tvTopRate;
-
-  DatabaseRepository() {
-    Hive.openBox<Movie>(MOVIE_POPULAR).then((value) => moviePopular = value);
-    Hive.openBox<Movie>(MOVIE_TOP_RATE).then((value) => movieTopRate = value);
-    Hive.openBox<Movie>(MOVIE_UPCOMING).then((value) => movieUpcoming = value);
-
-    Hive.openBox<TV>(TV_ON_AIR).then((value) => tvOnAir = value);
-    Hive.openBox<TV>(TV_POPULAR).then((value) => tvPopular = value);
-    Hive.openBox<TV>(TV_TOP_RATE).then((value) => tvTopRate = value);
-  }
-
   Future<void> insertMovie(
       {List<Movie> movies,
       bool isPopuler,
       bool isTopRate,
       bool isUpcoming}) async {
+    Box<Movie> moviePopular = Hive.box<Movie>(MOVIE_POPULAR);
+    Box<Movie> movieTopRate = Hive.box<Movie>(MOVIE_TOP_RATE);
+    Box<Movie> movieUpcoming = Hive.box<Movie>(MOVIE_UPCOMING);
     if (isPopuler) {
       moviePopular.clear().then((value) => moviePopular.addAll(movies));
     } else if (isTopRate) {
@@ -39,6 +24,11 @@ class DatabaseRepository {
   Future<List<Movie>> getMovies(
       {bool isPopuler, bool isTopRate, bool isUpcoming}) async {
     List<Movie> data = [];
+
+    Box<Movie> moviePopular = Hive.box<Movie>(MOVIE_POPULAR);
+    Box<Movie> movieTopRate = Hive.box<Movie>(MOVIE_TOP_RATE);
+    Box<Movie> movieUpcoming = Hive.box<Movie>(MOVIE_UPCOMING);
+
     if (isPopuler) {
       data = moviePopular.values.toList();
     } else if (isTopRate) {
@@ -54,6 +44,9 @@ class DatabaseRepository {
       bool isPopuler = false,
       bool isOnAir = false,
       bool isTopRate = false}) async {
+    Box<TV> tvOnAir = Hive.box<TV>(TV_ON_AIR);
+    Box<TV> tvPopular = Hive.box<TV>(TV_POPULAR);
+    Box<TV> tvTopRate = Hive.box<TV>(TV_TOP_RATE);
     if (isPopuler) {
       tvPopular.clear().then((value) => tvPopular.addAll(movies));
     } else if (isTopRate) {
@@ -68,6 +61,11 @@ class DatabaseRepository {
       bool isOnAir = false,
       bool isTopRate = false}) async {
     List<TV> data = [];
+
+    Box<TV> tvOnAir = Hive.box<TV>(TV_ON_AIR);
+    Box<TV> tvPopular = Hive.box<TV>(TV_POPULAR);
+    Box<TV> tvTopRate = Hive.box<TV>(TV_TOP_RATE);
+
     if (isPopuler) {
       data = tvPopular.values.toList();
     } else if (isTopRate) {

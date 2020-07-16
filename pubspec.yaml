@@ -42,8 +42,9 @@ dependencies:
   dio: ^3.0.9
   hive: ^1.4.1+1
   hive_flutter: ^0.3.0+2
-  equatable: ^1.1.1
+  equatable: ^1.2.0
   path_provider: ^1.6.8
+  responsive_builder: ^0.2.0+2
 
 dependency_overrides:
   path: ^1.7.0
