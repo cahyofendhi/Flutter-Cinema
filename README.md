@@ -26,7 +26,7 @@ run for web
 ```
  run `build/web` with local server using [dhttpd](https://pub.dev/packages/dhttpd).
 
- The results of the flutter can be checked here [FLUTTER CINEMA](https://cahyofendhi.github.io/Flutter-Cinema/)
+ The results of the flutter web can be checked here [FLUTTER CINEMA](https://cahyofendhi.github.io/Flutter-Cinema/)
 
 
 
