@@ -6,8 +6,8 @@
 
 Flutter project built use BLoC architecture, this application implements api from [themoviedb](http://themoviedb.org). this project responsive and support for web .
 
-<p><img src="mobile.png" width="800"></p>
-<p><img src="web.png" width="800"></p>
+<p><img src="mobile.png" width="1257"></p>
+<p><img src="web.png" width="1257"></p>
 
 ## Getting Started
 
