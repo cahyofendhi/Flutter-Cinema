@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: SplashScreen.routeName,
         onGenerateRoute: Router.generateRoute,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

@@ -22,21 +22,21 @@ class _TvPopulerState extends State<TvPopuler> {
       builder: (cxt, sizingInformation) {
         switch (sizingInformation.deviceScreenType) {
           case DeviceScreenType.tablet:
-            return buildBody(TABLET);
+            return buildBody(TABLET, DeviceScreenType.tablet);
             break;
           case DeviceScreenType.desktop:
-            return buildBody(DEKSTOP);
+            return buildBody(DEKSTOP, DeviceScreenType.desktop);
             break;
           default:
             final screenWidth = MediaQuery.of(context).size.width;
-            return buildBody(screenWidth);
+            return buildBody(screenWidth, DeviceScreenType.mobile);
         }
       },
     );
   }
 
-  Widget buildBody(double screenWidth) {
-    final heightCard = screenWidth / 2;
+  Widget buildBody(double screenWidth, DeviceScreenType device) {
+    final heightCard = device == DeviceScreenType.mobile ? screenWidth / 2 : screenWidth / 2 + 20;
     final imageWidth = (screenWidth / 2) / 1.83;
     final imageHeight = imageWidth + (imageWidth / 2.5);
     final Size cardSize = Size(imageWidth, heightCard);

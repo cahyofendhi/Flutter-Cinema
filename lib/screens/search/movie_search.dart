@@ -3,11 +3,13 @@ import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
+import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:cinema_flt/utils/plugin/searchbar/flutter_search_bar_base.dart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class MovieSearch extends StatefulWidget {
   static const routeName = '/search-page';
@@ -69,6 +71,41 @@ class _MovieSearchState extends State<MovieSearch> {
 
   @override
   Widget build(BuildContext context) {
+    return ResponsiveBuilder(
+      builder: (ctx, sizingInformation) {
+        switch (sizingInformation.deviceScreenType) {
+          case DeviceScreenType.desktop:
+            return Scaffold(
+              backgroundColor: AppStyle.greyApp,
+              body: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: DEKSTOP,
+                  child: buildBody(),
+                ),
+              ),
+            );
+            break;
+          case DeviceScreenType.tablet:
+            return Scaffold(
+              backgroundColor: AppStyle.greyApp,
+              body: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: TABLET,
+                  child: buildBody(),
+                ),
+              ),
+            );
+            break;
+          default:
+            return buildBody();
+        }
+      },
+    );
+  }
+
+  Widget buildBody() {
     return new Scaffold(
         backgroundColor: Colors.white,
         appBar: searchBar.build(context),
@@ -181,5 +218,4 @@ class _MovieSearchState extends State<MovieSearch> {
       ),
     );
   }
-
 }
