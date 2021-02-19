@@ -10,7 +10,7 @@ class RatingBarRestultItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: RatingBar(
+      child: RatingBar.builder(
         initialRating: rate,
         textDirection: TextDirection.ltr,
         direction: Axis.horizontal,

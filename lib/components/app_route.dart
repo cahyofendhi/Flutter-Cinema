@@ -14,7 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Router {
+class AppRoute {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments as Map;
     switch (settings.name) {
