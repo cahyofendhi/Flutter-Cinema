@@ -39,12 +39,14 @@ class _UpcomingMovieSliderState extends State<UpcomingMovieSlider> {
 
   Widget buildSlide(double contentHeight) {
     return CarouselSlider(
-      height: contentHeight,
-      aspectRatio: 16 / 9,
-      viewportFraction: 0.8,
-      enlargeCenterPage: true,
-      initialPage: 0,
       items: sliderItemView(contentHeight),
+      options: CarouselOptions(
+        height: contentHeight,
+        aspectRatio: 16 / 9,
+        viewportFraction: 0.8,
+        enlargeCenterPage: true,
+        initialPage: 0,
+      ),
     );
   }
 

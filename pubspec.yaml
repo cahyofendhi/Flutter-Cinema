@@ -22,32 +22,29 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  carousel_slider: ^1.4.1
+  cupertino_icons: ^1.0.0
+  carousel_slider: ^3.0.0
   flutter_swiper: ^1.1.6
   snaplist: ^0.1.8
-  flutter_rating_bar: ^3.0.1+1
+  flutter_rating_bar: ^3.2.0+1
   intl: ^0.16.1
-  flutter_tags: ^0.4.8
-  shimmer: ^1.1.0
-  rxdart: ^0.23.1
-  pull_to_refresh: ^1.5.8
-  cached_network_image: ^2.0.0
+  flutter_tags: ^0.4.9+1
+  shimmer: ^1.1.2
+  rxdart: ^0.25.0
+  pull_to_refresh: ^1.6.4
+  cached_network_image: ^2.5.0
 
-  provider: ^4.0.4
+  provider: ^4.3.3
   logging: ^0.11.4
-  json_serializable: ^3.2.2
-  json_annotation: ^3.0.1
+  json_serializable: ^3.5.1
+  json_annotation: ^3.1.1
   # moor_flutter: ^2.1.1
-  dio: ^3.0.9
-  hive: ^1.4.1+1
-  hive_flutter: ^0.3.0+2
-  equatable: ^1.2.0
-  path_provider: ^1.6.8
-  responsive_builder: ^0.2.0+2
-
-dependency_overrides:
-  path: ^1.7.0
+  dio: ^3.0.10
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
+  equatable: ^1.2.6
+  path_provider: ^1.6.27
+  responsive_builder: ^0.3.0
 
 dev_dependencies:
   flutter_test:
@@ -55,10 +52,10 @@ dev_dependencies:
   flutter_driver:
     sdk: flutter
   # moor_generator: ^2.1.1
-  mockito: ^4.1.1
-  test: ^1.5.3
-  hive_generator: ^0.7.0+2
-  build_runner: ^1.10.0
+  mockito: ^4.1.4
+  test: ^1.15.7
+  hive_generator: ^0.8.2
+  build_runner: ^1.11.1
 
 
 
