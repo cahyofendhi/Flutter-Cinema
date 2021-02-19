@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cinema_flt/components/router.dart';
+import 'package:cinema_flt/components/app_route.dart';
 import 'package:cinema_flt/data/constant.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/tv/tv.dart';
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         initialRoute: SplashScreen.routeName,
-        onGenerateRoute: Router.generateRoute,
+        onGenerateRoute: AppRoute.generateRoute,
         debugShowCheckedModeBanner: false,
       ),
     );
