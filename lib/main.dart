@@ -17,7 +17,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _initHive();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(MyApp());
+  runApp(const App());
 }
 
 void _initHive() async {
@@ -37,8 +37,9 @@ void _initHive() async {
   Hive.openBox<TV>(TV_TOP_RATE);
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -47,13 +48,20 @@ class MyApp extends StatelessWidget {
         ...uiConsumableProviders,
       ],
       child: MaterialApp(
-        title: 'Cinema FlT',
+        title: 'Cinema FLT',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          splashColor: Colors.blue,
+          highlightColor: Colors.blue,
+          brightness: Brightness.light,
+          primaryColor: Colors.blue,
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: Colors.blue,
+          ),
         ),
         initialRoute: SplashScreen.routeName,
         onGenerateRoute: AppRoute.generateRoute,
         debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.light,
       ),
     );
   }

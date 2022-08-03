@@ -15,15 +15,15 @@ import 'package:provider/provider.dart';
 
 class AppRoute {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final arguments = settings.arguments as Map;
     switch (settings.name) {
       case SplashScreen.routeName:
-        return MaterialPageRoute(
+        return AppPageRoute(
           builder: (ctx) => SplashScreen(),
         );
       case MainScreens.routeName:
         return FadeRoute(page: MainScreens());
       case DetailMovie.routeName:
+        final arguments = settings.arguments as Map;
         final page = DetailMovie(arguments['movie'], arguments['tag']);
         final _page = (BuildContext context, _, __) {
           return ProxyProvider<MovieRepository, MovieDetailBloc>(
@@ -35,7 +35,7 @@ class AppRoute {
         };
         return FadeRoute(page: page, builder: _page);
       case MovieSearch.routeName:
-        return MaterialPageRoute(
+        return AppPageRoute(
           builder: (ctx) => ProxyProvider<MovieRepository, MovieSearchBloc>(
             update: (context, movieRepository, movieSearchBloc) =>
                 MovieSearchBloc(movieRepository: movieRepository),
@@ -44,7 +44,8 @@ class AppRoute {
           ),
         );
       case TvDetailScreen.routeName:
-        return MaterialPageRoute(
+        final arguments = settings.arguments as Map;
+        return AppPageRoute(
           builder: (ctx) => ProxyProvider<TvRepository, TvDetailBloc>(
             update: (context, tvRepository, tvDetailBloc) =>
                 TvDetailBloc(tvRepository: tvRepository),
@@ -53,22 +54,16 @@ class AppRoute {
           ),
         );
       default:
-        return MaterialPageRoute(
+        return AppPageRoute(
           builder: (_) => UnkownPage(settings.name ?? ''),
         );
     }
   }
 }
 
-class CustomMaterialRouter<T> extends MaterialPageRoute<T> {
-  CustomMaterialRouter(
-      {required WidgetBuilder builder, required RouteSettings settings})
-      : super(builder: builder, settings: settings);
+class AppPageRoute extends MaterialPageRoute {
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 500);
-  @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
-    return FadeTransition(opacity: animation, child: child);
-  }
+  Duration get transitionDuration => const Duration(milliseconds: 200);
+
+  AppPageRoute({builder}) : super(builder: builder);
 }
