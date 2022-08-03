@@ -112,16 +112,12 @@ class _DetailMovieState extends State<DetailMovie> {
 
   Widget _appBarView() {
     return SliverAppBar(
-      leading: Container(
-        child: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: AppStyle.getColor(ThemeColor.secondary),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: AppStyle.getColor(ThemeColor.secondary),
         ),
+        onPressed: () => Navigator.pop(context),
       ),
       elevation: 0,
       backgroundColor: Colors.transparent,

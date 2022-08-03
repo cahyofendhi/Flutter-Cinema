@@ -4,7 +4,6 @@ import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
-import 'package:cinema_flt/utils/plugin/searchbar/flutter_search_bar_base.dart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +18,10 @@ class MovieSearch extends StatefulWidget {
 }
 
 class _MovieSearchState extends State<MovieSearch> {
-  SearchBar? searchBar;
   static final defaultTitle = 'Movie Search';
-  String titleSearch = defaultTitle;
   String querySearch = '';
+  Icon customIcon = const Icon(Icons.search);
+  Widget customSearchBar = Text(defaultTitle);
 
   MovieSearchBloc? _movieSearchBloc;
   List<Movie> movies = [];
@@ -31,31 +30,72 @@ class _MovieSearchState extends State<MovieSearch> {
   int totalPage = 0;
   int page = 1;
 
-  void onSubmitted(String value) {
+  onSubmitted(String value) {
     setState(() {
-      titleSearch = value;
       querySearch = value;
+      customIcon = const Icon(Icons.search);
+      customSearchBar = Text(defaultTitle);
     });
     _movieSearchBloc!.getMovie(querySearch, 1);
   }
 
-  _searchAppBar() {
-    searchBar = SearchBar(
-      (ctx) => AppBar(
-        title: Text(titleSearch),
-        actions: [searchBar!.getSearchAction(context)],
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: customSearchBar,
+      automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: AppStyle.getColor(ThemeColor.secondary),
+        ),
+        onPressed: () => Navigator.pop(context),
       ),
-      setState: setState,
-      onSubmitted: onSubmitted,
-      onClosed: () => setState(() => titleSearch = defaultTitle),
-      defaultAppBar: AppBar(),
+      actions: [
+        IconButton(
+          onPressed: () {
+            setState(() {
+              if (customIcon.icon == Icons.search) {
+                customIcon = const Icon(Icons.cancel);
+                customSearchBar = ListTile(
+                  leading: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                  title: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'search...',
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      border: InputBorder.none,
+                    ),
+                    onSubmitted: onSubmitted,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
+              } else {
+                customIcon = const Icon(Icons.search);
+                customSearchBar = Text(defaultTitle);
+              }
+            });
+          },
+          icon: customIcon,
+        )
+      ],
+      centerTitle: true,
     );
-  }
-
-  @override
-  void initState() {
-    _searchAppBar();
-    super.initState();
+    // SearchBar(
+    //   (ctx) => AppBar(
+    //     title: Text(titleSearch),
+    //     actions: [searchBar!.getSearchAction(context)],
+    //   ),
+    //   setState: setState,
+    //   onSubmitted: onSubmitted,
+    //   onClosed: () => setState(() => titleSearch = defaultTitle),
+    //   defaultAppBar: AppBar(),
+    // );
   }
 
   @override
@@ -101,7 +141,7 @@ class _MovieSearchState extends State<MovieSearch> {
   Widget buildBody() {
     return new Scaffold(
         backgroundColor: Colors.white,
-        appBar: searchBar!.build(context),
+        appBar: _buildAppBar(),
         body: StreamBuilder<MoviesResult>(
           stream: _movieSearchBloc!.movies.stream,
           builder: (context, AsyncSnapshot<MoviesResult> snapshot) {
