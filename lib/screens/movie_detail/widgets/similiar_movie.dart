@@ -6,18 +6,16 @@ import 'package:flutter/material.dart';
 import 'similiar_movie_item.dart';
 
 class SimiliarMovie extends StatelessWidget {
-  SimilarResult? similiarMovie;
+  final SimilarResult? similiarMovie;
 
-  SimiliarMovie({this.similiarMovie});
+  SimiliarMovie(this.similiarMovie);
 
   @override
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait || kIsWeb;
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: isPortrait ? 20 : 10,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: isPortrait ? 20 : 10),
       child: GridView.count(
         physics: NeverScrollableScrollPhysics(),
         primary: false,
@@ -27,22 +25,12 @@ class SimiliarMovie extends StatelessWidget {
         crossAxisCount: isPortrait ? 3 : 7,
         childAspectRatio: 0.6,
         shrinkWrap: true,
-        children: getGridViewItem(),
+        children: similiarMovie != null
+            ? similiarMovie!.results!.map((e) => SimiliarMovieItem(e)).toList()
+            : [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                .map((e) => SimiliarItemPlaceholder())
+                .toList(),
       ),
     );
-  }
-
-  List<Widget> getGridViewItem() {
-    if (similiarMovie != null) {
-      return similiarMovie!.results!
-          .map((item) => SimiliarMovieItem(item))
-          .toList();
-    } else {
-      List<Widget> list = const [];
-      for (var i = 0; i < 10; i++) {
-        list.add(SimiliarItemPlaceholder());
-      }
-      return list;
-    }
   }
 }

@@ -223,13 +223,11 @@ class _ContentDetailState extends State<ContentDetail> {
         builder: (context, AsyncSnapshot<SimilarResult> snapshot) {
           Widget cardItem = Container();
           if (snapshot.connectionState == ConnectionState.waiting) {
-            print('waiting');
-            cardItem = SimiliarMovie();
+            cardItem = SimiliarMovie(null);
           } else if ((snapshot.connectionState == ConnectionState.active ||
                   snapshot.connectionState == ConnectionState.done) &&
               snapshot.data != null) {
-            print('done');
-            cardItem = SimiliarMovie(similiarMovie: snapshot.data);
+            cardItem = SimiliarMovie(snapshot.data);
           }
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,

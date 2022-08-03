@@ -111,7 +111,7 @@ class MovieRepository {
         page: page,
         group: getRequestType(RequestType.Movie),
       );
-      return MoviesResult.fromJson(response!.data);
+      return MoviesResult.fromJson(response?.data);
     });
     return data;
   }
@@ -120,7 +120,7 @@ class MovieRepository {
   Future<ServiceModel> getMovieDetail(int movieId) async {
     final data = await ServiceModel.fetch<Movie>(() async {
       final response = await _service.getMovieDetail(movieId: movieId);
-      return Movie.fromDetailJson(response!.data);
+      return Movie.fromDetailJson(response?.data);
     });
     return data;
   }
@@ -128,7 +128,7 @@ class MovieRepository {
   Future<ServiceModel> getMovieMediaCredit(int movieId) async {
     final data = await ServiceModel.fetch<MediaCredit>(() async {
       final response = await _service.getMovieMediaCredit(movieId: movieId);
-      return MediaCredit.fromJson(response!.data);
+      return MediaCredit.fromJson(response?.data);
     });
     return data;
   }
@@ -136,7 +136,7 @@ class MovieRepository {
   Future<ServiceModel> getMovieSimilar(int movieId) async {
     final data = await ServiceModel.fetch<SimilarResult>(() async {
       final response = await _service.getMovieSimilar(movieId: movieId);
-      return SimilarResult.fromJson(response!.data);
+      return SimilarResult.fromJson(response?.data);
     });
     return data;
   }

@@ -32,6 +32,7 @@ class _DetailMovieState extends State<DetailMovie> {
     _movieBloc = Provider.of<MovieDetailBloc>(context);
     _movieBloc?.getMovieDetail(widget.movie.id!);
     _movieBloc?.getMediaCredit(widget.movie.id!);
+    _movieBloc?.getSimilarMovie(widget.movie.id!);
     super.didChangeDependencies();
   }
 

@@ -86,16 +86,6 @@ class _MovieSearchState extends State<MovieSearch> {
       ],
       centerTitle: true,
     );
-    // SearchBar(
-    //   (ctx) => AppBar(
-    //     title: Text(titleSearch),
-    //     actions: [searchBar!.getSearchAction(context)],
-    //   ),
-    //   setState: setState,
-    //   onSubmitted: onSubmitted,
-    //   onClosed: () => setState(() => titleSearch = defaultTitle),
-    //   defaultAppBar: AppBar(),
-    // );
   }
 
   @override
@@ -145,12 +135,9 @@ class _MovieSearchState extends State<MovieSearch> {
         body: StreamBuilder<MoviesResult>(
           stream: _movieSearchBloc!.movies.stream,
           builder: (context, AsyncSnapshot<MoviesResult> snapshot) {
-            print('state = ${snapshot.connectionState}');
             if (snapshot.hasData) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+                return Center(child: CircularProgressIndicator());
               } else if (snapshot.connectionState == ConnectionState.active &&
                   snapshot.data != null) {
                 MoviesResult data = snapshot.data!;
@@ -213,40 +200,39 @@ class _MovieSearchState extends State<MovieSearch> {
         'assets/images/icon_not_found.png', 'No search results found');
   }
 
-  Widget _initializeView() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 300),
-      child: _blankPage('assets/images/icon_movie.png', 'Movie Search Page'),
-    );
-  }
+  Widget _initializeView() =>
+      _blankPage('assets/images/icon_movie.png', 'Movie Search Page');
 
   Widget _blankPage(String icon, String name) {
     return Container(
       height: MediaQuery.of(context).size.height,
       child: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 50,
-              width: 50,
-              child: Image.asset(
-                icon,
-                fit: BoxFit.contain,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-              child: Text(
-                name,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300,
-                  color: AppStyle.getColor(ThemeColor.blackText),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 50,
+                width: 50,
+                child: Image.asset(
+                  icon,
+                  fit: BoxFit.contain,
                 ),
-                textAlign: TextAlign.center,
               ),
-            ),
-          ],
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                child: Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300,
+                    color: AppStyle.getColor(ThemeColor.blackText),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

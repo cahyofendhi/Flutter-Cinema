@@ -5,33 +5,25 @@ class MediaCredit {
 
   MediaCredit({this.id, this.cast, this.crew});
 
-  MediaCredit.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    if (json['cast'] != null) {
-      cast = const [];
-      json['cast'].forEach((v) {
-        cast?.add(new Cast.fromJson(v));
-      });
-    }
-    if (json['crew'] != null) {
-      crew = const [];
-      json['crew'].forEach((v) {
-        crew?.add(new Crew.fromJson(v));
-      });
-    }
-  }
+  factory MediaCredit.fromJson(Map<String, dynamic> json) => MediaCredit(
+        id: json['id'],
+        cast: json['cast'] != null
+            ? List<Cast>.from(json["cast"].map((x) => Cast.fromJson(x)))
+            : [],
+        crew: json['crew'] != null
+            ? List<Crew>.from(json["crew"].map((x) => Crew.fromJson(x)))
+            : [],
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.cast != null) {
-      data['cast'] = this.cast!.map((v) => v.toJson()).toList();
-    }
-    if (this.crew != null) {
-      data['crew'] = this.crew!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        'id': this.id,
+        'cast': this.cast != null
+            ? this.cast!.map((v) => v.toJson()).toList()
+            : null,
+        'crew': this.crew != null
+            ? this.crew!.map((v) => v.toJson()).toList()
+            : null,
+      };
 }
 
 class Cast {

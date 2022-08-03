@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:cinema_flt/models/media_credit.dart';
@@ -12,7 +10,6 @@ import 'package:flutter/foundation.dart';
 // import 'package:moor_flutter/moor_flutter.dart';
 
 class MovieDetailBloc {
-
   final MovieRepository _movieRepository;
 
   final _movieController = StreamController<Movie>.broadcast();
@@ -29,22 +26,21 @@ class MovieDetailBloc {
   Function(UiState) get setUiStateMovie => _uiStateMovieController.sink.add;
 
   Function(MediaCredit) get setMovieMedia => _movieCreditsController.sink.add;
-  Function(SimilarResult) get setSimilarMovie => _movieSimilarController.sink.add;
+  Function(SimilarResult) get setSimilarMovie =>
+      _movieSimilarController.sink.add;
 
-
-  MovieDetailBloc({@required movieRepository}) : _movieRepository = movieRepository;
+  MovieDetailBloc({@required movieRepository})
+      : _movieRepository = movieRepository;
 
   void getMovieDetail(int movieId) async {
     try {
       ServiceModel result = await _movieRepository.getMovieDetail(movieId);
       if (result.isSuccess) {
         Movie mv = result.data;
-        print('Movie : ${mv.originalTitle}');
         setDataMovie(mv);
       }
       setUiStateMovie(UiState(RequestState.DONE));
     } catch (err) {
-      print('Error Movie Detail : ${err.toString()}');
       setUiStateMovie(UiState(RequestState.ERROR));
     }
   }
@@ -53,8 +49,7 @@ class MovieDetailBloc {
     try {
       ServiceModel result = await _movieRepository.getMovieMediaCredit(movieId);
       if (result.isSuccess) {
-        MediaCredit data = result.data;
-        setMovieMedia(data);
+        setMovieMedia(result.data);
       }
     } catch (err) {
       print('Error Media : $err');
@@ -65,11 +60,10 @@ class MovieDetailBloc {
     try {
       ServiceModel result = await _movieRepository.getMovieSimilar(movieId);
       if (result.isSuccess) {
-        SimilarResult data = result.data;
-        setSimilarMovie(data);
+        setSimilarMovie(result.data);
       }
     } catch (err) {
-      print('Error Media : $err');
+      print('Error Similiar : $err');
     }
   }
 
@@ -79,5 +73,4 @@ class MovieDetailBloc {
     _movieSimilarController.close();
     _uiStateMovieController.close();
   }
-
 }
