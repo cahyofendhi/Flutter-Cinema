@@ -1,12 +1,14 @@
-import 'package:cinema_flt/bloc/tv_bloc.dart';
+import 'package:cinema_flt/bloc/tv/tv_event.dart';
+import 'package:cinema_flt/bloc/tv/tv_state.dart';
 import 'package:cinema_flt/components/widgets/container_category.dart';
-import 'package:cinema_flt/models/tv/tv_result.dart';
 import 'package:cinema_flt/screens/tv/widgets/tv_populer.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../bloc/tv/tv_bloc.dart';
 import 'widgets/tv_video.dart';
 
 class TvScreen extends StatefulWidget {
@@ -21,35 +23,37 @@ class _TvScreenState extends State<TvScreen> {
       RefreshController(initialRefresh: false);
 
   @override
-  void didChangeDependencies() {
-    _tvBloc = Provider.of<TvBloc>(context, listen: false);
-    _tvBloc!.getTvContent();
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    _tvBloc = TvBloc();
   }
 
   void _onRefresh() async {
-    await _tvBloc!.getTvContent();
+    _tvBloc!.add(TvInitEvent());
     _refreshController.refreshCompleted();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(),
-      backgroundColor: Colors.white,
-      body: SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: false,
-        controller: _refreshController,
-        header: WaterDropHeader(),
-        onRefresh: _onRefresh,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              _tvVideo(),
-              _tvPopuler(),
-              _tvTopRate(),
-            ],
+    return BlocProvider(
+      create: (context) => _tvBloc!..add(TvInitEvent()),
+      child: Scaffold(
+        appBar: _appBar(),
+        backgroundColor: Colors.white,
+        body: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: false,
+          controller: _refreshController,
+          header: WaterDropHeader(),
+          onRefresh: _onRefresh,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                _tvVideo(),
+                _tvPopuler(),
+                _tvTopRate(),
+              ],
+            ),
           ),
         ),
       ),
@@ -81,57 +85,56 @@ class _TvScreenState extends State<TvScreen> {
   }
 
   Widget _tvVideo() {
-    return StreamBuilder(
-        stream: _tvBloc!.onAir,
-        builder: (context, AsyncSnapshot<TvResult> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return ContainerCategory('On Air', TvVideo(null));
-          } else if (snapshot.data == null ||
-              snapshot.data?.results?.isEmpty == true) {
-            return Container();
-          } else {
-            return ContainerCategory(
-                'On Air', TvVideo(snapshot.data?.results ?? []));
-          }
-        });
+    return BlocBuilder<TvBloc, TvState>(
+      buildWhen: (previous, current) => previous.onAir != current.onAir,
+      builder: (context, state) {
+        return state.onAirStatus == FormzStatus.submissionInProgress
+            ? ContainerCategory('On Air', TvVideo(null))
+            : state.onAirStatus == FormzStatus.submissionSuccess
+                ? ContainerCategory(
+                    'On Air', TvVideo(state.onAir?.results ?? []))
+                : Container();
+      },
+    );
   }
 
   Widget _tvPopuler() {
-    return StreamBuilder(
-        stream: _tvBloc!.populerTv,
-        builder: (context, AsyncSnapshot<TvResult> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: ContainerCategory('Populer', TvPopuler(null)),
-            );
-          } else if (snapshot.data == null ||
-              snapshot.data?.results?.isEmpty == true) {
-            return Container();
-          } else {
-            return Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: ContainerCategory(
-                  'Populer', TvPopuler(snapshot.data?.results ?? [])),
-            );
-          }
-        });
+    return BlocBuilder<TvBloc, TvState>(
+      buildWhen: (previous, current) => previous.popular != current.popular,
+      builder: (context, state) {
+        return state.popularStatus == FormzStatus.submissionInProgress
+            ? Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: ContainerCategory('Popular', TvPopuler(null)),
+              )
+            : state.popularStatus == FormzStatus.submissionSuccess
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: ContainerCategory(
+                        'Popular', TvPopuler(state.popular?.results ?? [])),
+                  )
+                : Container();
+      },
+    );
   }
 
   Widget _tvTopRate() {
-    return StreamBuilder(
-        stream: _tvBloc!.topTv,
-        builder: (context, AsyncSnapshot<TvResult> snapshot) {
-          if (snapshot.data == null ||
-              snapshot.data?.results?.isEmpty == true) {
-            return Container();
-          } else {
-            return Padding(
-              padding: const EdgeInsets.only(top: 15, bottom: 15),
-              child: ContainerCategory(
-                  'Top Rate', TvPopuler(snapshot.data?.results ?? [])),
-            );
-          }
-        });
+    return BlocBuilder<TvBloc, TvState>(
+      buildWhen: (previous, current) => previous.top != current.top,
+      builder: (context, state) {
+        return state.topStatus == FormzStatus.submissionInProgress
+            ? Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: ContainerCategory('Top Rate', TvPopuler(null)),
+              )
+            : state.topStatus == FormzStatus.submissionSuccess
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: ContainerCategory(
+                        'Top Rate', TvPopuler(state.top?.results ?? [])),
+                  )
+                : Container();
+      },
+    );
   }
 }
