@@ -52,7 +52,6 @@ class TvBloc {
     try {
       await _tvRepository.getTopRateTv(page: page).then((response) {
         TvResult data = response.data;
-        print('TV Top Rate : ${data.results.length}');
         if (response.isSuccess) _topController.sink.add(data);
       });
     } catch (err) {

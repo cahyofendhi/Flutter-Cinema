@@ -21,18 +21,17 @@ class DetailMovie extends StatefulWidget {
 }
 
 class _DetailMovieState extends State<DetailMovie> {
-  MovieDetailBloc _movieBloc;
+  MovieDetailBloc? _movieBloc;
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   final double expandedHeight = 350.0;
 
   @override
   void didChangeDependencies() {
     _movieBloc = Provider.of<MovieDetailBloc>(context);
-    _movieBloc.getMovieDetail(widget.movie.id);
-    _movieBloc.getMediaCredit(widget.movie.id);
-    _movieBloc.getSimilarMovie(widget.movie.id);
+    _movieBloc?.getMovieDetail(widget.movie.id!);
+    _movieBloc?.getMediaCredit(widget.movie.id!);
     super.didChangeDependencies();
   }
 
@@ -52,7 +51,6 @@ class _DetailMovieState extends State<DetailMovie> {
                 ),
               ),
             );
-            break;
           case DeviceScreenType.tablet:
             return Scaffold(
               backgroundColor: AppStyle.greyApp,
@@ -64,7 +62,6 @@ class _DetailMovieState extends State<DetailMovie> {
                 ),
               ),
             );
-            break;
           default:
             return buildBody();
         }
@@ -99,13 +96,13 @@ class _DetailMovieState extends State<DetailMovie> {
       height: expandedHeight + 50,
       width: double.infinity,
       child: StreamBuilder(
-          stream: _movieBloc.movie,
+          stream: _movieBloc?.movie,
           builder: (ctx, AsyncSnapshot<Movie> snapshot) {
-            String path = snapshot.data != null
-                ? snapshot.data.posterPath
+            String? path = snapshot.data != null
+                ? snapshot.data?.posterPath
                 : widget.movie.posterPath;
             return FadeInImage.assetNetwork(
-              image: getTheMovieImage(path),
+              image: getTheMovieImage(path ?? ''),
               placeholder: 'assets/images/placeholder.png',
               fit: BoxFit.cover,
             );

@@ -24,15 +24,15 @@ class TvDetailScreen extends StatefulWidget {
 }
 
 class _TvDetailScreenState extends State<TvDetailScreen> {
-  TvDetailBloc _tvDetailBloc;
-  TV _dataTV;
+  TvDetailBloc? _tvDetailBloc;
+  TV? _dataTV;
 
   final double expandedHeight = 250.0;
 
   @override
   void didChangeDependencies() {
     _tvDetailBloc = Provider.of<TvDetailBloc>(context);
-    _tvDetailBloc.getTvDetail(widget.tv);
+    _tvDetailBloc!.getTvDetail(widget.tv);
     super.didChangeDependencies();
   }
 
@@ -52,7 +52,6 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
                 ),
               ),
             );
-            break;
           case DeviceScreenType.tablet:
             return Scaffold(
               backgroundColor: AppStyle.greyApp,
@@ -64,7 +63,6 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
                 ),
               ),
             );
-            break;
           default:
             return buildBody();
         }
@@ -76,7 +74,7 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: StreamBuilder<TV>(
-          stream: _tvDetailBloc.movie,
+          stream: _tvDetailBloc!.movie,
           builder: (context, snapshot) {
             _dataTV = snapshot.data == null ? widget.tv : snapshot.data;
             return Stack(
@@ -85,7 +83,7 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
                   top: 0,
                   left: 0,
                   right: 0,
-                  child: _buildHeaderImage(_dataTV.backdropPath),
+                  child: _buildHeaderImage(_dataTV?.backdropPath ?? ''),
                 ),
                 CustomScrollView(
                   slivers: <Widget>[_buildAppBar(), _buildContent(_dataTV)],
@@ -136,12 +134,12 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
     );
   }
 
-  Widget _buildContent(TV movie) {
+  Widget _buildContent(TV? movie) {
     return SliverList(
         delegate: SliverChildListDelegate([_buildTvContent(movie)]));
   }
 
-  Widget _buildTvContent(TV movie) {
+  Widget _buildTvContent(TV? movie) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +151,7 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
     );
   }
 
-  Widget _buildRateMovie(TV movie) {
+  Widget _buildRateMovie(TV? movie) {
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.white70, width: 1),
@@ -173,23 +171,24 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
             children: <Widget>[
               _buildItemRate(
                   title: 'Episode',
-                  value: movie.numberOfEpisodes.toDouble() ?? 0),
+                  value: movie?.numberOfEpisodes?.toDouble() ?? 0),
               _buildItemRate(
-                  title: 'Popularity', value: movie.popularity.toDouble() ?? 0),
+                  title: 'Popularity',
+                  value: movie?.popularity?.toDouble() ?? 0),
               _buildItemRate(
                   title: 'Rate',
-                  widget: RatingResult(movie.voteAverage ?? 0.0, 12.0))
+                  widget: RatingResult(movie?.voteAverage ?? 0.0, 12.0))
             ],
           )),
     );
   }
 
-  Widget _buildItemRate({@required title, double value, Widget widget}) {
+  Widget _buildItemRate({required title, double value = 0, Widget? widget}) {
     return Column(
       children: <Widget>[
         widget == null
             ? Text(
-                value.toString() ?? '0',
+                value.toString(),
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 14,
@@ -212,7 +211,7 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
     );
   }
 
-  Widget _buildDescription(TV movie) {
+  Widget _buildDescription(TV? movie) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -223,21 +222,23 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildTitle(movie.name ?? ''),
+              _buildTitle(movie?.name ?? ''),
               SizedBox(
                 height: 10,
               ),
-              movie.genres !=null ? _buildGenre(movie.genres) : Container(),
+              movie?.genres != null
+                  ? _buildGenre(movie?.genres ?? [])
+                  : Container(),
               SizedBox(
                 height: 10,
               ),
               AppStyle.textTitleSection(
                 'Overview',
-                AppStyle.getColor(ThemeColor.blackText),
+                textColor: AppStyle.getColor(ThemeColor.blackText),
               ),
               SizedBox(height: 10),
               Text(
-                movie.overview ?? '', //? overview
+                movie?.overview ?? '', //? overview
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey,
@@ -249,7 +250,9 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
           ),
         ),
         SizedBox(height: 10),
-        movie.createdBy != null ? _buildCreateBy(movie.createdBy) : Container(),
+        movie?.createdBy != null
+            ? _buildCreateBy(movie?.createdBy ?? [])
+            : Container(),
       ],
     );
   }
@@ -266,7 +269,7 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
   }
 
   Widget _buildGenre(List<Genres> genres) {
-    List<String> _genre = genres.map((e) => e.name).toList();
+    List<String> _genre = genres.map((e) => e.name ?? '').toList();
     return genres.isNotEmpty ? GenreMovie(items: _genre) : Container();
   }
 
@@ -278,8 +281,8 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: AppStyle.textTitleSection(
-                    'Created By', AppStyle.getColor(ThemeColor.blackText)),
+                child: AppStyle.textTitleSection('Created By',
+                    textColor: AppStyle.getColor(ThemeColor.blackText)),
               ),
               Container(
                 height: 120,

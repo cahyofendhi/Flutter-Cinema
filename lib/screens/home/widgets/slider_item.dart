@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 
 class SliderItem extends StatelessWidget {
   const SliderItem({
-    Key key,
-    @required this.movie,
-    @required this.contentHeight,
+    Key? key,
+    required this.movie,
+    required this.contentHeight,
   }) : super(key: key);
 
   final double contentHeight;
@@ -25,7 +25,7 @@ class SliderItem extends StatelessWidget {
               arguments: {'movie': movie, 'tag': _tag}),
           child: Stack(
             children: <Widget>[
-              _imageView(getTheMovieImage(movie.posterPath), _tag),
+              _imageView(getTheMovieImage(movie.posterPath ?? ''), _tag),
               _contentView(contentHeight, movie),
             ],
           ),
@@ -77,7 +77,8 @@ class SliderItem extends StatelessWidget {
               bottomRight: Radius.circular(10),
             ),
           ),
-          child: _titleContent(movie.originalTitle, movie.getReleaseDate()),
+          child:
+              _titleContent(movie.originalTitle ?? '', movie.getReleaseDate()),
         ),
       ],
     );

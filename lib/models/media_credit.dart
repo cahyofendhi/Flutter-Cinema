@@ -1,22 +1,22 @@
 class MediaCredit {
-  int id;
-  List<Cast> cast;
-  List<Crew> crew;
+  int? id;
+  List<Cast>? cast;
+  List<Crew>? crew;
 
   MediaCredit({this.id, this.cast, this.crew});
 
   MediaCredit.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     if (json['cast'] != null) {
-      cast = new List<Cast>();
+      cast = const [];
       json['cast'].forEach((v) {
-        cast.add(new Cast.fromJson(v));
+        cast?.add(new Cast.fromJson(v));
       });
     }
     if (json['crew'] != null) {
-      crew = new List<Crew>();
+      crew = const [];
       json['crew'].forEach((v) {
-        crew.add(new Crew.fromJson(v));
+        crew?.add(new Crew.fromJson(v));
       });
     }
   }
@@ -25,24 +25,24 @@ class MediaCredit {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     if (this.cast != null) {
-      data['cast'] = this.cast.map((v) => v.toJson()).toList();
+      data['cast'] = this.cast!.map((v) => v.toJson()).toList();
     }
     if (this.crew != null) {
-      data['crew'] = this.crew.map((v) => v.toJson()).toList();
+      data['crew'] = this.crew!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Cast {
-  int castId;
-  String character;
-  String creditId;
-  int gender;
-  int id;
-  String name;
-  int order;
-  String profilePath;
+  int? castId;
+  String? character;
+  String? creditId;
+  int? gender;
+  int? id;
+  String? name;
+  int? order;
+  String? profilePath;
 
   Cast(
       {this.castId,
@@ -80,13 +80,13 @@ class Cast {
 }
 
 class Crew {
-  String creditId;
-  String department;
-  int gender;
-  int id;
-  String job;
-  String name;
-  String profilePath;
+  String? creditId;
+  String? department;
+  int? gender;
+  int? id;
+  String? job;
+  String? name;
+  String? profilePath;
 
   Crew(
       {this.creditId,

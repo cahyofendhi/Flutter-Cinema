@@ -8,7 +8,6 @@ import 'package:cinema_flt/screens/widgets/genre_movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/flutter_tags.dart';
 import 'package:provider/provider.dart';
 
 import 'cast_detail_item.dart';
@@ -24,8 +23,8 @@ class ContentDetail extends StatefulWidget {
 }
 
 class _ContentDetailState extends State<ContentDetail> {
-  MovieDetailBloc _movieBloc;
-  Movie _dataMovie;
+  MovieDetailBloc? _movieBloc;
+  Movie? _dataMovie;
 
   @override
   void didChangeDependencies() {
@@ -50,7 +49,7 @@ class _ContentDetailState extends State<ContentDetail> {
 
   Widget _contentBody() {
     return StreamBuilder(
-        stream: _movieBloc.movie,
+        stream: _movieBloc?.movie,
         builder: (context, AsyncSnapshot<Movie> snapshot) {
           snapshot.data != null
               ? _dataMovie = snapshot.data
@@ -67,7 +66,7 @@ class _ContentDetailState extends State<ContentDetail> {
         });
   }
 
-  Widget _contentTitle(Movie movie) {
+  Widget _contentTitle(Movie? movie) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 20,
@@ -84,7 +83,7 @@ class _ContentDetailState extends State<ContentDetail> {
             children: <Widget>[
               Expanded(
                 child: Text(
-                  movie.originalTitle, //? title
+                  movie?.originalTitle ?? '', //? title
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
@@ -96,17 +95,17 @@ class _ContentDetailState extends State<ContentDetail> {
             ],
           ),
           SizedBox(height: 7),
-          GenreMovie(items: getGenresForIds(movie.genreIds)),
+          GenreMovie(items: getGenresForIds(movie?.genreIds ?? [])),
           SizedBox(height: 10),
           _contentAbout(),
           SizedBox(height: 10),
           AppStyle.textTitleSection(
             'Overview',
-            AppStyle.getColor(ThemeColor.blackText),
+            textColor: AppStyle.getColor(ThemeColor.blackText),
           ),
           SizedBox(height: 7),
           Text(
-            movie.overview, //? overview
+            movie?.overview ?? '', //? overview
             style: TextStyle(
               fontSize: 12,
               color: Colors.grey,
@@ -121,7 +120,7 @@ class _ContentDetailState extends State<ContentDetail> {
 
   Widget _contentCast() {
     return StreamBuilder(
-        stream: _movieBloc.movieCredit,
+        stream: _movieBloc?.movieCredit,
         builder: (context, AsyncSnapshot<MediaCredit> snapshot) {
           Widget cardItem = Container();
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -141,7 +140,7 @@ class _ContentDetailState extends State<ContentDetail> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: AppStyle.textTitleSection(
                   'Full Cast',
-                  AppStyle.getColor(ThemeColor.blackText),
+                  textColor: AppStyle.getColor(ThemeColor.blackText),
                 ),
               ),
               SizedBox(height: 10),
@@ -162,22 +161,24 @@ class _ContentDetailState extends State<ContentDetail> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (_dataMovie.status != null)
-                _contentDescriptionAbout('Status', _dataMovie.status),
-              if (_dataMovie.runtime != null)
-                _contentDescriptionAbout('Runtime', '${_dataMovie.runtime}'),
-              _contentDescriptionAbout('Premiere', _dataMovie.getReleaseDate()),
-              if (_dataMovie.budget != null)
-                _contentDescriptionAbout('Budget', '\$${_dataMovie.budget}'),
-              if (_dataMovie.revenue != null)
-                _contentDescriptionAbout('Revenue', '\$${_dataMovie.revenue}'),
+              if (_dataMovie?.status != null)
+                _contentDescriptionAbout('Status', _dataMovie?.status ?? ''),
+              if (_dataMovie?.runtime != null)
+                _contentDescriptionAbout('Runtime', '${_dataMovie?.runtime}'),
+              _contentDescriptionAbout(
+                  'Premiere', _dataMovie?.getReleaseDate() ?? ''),
+              if (_dataMovie?.budget != null)
+                _contentDescriptionAbout('Budget', '\$${_dataMovie?.budget}'),
+              if (_dataMovie?.revenue != null)
+                _contentDescriptionAbout('Revenue', '\$${_dataMovie?.revenue}'),
             ],
           ),
-          if (_dataMovie.backdropPath != null)
+          if (_dataMovie?.backdropPath != null)
             Container(
               width: 80,
               height: 125,
-              child: ImageNetwork(getTheMovieImage(_dataMovie.backdropPath)),
+              child: ImageNetwork(
+                  getTheMovieImage(_dataMovie?.backdropPath ?? '')),
             ),
         ],
       ),
@@ -218,17 +219,17 @@ class _ContentDetailState extends State<ContentDetail> {
 
   Widget _contentSimiliarMovie() {
     return StreamBuilder(
-        stream: _movieBloc.movieSimilar,
+        stream: _movieBloc?.movieSimilar,
         builder: (context, AsyncSnapshot<SimilarResult> snapshot) {
           Widget cardItem = Container();
           if (snapshot.connectionState == ConnectionState.waiting) {
             print('waiting');
-            cardItem = SimiliarMovie(null);
+            cardItem = SimiliarMovie();
           } else if ((snapshot.connectionState == ConnectionState.active ||
                   snapshot.connectionState == ConnectionState.done) &&
               snapshot.data != null) {
             print('done');
-            cardItem = SimiliarMovie(snapshot.data);
+            cardItem = SimiliarMovie(similiarMovie: snapshot.data);
           }
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -240,7 +241,7 @@ class _ContentDetailState extends State<ContentDetail> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: AppStyle.textTitleSection(
                   'Similiar',
-                  AppStyle.getColor(ThemeColor.blackText),
+                  textColor: AppStyle.getColor(ThemeColor.blackText),
                 ),
               ),
               cardItem,

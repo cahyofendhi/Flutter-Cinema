@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class SliderItemPlaceholder extends StatelessWidget {
   const SliderItemPlaceholder({
-    Key key,
-    @required this.contentHeight,
+    Key? key,
+    required this.contentHeight,
   }) : super(key: key);
 
   final double contentHeight;

@@ -4,10 +4,9 @@ import 'package:cinema_flt/screens/tv/widgets/tv_video_item.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:snaplist/snaplist.dart';
 
 class TvVideo extends StatelessWidget {
-  final List<TV> movies;
+  final List<TV>? movies;
 
   TvVideo(this.movies);
 
@@ -18,10 +17,8 @@ class TvVideo extends StatelessWidget {
         switch (sizingInformation.deviceScreenType) {
           case DeviceScreenType.tablet:
             return buildBody(TABLET);
-            break;
           case DeviceScreenType.desktop:
             return buildBody(DEKSTOP);
-            break;
           default:
             final screenWidth = MediaQuery.of(context).size.width;
             return buildBody(screenWidth);
@@ -37,16 +34,14 @@ class TvVideo extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: heightCard,
-      child: SnapList(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        sizeProvider: (index, data) => cardSize,
-        separatorProvider: (index, data) => Size(15.0, 15.0),
-        builder: (context, index, data) {
-          return movies == null
-              ? TvVideoItemPlaceholder()
-              : TvVideoItem(movies[index]);
-        },
-        count: movies == null ? 5 : movies.length,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemBuilder: ((context, index) => movies == null
+            ? TvVideoItemPlaceholder()
+            : TvVideoItem(movies![index])),
+        separatorBuilder: (context, index) =>
+            SizedBox(height: 15.0, width: 15.0),
+        itemCount: movies?.length ?? 0,
       ),
     );
   }

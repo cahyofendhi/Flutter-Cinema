@@ -15,19 +15,20 @@ class TvScreen extends StatefulWidget {
 }
 
 class _TvScreenState extends State<TvScreen> {
-  TvBloc _tvBloc;
+  TvBloc? _tvBloc;
 
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void didChangeDependencies() {
     _tvBloc = Provider.of<TvBloc>(context, listen: false);
-    _tvBloc.getTvContent();
+    _tvBloc!.getTvContent();
     super.didChangeDependencies();
   }
 
-  void _onRefresh() async{
-    await _tvBloc.getTvContent();
+  void _onRefresh() async {
+    await _tvBloc!.getTvContent();
     _refreshController.refreshCompleted();
   }
 
@@ -55,7 +56,7 @@ class _TvScreenState extends State<TvScreen> {
     );
   }
 
-  Widget _appBar() {
+  AppBar _appBar() {
     return AppBar(
       elevation: 0.0,
       centerTitle: false,
@@ -81,34 +82,37 @@ class _TvScreenState extends State<TvScreen> {
 
   Widget _tvVideo() {
     return StreamBuilder(
-        stream: _tvBloc.onAir,
+        stream: _tvBloc!.onAir,
         builder: (context, AsyncSnapshot<TvResult> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return ContainerCategory('On Air', TvVideo(null));
-          } else if (snapshot.data == null || snapshot.data.results.isEmpty) {
+          } else if (snapshot.data == null ||
+              snapshot.data?.results?.isEmpty == true) {
             return Container();
           } else {
-            return ContainerCategory('On Air', TvVideo(snapshot.data.results));
+            return ContainerCategory(
+                'On Air', TvVideo(snapshot.data?.results ?? []));
           }
         });
   }
 
   Widget _tvPopuler() {
     return StreamBuilder(
-        stream: _tvBloc.populerTv,
+        stream: _tvBloc!.populerTv,
         builder: (context, AsyncSnapshot<TvResult> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Padding(
               padding: const EdgeInsets.only(top: 15),
               child: ContainerCategory('Populer', TvPopuler(null)),
             );
-          } else if (snapshot.data == null || snapshot.data.results.isEmpty) {
+          } else if (snapshot.data == null ||
+              snapshot.data?.results?.isEmpty == true) {
             return Container();
           } else {
             return Padding(
               padding: const EdgeInsets.only(top: 15),
               child: ContainerCategory(
-                  'Populer', TvPopuler(snapshot.data.results)),
+                  'Populer', TvPopuler(snapshot.data?.results ?? [])),
             );
           }
         });
@@ -116,15 +120,16 @@ class _TvScreenState extends State<TvScreen> {
 
   Widget _tvTopRate() {
     return StreamBuilder(
-        stream: _tvBloc.topTv,
+        stream: _tvBloc!.topTv,
         builder: (context, AsyncSnapshot<TvResult> snapshot) {
-          if (snapshot.data == null || snapshot.data.results.isEmpty) {
+          if (snapshot.data == null ||
+              snapshot.data?.results?.isEmpty == true) {
             return Container();
           } else {
             return Padding(
               padding: const EdgeInsets.only(top: 15, bottom: 15),
               child: ContainerCategory(
-                  'Top Rate', TvPopuler(snapshot.data.results)),
+                  'Top Rate', TvPopuler(snapshot.data?.results ?? [])),
             );
           }
         });

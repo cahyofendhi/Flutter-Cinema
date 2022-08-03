@@ -13,7 +13,6 @@ enum ThemeColor {
 }
 
 class AppStyle {
-
   static Color greyApp = Color(0xFFCCCCCC);
 
   static Color getColor([ThemeColor color = ThemeColor.primary]) {
@@ -37,7 +36,11 @@ class AppStyle {
     }
   }
 
-  static Text textSubtitle([String title, Color textColor, int line = 2]) {
+  static Text textSubtitle(
+    String title, {
+    Color? textColor,
+    int line = 2,
+  }) {
     Color _textColor = getColor(ThemeColor.greyText);
     if (textColor != null) {
       _textColor = textColor;
@@ -53,7 +56,7 @@ class AppStyle {
     );
   }
 
-  static Text textTitleItem([String title, Color textColor]) {
+  static Text textTitleItem(String title, {Color? textColor}) {
     Color _textColor = getColor(ThemeColor.secondary);
     if (textColor != null) {
       _textColor = textColor;
@@ -70,7 +73,8 @@ class AppStyle {
     );
   }
 
-  static Text textTitleDetailBold([String title, Color textColor, int line = 2]) {
+  static Text textTitleDetailBold(
+      {required String title, Color? textColor, int line = 2}) {
     Color _textColor = getColor(ThemeColor.secondary);
     if (textColor != null) {
       _textColor = textColor;
@@ -89,7 +93,8 @@ class AppStyle {
     );
   }
 
-  static Text textTitleBoldItem([String title, Color textColor, int line = 2]) {
+  static Text textTitleBoldItem(String title,
+      {Color? textColor, int line = 2}) {
     Color _textColor = getColor(ThemeColor.secondary);
     if (textColor != null) {
       _textColor = textColor;
@@ -108,7 +113,7 @@ class AppStyle {
     );
   }
 
-static Text textTitleSection([String title, Color textColor, int line = 2]) {
+  static Text textTitleSection(String title, {Color? textColor, int line = 2}) {
     Color _textColor = getColor(ThemeColor.secondary);
     if (textColor != null) {
       _textColor = textColor;
@@ -127,7 +132,7 @@ static Text textTitleSection([String title, Color textColor, int line = 2]) {
     );
   }
 
-  static Text textDescription([String title, Color textColor, int line = 2]) {
+  static Text textDescription(String title, {Color? textColor, int line = 2}) {
     Color _textColor = getColor(ThemeColor.greyText);
     if (textColor != null) {
       _textColor = textColor;

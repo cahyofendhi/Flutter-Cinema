@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'similiar_movie_item.dart';
 
 class SimiliarMovie extends StatelessWidget {
-  SimilarResult _similiarMovie;
+  SimilarResult? similiarMovie;
 
-  SimiliarMovie(this._similiarMovie);
+  SimiliarMovie({this.similiarMovie});
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +33,12 @@ class SimiliarMovie extends StatelessWidget {
   }
 
   List<Widget> getGridViewItem() {
-    if (_similiarMovie != null) {
-      return _similiarMovie.results
+    if (similiarMovie != null) {
+      return similiarMovie!.results!
           .map((item) => SimiliarMovieItem(item))
           .toList();
     } else {
-      List<Widget> list = List<Widget>();
+      List<Widget> list = const [];
       for (var i = 0; i < 10; i++) {
         list.add(SimiliarItemPlaceholder());
       }

@@ -1,18 +1,18 @@
 class SimilarMovieModel {
-  int id;
-  bool video;
-  int voteCount;
-  double voteAverage;
-  String title;
-  String releaseDate;
-  String originalLanguage;
-  String originalTitle;
-  List<int> genreIds;
-  String backdropPath;
-  bool adult;
-  String overview;
-  String posterPath;
-  double popularity;
+  int? id;
+  bool? video;
+  int? voteCount;
+  double? voteAverage;
+  String? title;
+  String? releaseDate;
+  String? originalLanguage;
+  String? originalTitle;
+  List<int>? genreIds;
+  String? backdropPath;
+  bool? adult;
+  String? overview;
+  String? posterPath;
+  double? popularity;
 
   SimilarMovieModel(
       {this.id,

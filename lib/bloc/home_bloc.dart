@@ -31,7 +31,7 @@ class HomeBloc {
   dynamic get changeTrending => _trendingController.sink.add;
   Function(UiState) get setStatePopuler => _statePopuler.sink.add;
 
-  HomeBloc({@required movieRepository}) : _movieRepository = movieRepository;
+  HomeBloc({required movieRepository}) : _movieRepository = movieRepository;
 
   /// get all movie
   void getAllCategoryMovie() {
@@ -46,8 +46,8 @@ class HomeBloc {
     try {
       await for (ServiceModel result
           in _movieRepository.getUpcomingMovie(page)) {
-            MoviesResult data = result.data;
-            print('Upcoming Total : ${data.results.length}');
+        MoviesResult data = result.data;
+        print('Upcoming Total : ${data.results.length}');
         changeUpcoming(result.data);
       }
       setStatePopuler(UiState(RequestState.DONE));

@@ -1,19 +1,19 @@
 import 'package:cinema_flt/models/similar_movie_model.dart';
 
 class SimilarResult {
-  int page;
-  List<SimilarMovieModel> results;
-  int totalPages;
-  int totalResults;
+  int? page;
+  List<SimilarMovieModel>? results;
+  int? totalPages;
+  int? totalResults;
 
   SimilarResult({this.page, this.results, this.totalPages, this.totalResults});
 
   SimilarResult.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
-      results = new List<SimilarMovieModel>();
+      results = const [];
       json['results'].forEach((v) {
-        results.add(new SimilarMovieModel.fromJson(v));
+        results?.add(new SimilarMovieModel.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
@@ -24,11 +24,10 @@ class SimilarResult {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['page'] = this.page;
     if (this.results != null) {
-      data['results'] = this.results.map((v) => v.toJson()).toList();
+      data['results'] = this.results!.map((v) => v.toJson()).toList();
     }
     data['total_pages'] = this.totalPages;
     data['total_results'] = this.totalResults;
     return data;
   }
 }
-

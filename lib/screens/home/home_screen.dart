@@ -17,12 +17,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  HomeBloc _homeBloc;
+  HomeBloc? _homeBloc;
 
   @override
   void didChangeDependencies() {
     _homeBloc = Provider.of<HomeBloc>(context, listen: false);
-    _homeBloc.getAllCategoryMovie();
+    _homeBloc?.getAllCategoryMovie();
     super.didChangeDependencies();
   }
 
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> onRefresh() async {
-    _homeBloc.getAllCategoryMovie();
+    _homeBloc?.getAllCategoryMovie();
   }
 
   @override
@@ -55,38 +55,41 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: <Widget>[
         StreamBuilder(
-          stream: _homeBloc.upcomingMovies,
+          stream: _homeBloc?.upcomingMovies,
           builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return _upcomingMovie(null);
-            } else if (snapshot.data == null || snapshot.data.results.isEmpty) {
+              return _upcomingMovie([]);
+            } else if (snapshot.data == null ||
+                snapshot.data?.results.isEmpty == true) {
               return Container();
             } else {
-              return _upcomingMovie(snapshot.data.results);
+              return _upcomingMovie(snapshot.data?.results ?? []);
             }
           },
         ),
         StreamBuilder(
-          stream: _homeBloc.populerMovies,
+          stream: _homeBloc?.populerMovies,
           builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return _populerMovie(null);
-            } else if (snapshot.data == null || snapshot.data.results.isEmpty) {
+            } else if (snapshot.data == null ||
+                snapshot.data?.results.isEmpty == true) {
               return Container();
             } else {
-              return _populerMovie(snapshot.data.results);
+              return _populerMovie(snapshot.data?.results ?? []);
             }
           },
         ),
         StreamBuilder(
-          stream: _homeBloc.trendingMovies,
+          stream: _homeBloc?.trendingMovies,
           builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return _trendingMovie(null);
-            } else if (snapshot.data == null || snapshot.data.results.isEmpty) {
+              return _trendingMovie([]);
+            } else if (snapshot.data == null ||
+                snapshot.data?.results.isEmpty == true) {
               return Container();
             } else {
-              return _trendingMovie(snapshot.data.results);
+              return _trendingMovie(snapshot.data?.results ?? []);
             }
           },
         ),
@@ -161,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return ContainerCategory('Upcoming Movie', UpcomingMovieSlider(movies));
   }
 
-  Widget _populerMovie(List<Movie> movies) {
+  Widget _populerMovie(List<Movie>? movies) {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: ContainerCategory('Populer Movie', PopulerMovie(movies)),

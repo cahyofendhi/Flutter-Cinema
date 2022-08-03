@@ -62,7 +62,7 @@ class TredingItem extends StatelessWidget {
                   ],
                 ),
                 child: ImageNetwork(
-                  getTheMovieImage(movie.posterPath),
+                  getTheMovieImage(movie.posterPath ?? ''),
                 ),
               ),
               Flexible(
@@ -74,24 +74,24 @@ class TredingItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       AppStyle.textTitleBoldItem(
-                        movie.originalTitle,
-                        AppStyle.getColor(ThemeColor.blackText),
+                        movie.originalTitle ?? '',
+                        textColor: AppStyle.getColor(ThemeColor.blackText),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 7),
-                        child: RatingResult(format(movie.voteAverage)),
+                        child: RatingResult(format(movie.voteAverage ?? 0)),
                       ),
                       // RatingBarRestultItem(4.5),
                       AppStyle.textSubtitle(
-                        getGenreString(movie.genreIds),
-                        AppStyle.getColor(ThemeColor.greyTextDesc),
+                        getGenreString(movie.genreIds ?? []),
+                        textColor: AppStyle.getColor(ThemeColor.greyTextDesc),
                       ),
                       SizedBox(
                         height: 3,
                       ),
                       AppStyle.textSubtitle(
                         movie.getReleaseDate(),
-                        AppStyle.getColor(ThemeColor.greyTextDesc),
+                        textColor: AppStyle.getColor(ThemeColor.greyTextDesc),
                       ),
                     ],
                   ),

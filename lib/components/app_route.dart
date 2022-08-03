@@ -10,7 +10,6 @@ import 'package:cinema_flt/screens/search/movie_search.dart';
 import 'package:cinema_flt/screens/splash/splash_screen.dart';
 import 'package:cinema_flt/screens/tv/tv_detail_screen.dart';
 import 'package:cinema_flt/utils/transition/fade_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,17 +22,18 @@ class AppRoute {
           builder: (ctx) => SplashScreen(),
         );
       case MainScreens.routeName:
-        return FadeRoute(MainScreens());
+        return FadeRoute(page: MainScreens());
       case DetailMovie.routeName:
+        final page = DetailMovie(arguments['movie'], arguments['tag']);
         final _page = (BuildContext context, _, __) {
           return ProxyProvider<MovieRepository, MovieDetailBloc>(
             update: (context, movieRepository, movieDetailBloc) =>
                 MovieDetailBloc(movieRepository: movieRepository),
             dispose: (context, movieDetailBloc) => movieDetailBloc.dispose(),
-            child: DetailMovie(arguments['movie'], arguments['tag']),
+            child: page,
           );
         };
-        return FadeRoute(null, _page);
+        return FadeRoute(page: page, builder: _page);
       case MovieSearch.routeName:
         return MaterialPageRoute(
           builder: (ctx) => ProxyProvider<MovieRepository, MovieSearchBloc>(
@@ -54,14 +54,15 @@ class AppRoute {
         );
       default:
         return MaterialPageRoute(
-          builder: (_) => UnkownPage(settings.name),
+          builder: (_) => UnkownPage(settings.name ?? ''),
         );
     }
   }
 }
 
 class CustomMaterialRouter<T> extends MaterialPageRoute<T> {
-  CustomMaterialRouter({WidgetBuilder builder, RouteSettings settings})
+  CustomMaterialRouter(
+      {required WidgetBuilder builder, required RouteSettings settings})
       : super(builder: builder, settings: settings);
   @override
   Duration get transitionDuration => const Duration(milliseconds: 500);

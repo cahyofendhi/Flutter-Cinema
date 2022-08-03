@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:cinema_flt/models/service_model.dart';
@@ -9,7 +7,6 @@ import 'package:cinema_flt/utils/request_state.dart';
 import 'package:flutter/material.dart';
 
 class TvDetailBloc {
-
   final TvRepository _tvRepository;
 
   final _movieController = StreamController<TV>.broadcast();
@@ -22,10 +19,10 @@ class TvDetailBloc {
   Function(UiState) get setUiStateMovie => _uiStateMovieController.sink.add;
 
   TvDetailBloc({@required tvRepository}) : _tvRepository = tvRepository;
-  
+
   Future<void> getTvDetail(TV tv) async {
     try {
-      ServiceModel result = await _tvRepository.getTvDetail(tv.id);
+      ServiceModel result = await _tvRepository.getTvDetail(tv.id!);
       if (result.isSuccess) {
         TV tv = result.data;
         setDataMovie(tv);
@@ -39,5 +36,4 @@ class TvDetailBloc {
     _movieController.close();
     _uiStateMovieController.close();
   }
-
 }

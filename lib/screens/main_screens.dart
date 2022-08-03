@@ -59,10 +59,7 @@ class _MainScreensState extends State<MainScreens> {
     return Scaffold(
       body: IndexedStack(
         index: _selectedPage,
-        children: _pagesView.map((t) {
-          Widget wg = t['page'];
-          return wg;
-        }).toList(),
+        children: _pagesView.map((t) => t['page'] as Widget).toList(),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: _getNavBarItems(),
@@ -82,7 +79,9 @@ class _MainScreensState extends State<MainScreens> {
       (item) {
         navBarItems.add(
           BottomNavigationBarItem(
-              icon: item['icon'], title: Text(item['title'])),
+            icon: item['icon'] as Widget,
+            label: item['title'] as String,
+          ),
         );
       },
     );

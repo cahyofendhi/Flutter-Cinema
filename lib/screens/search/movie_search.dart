@@ -19,12 +19,12 @@ class MovieSearch extends StatefulWidget {
 }
 
 class _MovieSearchState extends State<MovieSearch> {
-  SearchBar searchBar;
+  SearchBar? searchBar;
   static final defaultTitle = 'Movie Search';
   String titleSearch = defaultTitle;
   String querySearch = '';
 
-  MovieSearchBloc _movieSearchBloc;
+  MovieSearchBloc? _movieSearchBloc;
   List<Movie> movies = [];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -36,24 +36,19 @@ class _MovieSearchState extends State<MovieSearch> {
       titleSearch = value;
       querySearch = value;
     });
-    _movieSearchBloc.getMovie(querySearch, 1);
+    _movieSearchBloc!.getMovie(querySearch, 1);
   }
 
   _searchAppBar() {
-    searchBar = new SearchBar(
-      inBar: true,
-      buildDefaultAppBar: (ctx) {
-        return AppBar(
-            title: new Text(titleSearch),
-            actions: [searchBar.getSearchAction(context)]);
-      },
+    searchBar = SearchBar(
+      (ctx) => AppBar(
+        title: Text(titleSearch),
+        actions: [searchBar!.getSearchAction(context)],
+      ),
       setState: setState,
       onSubmitted: onSubmitted,
-      onClosed: () {
-        setState(() {
-          titleSearch = defaultTitle;
-        });
-      },
+      onClosed: () => setState(() => titleSearch = defaultTitle),
+      defaultAppBar: AppBar(),
     );
   }
 
@@ -85,7 +80,6 @@ class _MovieSearchState extends State<MovieSearch> {
                 ),
               ),
             );
-            break;
           case DeviceScreenType.tablet:
             return Scaffold(
               backgroundColor: AppStyle.greyApp,
@@ -97,7 +91,6 @@ class _MovieSearchState extends State<MovieSearch> {
                 ),
               ),
             );
-            break;
           default:
             return buildBody();
         }
@@ -108,9 +101,9 @@ class _MovieSearchState extends State<MovieSearch> {
   Widget buildBody() {
     return new Scaffold(
         backgroundColor: Colors.white,
-        appBar: searchBar.build(context),
+        appBar: searchBar!.build(context),
         body: StreamBuilder<MoviesResult>(
-          stream: _movieSearchBloc.movies.stream,
+          stream: _movieSearchBloc!.movies.stream,
           builder: (context, AsyncSnapshot<MoviesResult> snapshot) {
             print('state = ${snapshot.connectionState}');
             if (snapshot.hasData) {
@@ -120,9 +113,9 @@ class _MovieSearchState extends State<MovieSearch> {
                 );
               } else if (snapshot.connectionState == ConnectionState.active &&
                   snapshot.data != null) {
-                MoviesResult data = snapshot.data;
-                totalPage = data.totalPages;
-                page = data.page;
+                MoviesResult data = snapshot.data!;
+                totalPage = data.totalPages ?? 0;
+                page = data.page ?? 0;
                 final result = data.results;
                 _refreshController.loadComplete();
                 if (result.isNotEmpty) {
@@ -151,8 +144,8 @@ class _MovieSearchState extends State<MovieSearch> {
       enablePullUp: true,
       header: WaterDropHeader(),
       footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
-          Widget body;
+        builder: (BuildContext context, LoadStatus? mode) {
+          Widget? body;
           if (mode == LoadStatus.loading) {
             body = CupertinoActivityIndicator();
           }
@@ -172,7 +165,7 @@ class _MovieSearchState extends State<MovieSearch> {
   }
 
   void _onLoading() {
-    _movieSearchBloc.getMovie(querySearch, page + 1);
+    _movieSearchBloc!.getMovie(querySearch, page + 1);
   }
 
   Widget _emptyView() {

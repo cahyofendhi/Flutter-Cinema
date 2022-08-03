@@ -31,15 +31,15 @@ class TvPopulerItem extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: ImageNetwork(getImageTheMovie(movie.posterPath)),
+              child: ImageNetwork(getImageTheMovie(movie.posterPath ?? '')),
             ),
           ),
           SizedBox(
             height: 10,
           ),
           AppStyle.textTitleBoldItem(
-            movie.originalName,
-            AppStyle.getColor(ThemeColor.blackText),
+            movie.originalName ?? '',
+            textColor: AppStyle.getColor(ThemeColor.blackText),
           )
         ],
       ),
