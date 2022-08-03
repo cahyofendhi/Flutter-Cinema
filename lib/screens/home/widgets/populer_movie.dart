@@ -35,15 +35,18 @@ class _PopulerMovieState extends State<PopulerMovie> {
 
   Widget buildBody(double screenWidth) {
     final heightCard = screenWidth / 1.6;
-    final Size cardSize = Size(screenWidth / 3, heightCard);
     return Container(
       width: double.infinity,
       height: heightCard,
       child: ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: 20),
         scrollDirection: Axis.horizontal,
-        itemBuilder: ((context, index) => widget.movies == null
-            ? PopulerItemPlaceholder()
-            : PopulerMovieItem(index, widget.movies![index], screenWidth)),
+        itemBuilder: ((context, index) => SizedBox(
+              width: screenWidth / 3,
+              child: widget.movies == null
+                  ? PopulerItemPlaceholder()
+                  : PopulerMovieItem(index, widget.movies![index], screenWidth),
+            )),
         separatorBuilder: (context, index) =>
             SizedBox(height: 15.0, width: 15.0),
         itemCount: widget.movies?.length ?? 0,

@@ -34,11 +34,10 @@ class TvPopulerItem extends StatelessWidget {
               child: ImageNetwork(getImageTheMovie(movie.posterPath ?? '')),
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           AppStyle.textTitleBoldItem(
             movie.originalName ?? '',
+            line: 2,
             textColor: AppStyle.getColor(ThemeColor.blackText),
           )
         ],

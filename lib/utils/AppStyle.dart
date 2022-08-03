@@ -108,6 +108,7 @@ class AppStyle {
         height: 1.5,
         color: _textColor,
       ),
+      textAlign: TextAlign.center,
       maxLines: line,
       overflow: TextOverflow.ellipsis,
     );

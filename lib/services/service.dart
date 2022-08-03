@@ -26,12 +26,11 @@ class Service {
   }
 
   Future<Response?> getMovieList(
-    String getCategoryMovie, {
-    String? group,
+    String category, {
     int? page,
     String apiKey = API_KEY,
   }) async {
-    return await client.get(url: 'movie/$group', parameters: {
+    return await client.get(url: 'movie/$category', parameters: {
       'api_key': apiKey,
       'page': page,
     });

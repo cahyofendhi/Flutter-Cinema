@@ -49,15 +49,7 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Cinema FLT',
-        theme: ThemeData(
-          splashColor: Colors.blue,
-          highlightColor: Colors.blue,
-          brightness: Brightness.light,
-          primaryColor: Colors.blue,
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-            secondary: Colors.blue,
-          ),
-        ),
+        theme: ThemeData(primarySwatch: Colors.blue),
         initialRoute: SplashScreen.routeName,
         onGenerateRoute: AppRoute.generateRoute,
         debugShowCheckedModeBanner: false,

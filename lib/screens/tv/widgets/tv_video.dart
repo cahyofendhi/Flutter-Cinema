@@ -30,15 +30,17 @@ class TvVideo extends StatelessWidget {
   Widget buildBody(double screenWidth) {
     final widthCard = screenWidth / 3;
     final heightCard = widthCard / 2;
-    final Size cardSize = Size(widthCard, heightCard);
     return SizedBox(
       width: double.infinity,
       height: heightCard,
       child: ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: 20),
         scrollDirection: Axis.horizontal,
-        itemBuilder: ((context, index) => movies == null
-            ? TvVideoItemPlaceholder()
-            : TvVideoItem(movies![index])),
+        itemBuilder: ((context, index) => SizedBox(
+            width: widthCard,
+            child: movies == null
+                ? TvVideoItemPlaceholder()
+                : TvVideoItem(movies![index]))),
         separatorBuilder: (context, index) =>
             SizedBox(height: 15.0, width: 15.0),
         itemCount: movies?.length ?? 0,

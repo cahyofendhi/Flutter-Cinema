@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/utils/request_state.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/repository/movie_repository.dart';

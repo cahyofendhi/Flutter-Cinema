@@ -34,19 +34,21 @@ class _TvPopulerState extends State<TvPopuler> {
 
   Widget buildBody(double screenWidth, DeviceScreenType device) {
     final heightCard = device == DeviceScreenType.mobile
-        ? screenWidth / 2
+        ? screenWidth / 2 + 8
         : screenWidth / 2 + 20;
     final imageWidth = (screenWidth / 2) / 1.83;
     final imageHeight = imageWidth + (imageWidth / 2.5);
-    final Size cardSize = Size(imageWidth, heightCard);
     return SizedBox(
       width: double.infinity,
       height: heightCard,
       child: ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: 20),
         scrollDirection: Axis.horizontal,
-        itemBuilder: ((context, index) => widget.movies == null
-            ? TvPopulerItemPlaceholder(imageHeight)
-            : TvPopulerItem(widget.movies![index], imageHeight)),
+        itemBuilder: ((context, index) => SizedBox(
+            width: imageWidth,
+            child: widget.movies == null
+                ? TvPopulerItemPlaceholder(imageHeight)
+                : TvPopulerItem(widget.movies![index], imageHeight))),
         separatorBuilder: (context, index) =>
             SizedBox(height: 15.0, width: 15.0),
         itemCount: widget.movies?.length ?? 0,

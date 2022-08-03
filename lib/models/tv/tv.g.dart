@@ -8,44 +8,44 @@ part of 'tv.dart';
 
 class TVAdapter extends TypeAdapter<TV> {
   @override
-  final typeId = 2;
+  final int typeId = 2;
 
   @override
   TV read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TV(
-      backdropPath: fields[0] as String,
-      createdBy: (fields[1] as List).cast<Cast>(),
-      episodeRunTime: (fields[2] as List).cast<int>(),
-      firstAirDate: fields[3] as String,
-      genres: (fields[4] as List).cast<Genres>(),
-      genreIds: (fields[5] as List).cast<int>(),
-      homepage: fields[6] as String,
-      id: fields[7] as int,
-      inProduction: fields[8] as bool,
-      languages: (fields[9] as List).cast<String>(),
-      lastAirDate: fields[10] as String,
-      lastEpisodeToAir: fields[11] as LastEpisodeToAir,
-      name: fields[12] as String,
-      nextEpisodeToAir: fields[13] as int,
-      networks: (fields[14] as List).cast<Networks>(),
-      numberOfEpisodes: fields[15] as int,
-      numberOfSeasons: fields[16] as int,
-      originCountry: (fields[17] as List).cast<String>(),
-      originalLanguage: fields[18] as String,
-      originalName: fields[19] as String,
-      overview: fields[20] as String,
-      popularity: fields[21] as double,
-      posterPath: fields[22] as String,
-      productionCompanies: (fields[23] as List).cast<ProductionCompanies>(),
-      seasons: (fields[24] as List).cast<Seasons>(),
-      status: fields[25] as String,
-      type: fields[26] as String,
-      voteAverage: fields[27] as double,
-      voteCount: fields[28] as int,
+      backdropPath: fields[0] as String?,
+      createdBy: (fields[1] as List?)?.cast<Cast>(),
+      episodeRunTime: (fields[2] as List?)?.cast<int>(),
+      firstAirDate: fields[3] as String?,
+      genres: (fields[4] as List?)?.cast<Genres>(),
+      genreIds: (fields[5] as List?)?.cast<int>(),
+      homepage: fields[6] as String?,
+      id: fields[7] as int?,
+      inProduction: fields[8] as bool?,
+      languages: (fields[9] as List?)?.cast<String>(),
+      lastAirDate: fields[10] as String?,
+      lastEpisodeToAir: fields[11] as LastEpisodeToAir?,
+      name: fields[12] as String?,
+      nextEpisodeToAir: fields[13] as int?,
+      networks: (fields[14] as List?)?.cast<Networks>(),
+      numberOfEpisodes: fields[15] as int?,
+      numberOfSeasons: fields[16] as int?,
+      originCountry: (fields[17] as List?)?.cast<String>(),
+      originalLanguage: fields[18] as String?,
+      originalName: fields[19] as String?,
+      overview: fields[20] as String?,
+      popularity: fields[21] as double?,
+      posterPath: fields[22] as String?,
+      productionCompanies: (fields[23] as List?)?.cast<ProductionCompanies>(),
+      seasons: (fields[24] as List?)?.cast<Seasons>(),
+      status: fields[25] as String?,
+      type: fields[26] as String?,
+      voteAverage: fields[27] as double?,
+      voteCount: fields[28] as int?,
     );
   }
 
@@ -112,4 +112,14 @@ class TVAdapter extends TypeAdapter<TV> {
       ..writeByte(28)
       ..write(obj.voteCount);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TVAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
