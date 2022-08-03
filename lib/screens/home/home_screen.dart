@@ -1,14 +1,16 @@
-import 'package:cinema_flt/bloc/home_bloc.dart';
+import 'package:cinema_flt/bloc/home/home_event.dart';
+import 'package:cinema_flt/bloc/home/home_state.dart';
 import 'package:cinema_flt/components/widgets/container_category.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
-import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
 import 'package:cinema_flt/screens/home/widgets/upcoming_movie_slider.dart';
 import 'package:cinema_flt/screens/search/movie_search.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:formz/formz.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/home/home_bloc.dart';
 import 'widgets/populer_movie.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,30 +22,31 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeBloc? _homeBloc;
 
   @override
-  void didChangeDependencies() {
-    _homeBloc = Provider.of<HomeBloc>(context, listen: false);
-    _homeBloc?.getAllCategoryMovie();
-    super.didChangeDependencies();
-  }
-
-  injectBLoCForTest(HomeBloc homeBloc) {
-    _homeBloc = homeBloc;
+  void initState() {
+    super.initState();
+    _homeBloc = HomeBloc();
   }
 
   Future<void> onRefresh() async {
-    _homeBloc?.getAllCategoryMovie();
+    _homeBloc?.add(HomeInitEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: RefreshIndicator(
-            onRefresh: () => onRefresh(),
-            child: Column(
-              children: <Widget>[_headerView(), _categoryMovie()],
+    return BlocProvider(
+      create: (context) => _homeBloc!..add(HomeInitEvent()),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: RefreshIndicator(
+              onRefresh: () => onRefresh(),
+              child: Column(
+                children: <Widget>[
+                  _headerView(),
+                  _categoryMovie(),
+                ],
+              ),
             ),
           ),
         ),
@@ -54,43 +57,41 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _categoryMovie() {
     return Column(
       children: <Widget>[
-        StreamBuilder(
-          stream: _homeBloc?.upcomingMovies,
-          builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return _upcomingMovie([]);
-            } else if (snapshot.data == null ||
-                snapshot.data?.results.isEmpty == true) {
-              return Container();
-            } else {
-              return _upcomingMovie(snapshot.data?.results ?? []);
-            }
+        // upcoming
+        BlocBuilder<HomeBloc, HomeState>(
+          buildWhen: (previous, current) =>
+              previous.upcoming != current.upcoming,
+          builder: (context, state) {
+            return state.upcomingStatus == FormzStatus.submissionInProgress
+                ? _upcomingMovie([])
+                : state.upcomingStatus == FormzStatus.submissionSuccess
+                    ? _upcomingMovie(state.upcoming?.results ?? [])
+                    : Container();
           },
         ),
-        StreamBuilder(
-          stream: _homeBloc?.populerMovies,
-          builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return _populerMovie(null);
-            } else if (snapshot.data == null ||
-                snapshot.data?.results.isEmpty == true) {
-              return Container();
-            } else {
-              return _populerMovie(snapshot.data?.results ?? []);
-            }
+
+        // popular
+        BlocBuilder<HomeBloc, HomeState>(
+          buildWhen: (previous, current) => previous.popular != current.popular,
+          builder: (context, state) {
+            return state.popularStatus == FormzStatus.submissionInProgress
+                ? _populerMovie(null)
+                : state.popularStatus == FormzStatus.submissionSuccess
+                    ? _populerMovie(state.popular?.results ?? [])
+                    : Container();
           },
         ),
-        StreamBuilder(
-          stream: _homeBloc?.trendingMovies,
-          builder: (_, AsyncSnapshot<MoviesResult> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return _trendingMovie([]);
-            } else if (snapshot.data == null ||
-                snapshot.data?.results.isEmpty == true) {
-              return Container();
-            } else {
-              return _trendingMovie(snapshot.data?.results ?? []);
-            }
+
+        // trending
+        BlocBuilder<HomeBloc, HomeState>(
+          buildWhen: (previous, current) =>
+              previous.trending != current.trending,
+          builder: (context, state) {
+            return state.trendingStatus == FormzStatus.submissionInProgress
+                ? _trendingMovie([])
+                : state.trendingStatus == FormzStatus.submissionSuccess
+                    ? _trendingMovie(state.trending?.results ?? [])
+                    : Container();
           },
         ),
       ],

@@ -45,6 +45,7 @@ dependencies:
   path_provider: ^2.0.11
   responsive_builder: ^0.4.2
   flutter_bloc: ^8.0.1
+  formz: ^0.4.1
 
 dev_dependencies:
   flutter_test:

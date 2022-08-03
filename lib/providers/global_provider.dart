@@ -1,4 +1,3 @@
-import 'package:cinema_flt/bloc/home_bloc.dart';
 import 'package:cinema_flt/bloc/tv_bloc.dart';
 import 'package:cinema_flt/repository/database_repository.dart';
 import 'package:cinema_flt/repository/movie_repository.dart';
@@ -34,13 +33,6 @@ List<SingleChildWidget> dependentServices = [
 ];
 
 List<SingleChildWidget> uiConsumableProviders = [
-  //? home bloc
-  ProxyProvider<MovieRepository, HomeBloc>(
-    update: (context, movieRepository, homeBloc) =>
-        HomeBloc(movieRepository: movieRepository),
-    dispose: (context, homeBloc) => homeBloc.dispose(),
-  ),
-
   //? tv bloc
   ProxyProvider<TvRepository, TvBloc>(
     update: (context, tvRepository, tvBloc) =>
