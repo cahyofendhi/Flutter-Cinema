@@ -1,4 +1,8 @@
-import 'package:cinema_flt/bloc/movie_search_bloc.dart';
+import 'package:cinema_flt/bloc/search/search_bloc.dart';
+import 'package:cinema_flt/bloc/search/search_event.dart';
+import 'package:cinema_flt/bloc/search/search_state.dart';
+import 'package:formz/formz.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
 import 'package:cinema_flt/screens/home/widgets/trending_movie.dart';
@@ -6,7 +10,6 @@ import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -23,7 +26,7 @@ class _MovieSearchState extends State<MovieSearch> {
   Icon customIcon = const Icon(Icons.search);
   Widget customSearchBar = Text(defaultTitle);
 
-  MovieSearchBloc? _movieSearchBloc;
+  SearchBloc? _movieSearchBloc;
   List<Movie> movies = [];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -36,7 +39,7 @@ class _MovieSearchState extends State<MovieSearch> {
       customIcon = const Icon(Icons.search);
       customSearchBar = Text(defaultTitle);
     });
-    _movieSearchBloc!.getMovie(querySearch, 1);
+    _movieSearchBloc!.add(SubmitSearchEvent(value));
   }
 
   AppBar _buildAppBar() {
@@ -89,9 +92,9 @@ class _MovieSearchState extends State<MovieSearch> {
   }
 
   @override
-  void didChangeDependencies() {
-    _movieSearchBloc = Provider.of<MovieSearchBloc>(context, listen: false);
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    _movieSearchBloc = context.read<SearchBloc>()..add(SearchInitEvent());
   }
 
   @override
@@ -132,31 +135,25 @@ class _MovieSearchState extends State<MovieSearch> {
     return new Scaffold(
         backgroundColor: Colors.white,
         appBar: _buildAppBar(),
-        body: StreamBuilder<MoviesResult>(
-          stream: _movieSearchBloc!.movies.stream,
-          builder: (context, AsyncSnapshot<MoviesResult> snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.connectionState == ConnectionState.active &&
-                  snapshot.data != null) {
-                MoviesResult data = snapshot.data!;
-                totalPage = data.totalPages ?? 0;
-                page = data.page ?? 0;
-                final result = data.results;
-                _refreshController.loadComplete();
-                if (result.isNotEmpty) {
-                  if (page == 1) {
-                    movies = result;
-                  } else {
-                    movies.insertAll(movies.length, result);
-                  }
-                  return _contentList();
+        body: BlocBuilder<SearchBloc, SearchState>(
+          builder: (context, state) {
+            if (state.movieStatus == FormzStatus.submissionInProgress) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state.movieStatus == FormzStatus.submissionSuccess) {
+              MoviesResult data = state.movies!;
+              totalPage = data.totalPages ?? 0;
+              page = data.page ?? 0;
+              final result = data.results;
+              _refreshController.loadComplete();
+              if (result.isNotEmpty) {
+                if (page == 1) {
+                  movies = result;
                 } else {
-                  return _emptyView();
+                  movies.insertAll(movies.length, result);
                 }
+                return _contentList();
               } else {
-                return _initializeView();
+                return _emptyView();
               }
             } else {
               return _initializeView();
@@ -192,7 +189,7 @@ class _MovieSearchState extends State<MovieSearch> {
   }
 
   void _onLoading() {
-    _movieSearchBloc!.getMovie(querySearch, page + 1);
+    _movieSearchBloc!.add(SubmitSearchEvent(querySearch));
   }
 
   Widget _emptyView() {

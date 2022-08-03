@@ -1,5 +1,5 @@
 import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
-import 'package:cinema_flt/bloc/movie_search_bloc.dart';
+import 'package:cinema_flt/bloc/search/search_bloc.dart';
 import 'package:cinema_flt/bloc/tv_detail_bloc.dart';
 import 'package:cinema_flt/components/unknown_page.dart';
 import 'package:cinema_flt/repository/movie_repository.dart';
@@ -11,6 +11,7 @@ import 'package:cinema_flt/screens/splash/splash_screen.dart';
 import 'package:cinema_flt/screens/tv/tv_detail_screen.dart';
 import 'package:cinema_flt/utils/transition/fade_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class AppRoute {
@@ -36,10 +37,8 @@ class AppRoute {
         return FadeRoute(page: page, builder: _page);
       case MovieSearch.routeName:
         return AppPageRoute(
-          builder: (ctx) => ProxyProvider<MovieRepository, MovieSearchBloc>(
-            update: (context, movieRepository, movieSearchBloc) =>
-                MovieSearchBloc(movieRepository: movieRepository),
-            dispose: (context, movieSearchBloc) => movieSearchBloc.dispose(),
+          builder: (ctx) => BlocProvider(
+            create: (context) => SearchBloc(),
             child: MovieSearch(),
           ),
         );
