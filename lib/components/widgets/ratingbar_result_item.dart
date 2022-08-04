@@ -22,7 +22,7 @@ class RatingBarRestultItem extends StatelessWidget {
           Icons.star,
           color: Colors.amber,
         ),
-        onRatingUpdate: null,
+        onRatingUpdate: (value) {},
       ),
     );
   }

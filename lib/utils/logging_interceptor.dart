@@ -1,44 +1,55 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
 
-class LoggingInterceptors extends Interceptor {
-  
+class LoggingInterceptor extends Interceptor {
   @override
-  Future<FutureOr> onRequest(RequestOptions options) async {
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) {
+    print('\n');
     print(
-        "--> ${options.method != null ? options.method.toUpperCase() : 'METHOD'} ${"" + (options.baseUrl ?? "") + (options.path ?? "")}");
-    print("Headers:");
-    options.headers.forEach((k, v) => print('$k: $v'));
+        '--> ${options.method != null ? options.method.toUpperCase() : 'METHOD'} ${'' + (options.baseUrl) + (options.path)}');
+    print('Headers:');
+    options.headers.forEach((k, dynamic v) => print('$k: $v'));
     if (options.queryParameters != null) {
-      print("queryParameters:");
-      options.queryParameters.forEach((k, v) => print('$k: $v'));
+      print('queryParameters:');
+      options.queryParameters.forEach((k, dynamic v) => print('$k: $v'));
     }
     if (options.data != null) {
-      print("Body: ${options.data}");
+      print('Body: ${options.data.toString()}');
     }
     print(
-        "--> END ${options.method != null ? options.method.toUpperCase() : 'METHOD'}");
-
-    return options;
+        '--> END ${options.method != null ? options.method.toUpperCase() : 'METHOD'}');
+    handler.next(options);
   }
 
   @override
-  Future<FutureOr> onError(DioError dioError) async {
+  void onError(DioError dioError, ErrorInterceptorHandler handler) {
+    print('\n');
     print(
-        "<-- ${dioError.message} ${(dioError.response?.request != null ? (dioError.response.request.baseUrl + dioError.response.request.path) : 'URL')}");
+        "<-- ${dioError.message} ${dioError.response?.requestOptions != null ? (dioError.response?.requestOptions.baseUrl) : 'URL'}");
     print(
-        "${dioError.response != null ? dioError.response.data : 'Unknown Error'}");
-    print("<-- End error");
+        '${dioError.response != null ? dioError.response?.data : 'Unknown Error'}');
+    print('<-- End error');
+    handler.next(dioError);
   }
 
   @override
-  Future<FutureOr> onResponse(Response response) async {
+  void onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) {
+    print('\n\n');
     print(
-        "<-- ${response.statusCode} ${(response.request != null ? (response.request.baseUrl + response.request.path) : 'URL')}");
-    print("Headers:");
-    response.headers?.forEach((k, v) => print('$k: $v'));
-    print("Response: ${response.data}");
-    print("<-- END HTTP");
+        '<--- HTTP CODE : ${response.statusCode} URL : ${response.requestOptions.baseUrl}${response.requestOptions.path}');
+    print('Headers: ');
+    printWrapped('Response : ${response.data}');
+    print('<--- END HTTP');
+    handler.next(response);
+  }
+
+  void printWrapped(String text) {
+    final RegExp pattern = RegExp('.{1,800}');
+    pattern
+        .allMatches(text)
+        .forEach((RegExpMatch match) => print(match.group(0)));
   }
 }

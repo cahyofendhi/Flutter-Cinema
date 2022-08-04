@@ -19,10 +19,10 @@ class _SplashScreenState extends State<SplashScreen>
   // ignore: non_constant_identifier_names
   final SPLASHSCREEN_DURATION = 3 * 1000;
 
-  AnimationController controller;
+  AnimationController? controller;
 
-  Animation<double> imageAnimation;
-  Animation<Offset> textAnimation;
+  Animation<double>? imageAnimation;
+  Animation<Offset>? textAnimation;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
-    controller.dispose();
+    controller?.dispose();
     super.dispose();
   }
 
@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen>
       end: 1.0,
     ).animate(
       CurvedAnimation(
-        parent: controller,
+        parent: controller!,
         curve: Interval(
           0.050,
           0.200,
@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen>
     textAnimation =
         Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0)).animate(
             CurvedAnimation(
-                parent: controller,
+                parent: controller!,
                 curve: Interval(0.620, 0.920, curve: Curves.bounceIn)));
   }
 
@@ -74,10 +74,10 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     setImageAnimation();
     setTextAnimation();
-    controller.forward();
+    controller!.forward();
     return AnimatedBuilder(
-        animation: controller,
-        builder: (BuildContext ctx, Widget child) {
+        animation: controller!,
+        builder: (BuildContext ctx, Widget? child) {
           return ResponsiveBuilder(
             builder: (context, sizingInformation) {
               switch (sizingInformation.deviceScreenType) {
@@ -94,7 +94,6 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                     ),
                   );
-                  break;
                 case DeviceScreenType.tablet:
                   return Scaffold(
                     backgroundColor: AppStyle.greyApp,
@@ -108,7 +107,6 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                     ),
                   );
-                  break;
                 default:
                   return Scaffold(
                     backgroundColor: Colors.white,
@@ -126,7 +124,7 @@ class _SplashScreenState extends State<SplashScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ScaleTransition(
-            scale: imageAnimation,
+            scale: imageAnimation!,
             child: Image.asset(
               'assets/images/logo_cinema.png',
               fit: BoxFit.fill,
@@ -139,7 +137,7 @@ class _SplashScreenState extends State<SplashScreen>
             height: 25,
           ),
           SlideTransition(
-            position: textAnimation,
+            position: textAnimation!,
             child: Text(
               'Cinema FLT',
               style: TextStyle(

@@ -12,8 +12,12 @@ class Service {
 
   Service(this.client);
 
-  Future<Response> getSearchMovieList(
-      [String query, int page, String group, String apiKey = API_KEY]) async {
+  Future<Response?> getSearchMovieList({
+    String? query,
+    int? page,
+    String? group,
+    String apiKey = API_KEY,
+  }) async {
     return await client.get(url: '/search/$group/', parameters: {
       'api_key': apiKey,
       'query': query,
@@ -21,44 +25,59 @@ class Service {
     });
   }
 
-  Future<Response> getMovieList(
-      [String group, int page, String apiKey = API_KEY]) async {
-    return await client.get(url: 'movie/$group', parameters: {
+  Future<Response?> getMovieList(
+    String category, {
+    int? page,
+    String apiKey = API_KEY,
+  }) async {
+    return await client.get(url: 'movie/$category', parameters: {
       'api_key': apiKey,
       'page': page,
     });
   }
 
-  Future<Response> getMovieDetail(
-      [int movieId, String apiKey = API_KEY]) async {
+  Future<Response?> getMovieDetail({
+    required int movieId,
+    String apiKey = API_KEY,
+  }) async {
     return await client.get(url: 'movie/$movieId', parameters: {
       'api_key': apiKey,
     });
   }
 
-  Future<Response> getMovieMediaCredit(
-      [int movieId, String apiKey = API_KEY]) async {
+  Future<Response?> getMovieMediaCredit({
+    required int movieId,
+    String apiKey = API_KEY,
+  }) async {
     return await client.get(url: 'movie/$movieId/credits', parameters: {
       'api_key': apiKey,
     });
   }
 
-  Future<Response> getMovieSimilar(
-      [int movieId, String apiKey = API_KEY]) async {
+  Future<Response?> getMovieSimilar({
+    required int movieId,
+    String apiKey = API_KEY,
+  }) async {
     return await client.get(url: 'movie/$movieId/similar', parameters: {
       'api_key': apiKey,
     });
   }
 
-  Future<Response> getTvList(
-      [String group, int page, String apiKey = API_KEY]) async {
+  Future<Response?> getTvList({
+    required String group,
+    int? page,
+    String apiKey = API_KEY,
+  }) async {
     return await client.get(url: 'tv/$group', parameters: {
       'api_key': apiKey,
       'page': page,
     });
   }
 
-  Future<Response> getTvDetail([int tvId, String apiKey = API_KEY]) async {
+  Future<Response?> getTvDetail({
+    required int tvId,
+    String apiKey = API_KEY,
+  }) async {
     return await client.get(url: '/tv/$tvId', parameters: {
       'api_key': apiKey,
     });

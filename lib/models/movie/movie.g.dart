@@ -8,41 +8,41 @@ part of 'movie.dart';
 
 class MovieAdapter extends TypeAdapter<Movie> {
   @override
-  final typeId = 1;
+  final int typeId = 1;
 
   @override
   Movie read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Movie(
-      adult: fields[0] as bool,
-      backdropPath: fields[1] as String,
-      belongsToCollection: fields[2] as BelongsToCollection,
-      budget: fields[3] as int,
-      genres: (fields[4] as List)?.cast<Genres>(),
-      homepage: fields[6] as String,
-      id: fields[7] as int,
-      imdbId: fields[8] as String,
-      originalLanguage: fields[9] as String,
-      originalTitle: fields[10] as String,
-      overview: fields[11] as String,
-      popularity: fields[12] as double,
-      posterPath: fields[13] as String,
-      productionCompanies: (fields[14] as List)?.cast<ProductionCompanies>(),
-      productionCountries: (fields[15] as List)?.cast<ProductionCountries>(),
-      releaseDate: fields[16] as String,
-      revenue: fields[17] as int,
-      runtime: fields[18] as int,
-      spokenLanguages: (fields[19] as List)?.cast<SpokenLanguages>(),
-      status: fields[20] as String,
-      tagline: fields[21] as String,
-      title: fields[22] as String,
-      video: fields[23] as bool,
-      voteAverage: fields[24] as double,
-      voteCount: fields[25] as int,
-      genreIds: (fields[5] as List)?.cast<int>(),
+      adult: fields[0] as bool?,
+      backdropPath: fields[1] as String?,
+      belongsToCollection: fields[2] as BelongsToCollection?,
+      budget: fields[3] as int?,
+      genres: (fields[4] as List?)?.cast<Genres>(),
+      homepage: fields[6] as String?,
+      id: fields[7] as int?,
+      imdbId: fields[8] as String?,
+      originalLanguage: fields[9] as String?,
+      originalTitle: fields[10] as String?,
+      overview: fields[11] as String?,
+      popularity: fields[12] as double?,
+      posterPath: fields[13] as String?,
+      productionCompanies: (fields[14] as List?)?.cast<ProductionCompanies>(),
+      productionCountries: (fields[15] as List?)?.cast<ProductionCountries>(),
+      releaseDate: fields[16] as String?,
+      revenue: fields[17] as int?,
+      runtime: fields[18] as int?,
+      spokenLanguages: (fields[19] as List?)?.cast<SpokenLanguages>(),
+      status: fields[20] as String?,
+      tagline: fields[21] as String?,
+      title: fields[22] as String?,
+      video: fields[23] as bool?,
+      voteAverage: fields[24] as double?,
+      voteCount: fields[25] as int?,
+      genreIds: (fields[5] as List?)?.cast<int>(),
     );
   }
 
@@ -103,4 +103,14 @@ class MovieAdapter extends TypeAdapter<Movie> {
       ..writeByte(25)
       ..write(obj.voteCount);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MovieAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

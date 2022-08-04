@@ -37,15 +37,15 @@ class PopulerMovieItem extends StatelessWidget {
                 ],
               ),
               child: ImageNetwork(
-                getImageTheMovie(movie.posterPath),
+                getImageTheMovie(movie.posterPath ?? ''),
               ),
             ),
             SizedBox(
               height: 15,
             ),
             AppStyle.textTitleBoldItem(
-              movie.originalTitle,
-              AppStyle.getColor(ThemeColor.blackText),
+              movie.originalTitle ?? '',
+              textColor: AppStyle.getColor(ThemeColor.blackText),
             ),
             SizedBox(
               height: 5,
@@ -55,7 +55,7 @@ class PopulerMovieItem extends StatelessWidget {
             ),
             AppStyle.textSubtitle(
               movie.getReleaseDate(),
-              AppStyle.getColor(ThemeColor.greyTextDesc),
+              textColor: AppStyle.getColor(ThemeColor.greyTextDesc),
             ),
           ],
         ),

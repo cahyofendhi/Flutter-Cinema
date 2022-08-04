@@ -3,10 +3,8 @@ import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 
-
 // ignore: must_be_immutable
 class SimiliarMovieItem extends StatefulWidget {
-  
   SimilarMovieModel movie;
 
   SimiliarMovieItem(this.movie);
@@ -29,7 +27,7 @@ class _SimiliarMovieItemState extends State<SimiliarMovieItem> {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: FadeInImage.assetNetwork(
-                image: getTheMovieImage(widget.movie.posterPath),
+                image: getTheMovieImage(widget.movie.posterPath ?? ''),
                 placeholder: 'assets/images/placeholder.jpg',
                 fit: BoxFit.cover,
               ),
@@ -39,7 +37,7 @@ class _SimiliarMovieItemState extends State<SimiliarMovieItem> {
             height: 5,
           ),
           Text(
-            widget.movie.title,
+            widget.movie.title ?? '',
             style: TextStyle(
               fontSize: 12,
               letterSpacing: -0.04,

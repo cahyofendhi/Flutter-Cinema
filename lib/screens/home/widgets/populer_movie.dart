@@ -4,12 +4,10 @@ import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-import 'package:snaplist/snaplist_view.dart';
-
 import 'populer_movie_item.dart';
 
 class PopulerMovie extends StatefulWidget {
-  final List<Movie> movies;
+  final List<Movie>? movies;
 
   PopulerMovie(this.movies);
 
@@ -25,14 +23,11 @@ class _PopulerMovieState extends State<PopulerMovie> {
         switch (sizingInformation.deviceScreenType) {
           case DeviceScreenType.desktop:
             return buildBody(DEKSTOP);
-            break;
           case DeviceScreenType.tablet:
             return buildBody(TABLET);
-            break;
           default:
             final screenWidth = MediaQuery.of(context).size.width;
             return buildBody(screenWidth);
-            break;
         }
       },
     );
@@ -40,22 +35,22 @@ class _PopulerMovieState extends State<PopulerMovie> {
 
   Widget buildBody(double screenWidth) {
     final heightCard = screenWidth / 1.6;
-    final Size cardSize = Size(screenWidth / 3, heightCard);
     return Container(
       width: double.infinity,
       height: heightCard,
-      child: SnapList(
-        padding: EdgeInsets.symmetric(horizontal: 25),
-        sizeProvider: (index, data) => cardSize,
-        separatorProvider: (index, data) => Size(15.0, 15.0),
-        builder: (context, index, data) {
-          return widget.movies == null
-              ? PopulerItemPlaceholder()
-              : PopulerMovieItem(index, widget.movies[index], screenWidth);
-        },
-        count: widget.movies == null ? 5 : widget.movies.length,
+      child: ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: ((context, index) => SizedBox(
+              width: screenWidth / 3,
+              child: widget.movies == null
+                  ? PopulerItemPlaceholder()
+                  : PopulerMovieItem(index, widget.movies![index], screenWidth),
+            )),
+        separatorBuilder: (context, index) =>
+            SizedBox(height: 15.0, width: 15.0),
+        itemCount: widget.movies?.length ?? 0,
       ),
     );
   }
-
 }

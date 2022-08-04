@@ -20,7 +20,7 @@ class TvVideoItem extends StatelessWidget {
             width: double.infinity,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: ImageNetwork(getImageTheMovie(movie.posterPath)),
+              child: ImageNetwork(getImageTheMovie(movie.posterPath ?? '')),
             ),
           ),
           Center(

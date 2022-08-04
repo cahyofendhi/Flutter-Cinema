@@ -4,24 +4,26 @@ import 'dart:convert';
 import 'package:cinema_flt/models/tv/tv.dart';
 
 class TvResult {
-  int page;
-  int totalResults;
-  int totalPages;
-  List<TV> results;
+  final int? page;
+  final int? totalResults;
+  final int? totalPages;
+  final List<TV>? results;
 
-  TvResult({this.page, this.totalResults, this.totalPages, this.results});
+  TvResult({
+    this.page,
+    this.totalResults,
+    this.totalPages,
+    this.results,
+  });
 
-  TvResult.fromJson(Map<String, dynamic> json) {
-    page = json['page'];
-    totalResults = json['total_results'];
-    totalPages = json['total_pages'];
-    if (json['results'] != null) {
-      results = new List<TV>();
-      json['results'].forEach((v) {
-        results.add(TV.fromJson(v));
-      });
-    }
-  }
+  factory TvResult.fromJson(Map<String, dynamic> json) => TvResult(
+        page: json['page'],
+        totalResults: json['total_results'],
+        totalPages: json['total_pages'],
+        results: json['results'] != null
+            ? List<TV>.from(json["results"].map((x) => TV.fromJson(x)))
+            : null,
+      );
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -29,7 +31,9 @@ class TvResult {
     data['total_results'] = this.totalResults;
     data['total_pages'] = this.totalPages;
     if (this.results != null) {
-      data['results'] = this.results.map((v) => v.toJson()).toList();
+      data['results'] = this.results != null
+          ? this.results!.map((v) => v.toJson()).toList()
+          : null;
     }
     return data;
   }

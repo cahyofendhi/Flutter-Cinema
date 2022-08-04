@@ -1,63 +1,62 @@
 import 'package:cinema_flt/utils/AppUtils.dart';
-import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 part 'movie.g.dart';
 
 @HiveType(typeId: 1)
-class Movie extends Equatable with HiveObject {
+class Movie extends HiveObject {
   @HiveField(0)
-  bool adult;
+  bool? adult;
   @HiveField(1)
-  String backdropPath;
+  String? backdropPath;
   @HiveField(2)
-  BelongsToCollection belongsToCollection;
+  BelongsToCollection? belongsToCollection;
   @HiveField(3)
-  int budget;
+  int? budget;
   @HiveField(4)
-  List<Genres> genres;
+  List<Genres>? genres;
   @HiveField(5)
-  List<int> genreIds;
+  List<int>? genreIds;
   @HiveField(6)
-  String homepage;
+  String? homepage;
   @HiveField(7)
-  int id;
+  int? id;
   @HiveField(8)
-  String imdbId;
+  String? imdbId;
   @HiveField(9)
-  String originalLanguage;
+  String? originalLanguage;
   @HiveField(10)
-  String originalTitle;
+  String? originalTitle;
   @HiveField(11)
-  String overview;
+  String? overview;
   @HiveField(12)
-  double popularity;
+  double? popularity;
   @HiveField(13)
-  String posterPath;
+  String? posterPath;
   @HiveField(14)
-  List<ProductionCompanies> productionCompanies;
+  List<ProductionCompanies>? productionCompanies;
   @HiveField(15)
-  List<ProductionCountries> productionCountries;
+  List<ProductionCountries>? productionCountries;
   @HiveField(16)
-  String releaseDate;
+  String? releaseDate;
   @HiveField(17)
-  int revenue;
+  int? revenue;
   @HiveField(18)
-  int runtime;
+  int? runtime;
   @HiveField(19)
-  List<SpokenLanguages> spokenLanguages;
+  List<SpokenLanguages>? spokenLanguages;
   @HiveField(20)
-  String status;
+  String? status;
   @HiveField(21)
-  String tagline;
+  String? tagline;
   @HiveField(22)
-  String title;
+  String? title;
   @HiveField(23)
-  bool video;
+  bool? video;
   @HiveField(24)
-  double voteAverage;
+  double? voteAverage;
   @HiveField(25)
-  int voteCount;
+  int? voteCount;
 
   Movie(
       {this.adult,
@@ -88,104 +87,91 @@ class Movie extends Equatable with HiveObject {
       this.genreIds});
 
   String getReleaseDate() {
-    return releaseDate != null && releaseDate.isNotEmpty
-        ? convertDate(releaseDate)
+    return releaseDate != null && releaseDate?.isNotEmpty == true
+        ? convertDate(releaseDate!)
         : '';
   }
 
-  Movie.fromDetailJson(Map<String, dynamic> json) {
-    adult = json['adult'];
-    backdropPath = json['backdrop_path'];
-    belongsToCollection = json['belongs_to_collection'] != null
-        ? new BelongsToCollection.fromJson(json['belongs_to_collection'])
+  factory Movie.fromDetailJson(Map<String, dynamic> json) {
+    final _genres = json['genres'] != null
+        ? List<Genres>.from(json["genres"].map((x) => Genres.fromJson(x)))
         : null;
-    budget = json['budget'];
-    if (json['genres'] != null) {
-      genres = new List<Genres>();
-      json['genres'].forEach((v) {
-        genres.add(new Genres.fromJson(v));
-      });
-      genreIds = genres.map((dt) => dt.id).toList();
-    }
-    homepage = json['homepage'];
-    id = json['id'];
-    imdbId = json['imdb_id'];
-    originalLanguage = json['original_language'];
-    originalTitle = json['original_title'];
-    overview = json['overview'];
-    popularity = json['popularity'].toDouble();
-    posterPath = json['poster_path'];
-    if (json['production_companies'] != null) {
-      productionCompanies = new List<ProductionCompanies>();
-      json['production_companies'].forEach((v) {
-        productionCompanies.add(new ProductionCompanies.fromJson(v));
-      });
-    }
-    if (json['production_countries'] != null) {
-      productionCountries = new List<ProductionCountries>();
-      json['production_countries'].forEach((v) {
-        productionCountries.add(new ProductionCountries.fromJson(v));
-      });
-    }
-    releaseDate = json['release_date'];
-    revenue = json['revenue'];
-    runtime = json['runtime'];
-    if (json['spoken_languages'] != null) {
-      spokenLanguages = new List<SpokenLanguages>();
-      json['spoken_languages'].forEach((v) {
-        spokenLanguages.add(new SpokenLanguages.fromJson(v));
-      });
-    }
-    status = json['status'];
-    tagline = json['tagline'];
-    title = json['title'];
-    video = json['video'];
-    voteAverage = json['vote_average'].toDouble();
-    voteCount = json['vote_count'];
+    return Movie(
+      adult: json['adult'],
+      backdropPath: json['backdrop_path'],
+      belongsToCollection: json['belongs_to_collection'] != null
+          ? BelongsToCollection.fromJson(json['belongs_to_collection'])
+          : null,
+      budget: json['budget'],
+      genres: _genres,
+      genreIds: _genres != null ? _genres.map((dt) => dt.id!).toList() : null,
+      homepage: json['homepage'],
+      id: json['id'],
+      imdbId: json['imdb_id'],
+      originalLanguage: json['original_language'],
+      originalTitle: json['original_title'],
+      overview: json['overview'],
+      popularity: json['popularity'].toDouble(),
+      posterPath: json['poster_path'],
+      productionCompanies: json['production_companies'] != null
+          ? List<ProductionCompanies>.from(json["production_companies"]
+              .map((x) => ProductionCompanies.fromJson(x)))
+          : null,
+      productionCountries: json['production_countries'] != null
+          ? List<ProductionCountries>.from(json["production_countries"]
+              .map((x) => ProductionCountries.fromJson(x)))
+          : null,
+      releaseDate: json['release_date'],
+      revenue: json['revenue'],
+      runtime: json['runtime'],
+      spokenLanguages: json['spoken_languages'] != null
+          ? List<SpokenLanguages>.from(
+              json["spoken_languages"].map((x) => SpokenLanguages.fromJson(x)))
+          : null,
+      status: json['status'],
+      tagline: json['tagline'],
+      title: json['title'],
+      video: json['video'],
+      voteAverage: json['vote_average'].toDouble(),
+      voteCount: json['vote_count'],
+    );
   }
 
-  Map<String, dynamic> toDetailJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['adult'] = this.adult;
-    data['backdrop_path'] = this.backdropPath;
-    if (this.belongsToCollection != null) {
-      data['belongs_to_collection'] = this.belongsToCollection.toJson();
-    }
-    data['budget'] = this.budget;
-    if (this.genres != null) {
-      data['genres'] = this.genres.map((v) => v.toJson()).toList();
-    }
-    data['homepage'] = this.homepage;
-    data['id'] = this.id;
-    data['imdb_id'] = this.imdbId;
-    data['original_language'] = this.originalLanguage;
-    data['original_title'] = this.originalTitle;
-    data['overview'] = this.overview;
-    data['popularity'] = this.popularity;
-    data['poster_path'] = this.posterPath;
-    if (this.productionCompanies != null) {
-      data['production_companies'] =
-          this.productionCompanies.map((v) => v.toJson()).toList();
-    }
-    if (this.productionCountries != null) {
-      data['production_countries'] =
-          this.productionCountries.map((v) => v.toJson()).toList();
-    }
-    data['release_date'] = this.releaseDate;
-    data['revenue'] = this.revenue;
-    data['runtime'] = this.runtime;
-    if (this.spokenLanguages != null) {
-      data['spoken_languages'] =
-          this.spokenLanguages.map((v) => v.toJson()).toList();
-    }
-    data['status'] = this.status;
-    data['tagline'] = this.tagline;
-    data['title'] = this.title;
-    data['video'] = this.video;
-    data['vote_average'] = this.voteAverage;
-    data['vote_count'] = this.voteCount;
-    return data;
-  }
+  Map<String, dynamic> toDetailJson() => {
+        'adult': this.adult,
+        'backdrop_path': this.backdropPath,
+        'belongs_to_collection': this.belongsToCollection?.toJson(),
+        'budget': this.budget,
+        'genres': this.genres != null
+            ? this.genres!.map((v) => v.toJson()).toList()
+            : null,
+        'homepage': this.homepage,
+        'id': this.id,
+        'imdb_id': this.imdbId,
+        'original_language': this.originalLanguage,
+        'original_title': this.originalTitle,
+        'overview': this.overview,
+        'popularity': this.popularity,
+        'poster_path': this.posterPath,
+        'production_companies': this.productionCompanies != null
+            ? this.productionCompanies!.map((v) => v.toJson()).toList()
+            : null,
+        'production_countries': this.productionCountries != null
+            ? this.productionCountries!.map((v) => v.toJson()).toList()
+            : null,
+        'release_date': this.releaseDate,
+        'revenue': this.revenue,
+        'runtime': this.runtime,
+        'spoken_languages': this.spokenLanguages != null
+            ? this.spokenLanguages!.map((v) => v.toJson()).toList()
+            : null,
+        'status': this.status,
+        'tagline': this.tagline,
+        'title': this.title,
+        'video': this.video,
+        'vote_average': this.voteAverage,
+        'vote_count': this.voteCount,
+      };
 
   Movie.fromJson(Map<String, dynamic> json) {
     popularity = json['popularity'].toDouble();
@@ -228,10 +214,10 @@ class Movie extends Equatable with HiveObject {
 }
 
 class BelongsToCollection {
-  int id;
-  String name;
-  String posterPath;
-  String backdropPath;
+  int? id;
+  String? name;
+  String? posterPath;
+  String? backdropPath;
 
   BelongsToCollection({this.id, this.name, this.posterPath, this.backdropPath});
 
@@ -253,8 +239,8 @@ class BelongsToCollection {
 }
 
 class Genres {
-  int id;
-  String name;
+  int? id;
+  String? name;
 
   Genres({this.id, this.name});
 
@@ -272,10 +258,10 @@ class Genres {
 }
 
 class ProductionCompanies {
-  int id;
-  String logoPath;
-  String name;
-  String originCountry;
+  int? id;
+  String? logoPath;
+  String? name;
+  String? originCountry;
 
   ProductionCompanies({this.id, this.logoPath, this.name, this.originCountry});
 
@@ -297,8 +283,8 @@ class ProductionCompanies {
 }
 
 class ProductionCountries {
-  String iso31661;
-  String name;
+  String? iso31661;
+  String? name;
 
   ProductionCountries({this.iso31661, this.name});
 
@@ -316,8 +302,8 @@ class ProductionCountries {
 }
 
 class SpokenLanguages {
-  String iso6391;
-  String name;
+  String? iso6391;
+  String? name;
 
   SpokenLanguages({this.iso6391, this.name});
 
