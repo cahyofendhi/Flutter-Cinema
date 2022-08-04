@@ -1,10 +1,12 @@
-import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
+import 'package:cinema_flt/bloc/detail/detail_movie_bloc.dart';
+import 'package:cinema_flt/bloc/detail/detail_movie_event.dart';
+import 'package:cinema_flt/bloc/detail/detail_movie_state.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/utils/AppStyle.dart';
 import 'package:cinema_flt/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'widgets/content_detail.dart';
 
@@ -21,19 +23,17 @@ class DetailMovie extends StatefulWidget {
 }
 
 class _DetailMovieState extends State<DetailMovie> {
-  MovieDetailBloc? _movieBloc;
+  DetailMovieBloc? _movieBloc;
 
   ScrollController? scrollController;
 
   final double expandedHeight = 350.0;
 
   @override
-  void didChangeDependencies() {
-    _movieBloc = Provider.of<MovieDetailBloc>(context);
-    _movieBloc?.getMovieDetail(widget.movie.id!);
-    _movieBloc?.getMediaCredit(widget.movie.id!);
-    _movieBloc?.getSimilarMovie(widget.movie.id!);
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    _movieBloc = context.read<DetailMovieBloc>()
+      ..add(DetailMovieInitEvent(widget.movie));
   }
 
   @override
@@ -96,18 +96,17 @@ class _DetailMovieState extends State<DetailMovie> {
     return Container(
       height: expandedHeight + 50,
       width: double.infinity,
-      child: StreamBuilder(
-          stream: _movieBloc?.movie,
-          builder: (ctx, AsyncSnapshot<Movie> snapshot) {
-            String? path = snapshot.data != null
-                ? snapshot.data?.posterPath
-                : widget.movie.posterPath;
-            return FadeInImage.assetNetwork(
-              image: getTheMovieImage(path ?? ''),
-              placeholder: 'assets/images/placeholder.png',
-              fit: BoxFit.cover,
-            );
-          }),
+      child: BlocBuilder<DetailMovieBloc, DetailMovieState>(
+        buildWhen: (previous, current) => previous.movie != current.movie,
+        builder: (context, state) {
+          String? path = state.movie?.posterPath ?? widget.movie.posterPath;
+          return FadeInImage.assetNetwork(
+            image: getTheMovieImage(path ?? ''),
+            placeholder: 'assets/images/placeholder.png',
+            fit: BoxFit.cover,
+          );
+        },
+      ),
     );
   }
 

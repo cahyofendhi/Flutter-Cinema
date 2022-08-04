@@ -1,8 +1,7 @@
-import 'package:cinema_flt/bloc/movie_detail_bloc.dart';
+import 'package:cinema_flt/bloc/detail/detail_movie_bloc.dart';
 import 'package:cinema_flt/bloc/search/search_bloc.dart';
 import 'package:cinema_flt/bloc/tv_detail_bloc.dart';
 import 'package:cinema_flt/components/unknown_page.dart';
-import 'package:cinema_flt/repository/movie_repository.dart';
 import 'package:cinema_flt/repository/tv_repository.dart';
 import 'package:cinema_flt/screens/main_screens.dart';
 import 'package:cinema_flt/screens/movie_detail/movie_detail.dart';
@@ -25,16 +24,12 @@ class AppRoute {
         return FadeRoute(page: MainScreens());
       case DetailMovie.routeName:
         final arguments = settings.arguments as Map;
-        final page = DetailMovie(arguments['movie'], arguments['tag']);
-        final _page = (BuildContext context, _, __) {
-          return ProxyProvider<MovieRepository, MovieDetailBloc>(
-            update: (context, movieRepository, movieDetailBloc) =>
-                MovieDetailBloc(movieRepository: movieRepository),
-            dispose: (context, movieDetailBloc) => movieDetailBloc.dispose(),
-            child: page,
-          );
-        };
-        return FadeRoute(page: page, builder: _page);
+        return FadeRoute(
+          page: BlocProvider(
+            create: (context) => DetailMovieBloc(),
+            child: DetailMovie(arguments['movie'], arguments['tag']),
+          ),
+        );
       case MovieSearch.routeName:
         return AppPageRoute(
           builder: (ctx) => BlocProvider(
