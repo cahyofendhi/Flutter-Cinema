@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class CastItemPlaceholder extends StatelessWidget {
   const CastItemPlaceholder({
-    Key key,
-    @required this.leftMargin,
+    Key? key,
+    required this.leftMargin,
   }) : super(key: key);
 
   final double leftMargin;

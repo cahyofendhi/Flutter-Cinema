@@ -35,12 +35,13 @@ class TvRepository {
   Future<ServiceModel> getTvList(TvGroup group, int page) async {
     final ServiceModel result = ServiceModel();
     try {
-      Response response = await _service.getTvList(_getTvGroup(group), 1);
-      if (response.statusCode == Service.SUCCESS) {
+      Response? response =
+          await _service.getTvList(group: _getTvGroup(group), page: 1);
+      if (response!.statusCode == Service.SUCCESS) {
         TvResult mResult = TvResult.fromJson(response.data);
         result.data = mResult;
         await insertTvMovie(
-            datas: mResult.results,
+            datas: mResult.results!,
             isOnAir: group == TvGroup.OnAir,
             isPopuler: group == TvGroup.PopulerTv,
             isTopRate: group == TvGroup.TopRateTv);
@@ -59,8 +60,8 @@ class TvRepository {
   Future<ServiceModel> getTvDetail(int tvId) async {
     final ServiceModel result = ServiceModel<TV>();
     try {
-      Response response = await _service.getTvDetail(tvId);
-      if (response.statusCode == Service.SUCCESS) {
+      Response? response = await _service.getTvDetail(tvId: tvId);
+      if (response!.statusCode == Service.SUCCESS) {
         TV mResult = TV.fromJson(response.data);
         result.data = mResult;
       } else {
@@ -73,11 +74,12 @@ class TvRepository {
     return result;
   }
 
-  Future<void> insertTvMovie(
-      {List<TV> datas,
-      bool isPopuler = false,
-      bool isOnAir = false,
-      bool isTopRate = false}) async {
+  Future<void> insertTvMovie({
+    required List<TV> datas,
+    bool isPopuler = false,
+    bool isOnAir = false,
+    bool isTopRate = false,
+  }) async {
     _databaseRepository.insertTvMovie(
         movies: datas,
         isOnAir: isOnAir,

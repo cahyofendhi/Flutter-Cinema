@@ -4,14 +4,15 @@ import 'package:cinema_flt/models/tv/tv.dart';
 import 'package:hive/hive.dart';
 
 class DatabaseRepository {
-  Future<void> insertMovie(
-      {List<Movie> movies,
-      bool isPopuler,
-      bool isTopRate,
-      bool isUpcoming}) async {
-    Box<Movie> moviePopular = Hive.box<Movie>(MOVIE_POPULAR);
-    Box<Movie> movieTopRate = Hive.box<Movie>(MOVIE_TOP_RATE);
-    Box<Movie> movieUpcoming = Hive.box<Movie>(MOVIE_UPCOMING);
+  Future<void> insertMovie({
+    required List<Movie> movies,
+    bool isPopuler = false,
+    bool isTopRate = false,
+    bool isUpcoming = false,
+  }) async {
+    Box<Movie> moviePopular = await Hive.openBox<Movie>(MOVIE_POPULAR);
+    Box<Movie> movieTopRate = await Hive.openBox<Movie>(MOVIE_TOP_RATE);
+    Box<Movie> movieUpcoming = await Hive.openBox<Movie>(MOVIE_UPCOMING);
     if (isPopuler) {
       moviePopular.clear().then((value) => moviePopular.addAll(movies));
     } else if (isTopRate) {
@@ -21,13 +22,16 @@ class DatabaseRepository {
     }
   }
 
-  Future<List<Movie>> getMovies(
-      {bool isPopuler, bool isTopRate, bool isUpcoming}) async {
+  Future<List<Movie>> getMovies({
+    bool isPopuler = false,
+    bool isTopRate = false,
+    bool isUpcoming = false,
+  }) async {
     List<Movie> data = [];
 
-    Box<Movie> moviePopular = Hive.box<Movie>(MOVIE_POPULAR);
-    Box<Movie> movieTopRate = Hive.box<Movie>(MOVIE_TOP_RATE);
-    Box<Movie> movieUpcoming = Hive.box<Movie>(MOVIE_UPCOMING);
+    Box<Movie> moviePopular = await Hive.openBox<Movie>(MOVIE_POPULAR);
+    Box<Movie> movieTopRate = await Hive.openBox<Movie>(MOVIE_TOP_RATE);
+    Box<Movie> movieUpcoming = await Hive.openBox<Movie>(MOVIE_UPCOMING);
 
     if (isPopuler) {
       data = moviePopular.values.toList();
@@ -39,14 +43,15 @@ class DatabaseRepository {
     return data;
   }
 
-  Future<void> insertTvMovie(
-      {List<TV> movies,
-      bool isPopuler = false,
-      bool isOnAir = false,
-      bool isTopRate = false}) async {
-    Box<TV> tvOnAir = Hive.box<TV>(TV_ON_AIR);
-    Box<TV> tvPopular = Hive.box<TV>(TV_POPULAR);
-    Box<TV> tvTopRate = Hive.box<TV>(TV_TOP_RATE);
+  Future<void> insertTvMovie({
+    required List<TV> movies,
+    bool isPopuler = false,
+    bool isOnAir = false,
+    bool isTopRate = false,
+  }) async {
+    Box<TV> tvOnAir = await Hive.openBox<TV>(TV_ON_AIR);
+    Box<TV> tvPopular = await Hive.openBox<TV>(TV_POPULAR);
+    Box<TV> tvTopRate = await Hive.openBox<TV>(TV_TOP_RATE);
     if (isPopuler) {
       tvPopular.clear().then((value) => tvPopular.addAll(movies));
     } else if (isTopRate) {
@@ -62,9 +67,9 @@ class DatabaseRepository {
       bool isTopRate = false}) async {
     List<TV> data = [];
 
-    Box<TV> tvOnAir = Hive.box<TV>(TV_ON_AIR);
-    Box<TV> tvPopular = Hive.box<TV>(TV_POPULAR);
-    Box<TV> tvTopRate = Hive.box<TV>(TV_TOP_RATE);
+    Box<TV> tvOnAir = await Hive.openBox<TV>(TV_ON_AIR);
+    Box<TV> tvPopular = await Hive.openBox<TV>(TV_POPULAR);
+    Box<TV> tvTopRate = await Hive.openBox<TV>(TV_TOP_RATE);
 
     if (isPopuler) {
       data = tvPopular.values.toList();

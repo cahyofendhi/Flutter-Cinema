@@ -31,7 +31,7 @@ Map<int, String> _genreMap = {
 };
 
 List<String> getGenresForIds(List<int> genreIds) =>
-    genreIds.map((id) => _genreMap[id]).toList();
+    genreIds.map((id) => _genreMap[id] ?? '').toList();
 
 String getGenreString(List<int> genreIds) {
   StringBuffer buffer = StringBuffer();

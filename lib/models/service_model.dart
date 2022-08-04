@@ -2,7 +2,7 @@ import 'package:cinema_flt/services/app_exception.dart';
 import 'package:dio/dio.dart';
 
 class ServiceModel<T> {
-  T data;
+  T? data;
   String message = '';
   String errorMessage = '';
   bool isSuccess = false;
@@ -22,9 +22,9 @@ class ServiceModel<T> {
     try {
       serviceModel.data = await fetch();
     } catch (e) {
-      serviceModel.errorMessage = e is AppException ? e.toString() : e.toString();
+      serviceModel.errorMessage =
+          e is AppException ? e.toString() : e.toString();
     }
     return serviceModel;
   }
-
 }

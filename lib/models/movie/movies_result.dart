@@ -1,74 +1,36 @@
-import 'dart:convert';
-
-// import 'package:cinema_flt/db/movie_db.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 
 import '../dates.dart';
 
 class MoviesResult {
-  List<Movie> results;
-  int page;
-  int totalResults;
-  Dates dates;
-  int totalPages;
+  final List<Movie> results;
+  final int? page;
+  final int? totalResults;
+  final Dates? dates;
+  final int? totalPages;
 
   MoviesResult(
-      {this.results,
+      {this.results = const [],
       this.page,
       this.totalResults,
       this.dates,
       this.totalPages});
 
-  MoviesResult.fromJson(Map<String, dynamic> json) {
-    if (json['results'] != null) {
-      results = new List<Movie>();
-      json['results'].forEach((v) {
-        results.add(Movie.fromJson(v));
-      });
-    }
-    page = json['page'];
-    totalResults = json['total_results'];
-    dates = json['dates'] != null ? new Dates.fromJson(json['dates']) : null;
-    totalPages = json['total_pages'];
-  }
+  factory MoviesResult.fromJson(Map<String, dynamic> json) => MoviesResult(
+        results: json['results'] != null
+            ? List<Movie>.from(json["results"].map((x) => Movie.fromJson(x)))
+            : [],
+        page: json['page'],
+        totalPages: json['total_results'],
+        dates: json['dates'] != null ? new Dates.fromJson(json['dates']) : null,
+        totalResults: json['total_pages'],
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.results != null) {
-      data['results'] = this.results.map((v) => v.toJson()).toList();
-    }
-    data['page'] = this.page;
-    data['total_results'] = this.totalResults;
-    if (this.dates != null) {
-      data['dates'] = this.dates.toJson();
-    }
-    data['total_pages'] = this.totalPages;
-    return data;
-  }
-
-  // static List<Movie> fromDb(List<MovieEntry> data) {
-  //   List<Movie> dataMovie = [];
-
-  //   data.forEach((mv) {
-  //     Movie movie = Movie(
-  //         popularity: mv.popularity,
-  //         voteCount: mv.voteCount,
-  //         video: mv.video,
-  //         posterPath: mv.posterPath,
-  //         id: mv.idMovie,
-  //         adult: mv.adult,
-  //         backdropPath: mv.backdropPath,
-  //         originalLanguage: mv.originalLanguage,
-  //         originalTitle: mv.originalTitle,
-  //         genreIds:
-  //             mv.genreIds.isEmpty ? [] : jsonDecode(mv.genreIds).cast<int>(),
-  //         title: mv.title,
-  //         voteAverage: mv.voteAverage,
-  //         overview: mv.overview,
-  //         releaseDate: mv.releaseDate);
-  //     dataMovie.add(movie);
-  //   });
-
-  //   return dataMovie;
-  // }
+  Map<String, dynamic> toJson() => {
+        "results": results.map((v) => v.toJson()).toList(),
+        "page": page,
+        "total_results": totalResults,
+        "dates": dates?.toJson(),
+        "total_pages": totalPages,
+      };
 }

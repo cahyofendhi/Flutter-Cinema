@@ -1,69 +1,68 @@
 import 'package:cinema_flt/models/media_credit.dart';
-import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 part 'tv.g.dart';
 
 @HiveType(typeId: 2)
-class TV extends Equatable with HiveObject{
+class TV extends HiveObject {
   @HiveField(0)
-  String backdropPath;
+  String? backdropPath;
   @HiveField(1)
-  List<Cast> createdBy;
+  List<Cast>? createdBy;
   @HiveField(2)
-  List<int> episodeRunTime;
+  List<int>? episodeRunTime;
   @HiveField(3)
-  String firstAirDate;
+  String? firstAirDate;
   @HiveField(4)
-  List<Genres> genres;
+  List<Genres>? genres;
   @HiveField(5)
-  List<int> genreIds;
+  List<int>? genreIds;
   @HiveField(6)
-  String homepage;
+  String? homepage;
   @HiveField(7)
-  int id;
+  int? id;
   @HiveField(8)
-  bool inProduction;
+  bool? inProduction;
   @HiveField(9)
-  List<String> languages;
+  List<String>? languages;
   @HiveField(10)
-  String lastAirDate;
+  String? lastAirDate;
   @HiveField(11)
-  LastEpisodeToAir lastEpisodeToAir;
+  LastEpisodeToAir? lastEpisodeToAir;
   @HiveField(12)
-  String name;
+  String? name;
   @HiveField(13)
-  int nextEpisodeToAir;
+  int? nextEpisodeToAir;
   @HiveField(14)
-  List<Networks> networks;
+  List<Networks>? networks;
   @HiveField(15)
-  int numberOfEpisodes;
+  int? numberOfEpisodes;
   @HiveField(16)
-  int numberOfSeasons;
+  int? numberOfSeasons;
   @HiveField(17)
-  List<String> originCountry;
+  List<String>? originCountry;
   @HiveField(18)
-  String originalLanguage;
+  String? originalLanguage;
   @HiveField(19)
-  String originalName;
+  String? originalName;
   @HiveField(20)
-  String overview;
+  String? overview;
   @HiveField(21)
-  double popularity;
+  double? popularity;
   @HiveField(22)
-  String posterPath;
+  String? posterPath;
   @HiveField(23)
-  List<ProductionCompanies> productionCompanies;
+  List<ProductionCompanies>? productionCompanies;
   @HiveField(24)
-  List<Seasons> seasons;
+  List<Seasons>? seasons;
   @HiveField(25)
-  String status;
+  String? status;
   @HiveField(26)
-  String type;
+  String? type;
   @HiveField(27)
-  double voteAverage;
+  double? voteAverage;
   @HiveField(28)
-  int voteCount;
+  int? voteCount;
 
   TV(
       {this.backdropPath,
@@ -96,84 +95,71 @@ class TV extends Equatable with HiveObject{
       this.voteAverage,
       this.voteCount});
 
-  TV.fromJson(Map<String, dynamic> json) {
-    backdropPath = json['backdrop_path'] ?? 'sjdhsjdh';
-    if (json['created_by'] != null) {
-      createdBy = new List<Cast>();
-      json['created_by'].forEach((v) {
-        createdBy.add(new Cast.fromJson(v));
-      });
-    }
-    if (json['episode_run_time'] != null) {
-      episodeRunTime = json['episode_run_time'].cast<int>();
-    }
-    firstAirDate = json['first_air_date'];
-    if (json['genres'] != null) {
-      genres = new List<Genres>();
-      json['genres'].forEach((v) {
-        genres.add(new Genres.fromJson(v));
-      });
-    }
-    if (json['genre_ids'] != null) {
-      genreIds = json['genre_ids'].cast<int>();
-    }
-    homepage = json['homepage'] ?? '';
-    id = json['id'] ?? 0;
-    inProduction = json['in_production'] ?? false;
-    if (json['languages'] != null) {
-      languages = json['languages'].cast<String>();
-    }
-    lastAirDate = json['last_air_date'] ?? '';
-    lastEpisodeToAir = json['last_episode_to_air'] != null
-        ? new LastEpisodeToAir.fromJson(json['last_episode_to_air'])
+  factory TV.fromJson(Map<String, dynamic> json) {
+    final _genres = json['genres'] != null
+        ? List<Genres>.from(json["genres"].map((x) => Genres.fromJson(x)))
         : null;
-    name = json['name'] ?? '';
-    if (json['networks'] != null) {
-      networks = new List<Networks>();
-      json['networks'].forEach((v) {
-        networks.add(new Networks.fromJson(v));
-      });
-    }
-    numberOfEpisodes = json['number_of_episodes'] ?? 0;
-    numberOfSeasons = json['number_of_seasons'] ?? 0;
-    if (json['origin_country'] != null) {
-      originCountry = json['origin_country'].cast<String>();
-    }
-    originalLanguage = json['original_language'] ?? '';
-    originalName = json['original_name'] ?? '';
-    overview = json['overview'] ?? '';
-    if (json['popularity'] != null)
-      popularity = json['popularity'].toDouble() ?? 0.0;
-    posterPath = json['poster_path'] ?? '';
-    if (json['production_companies'] != null) {
-      productionCompanies = new List<ProductionCompanies>();
-      json['production_companies'].forEach((v) {
-        productionCompanies.add(new ProductionCompanies.fromJson(v));
-      });
-    }
-    if (json['seasons'] != null) {
-      seasons = new List<Seasons>();
-      json['seasons'].forEach((v) {
-        seasons.add(new Seasons.fromJson(v));
-      });
-    }
-    status = json['status'] ?? '';
-    type = json['type'] ?? '';
-    if (json['vote_average'] != null)
-      voteAverage = json['vote_average'].toDouble() ?? 0.0;
-    voteCount = json['vote_count'] ?? 0;
+    return TV(
+      backdropPath: json['backdrop_path'],
+      createdBy: json['created_by'] != null
+          ? List<Cast>.from(json["created_by"].map((x) => Cast.fromJson(x)))
+          : null,
+      episodeRunTime: json['episode_run_time'] != null
+          ? json['episode_run_time'].cast<int>()
+          : null,
+      firstAirDate: json['first_air_date'],
+      genres: _genres,
+      genreIds: _genres != null ? _genres.map((dt) => dt.id!).toList() : null,
+      homepage: json['homepage'] ?? '',
+      id: json['id'] ?? 0,
+      inProduction: json['in_production'] ?? false,
+      languages:
+          json['languages'] != null ? json['languages'].cast<String>() : null,
+      lastAirDate: json['last_air_date'] ?? '',
+      lastEpisodeToAir: json['last_episode_to_air'] != null
+          ? new LastEpisodeToAir.fromJson(json['last_episode_to_air'])
+          : null,
+      name: json['name'] ?? '',
+      networks: json['networks'] != null
+          ? List<Networks>.from(
+              json["networks"].map((x) => Networks.fromJson(x)))
+          : null,
+      numberOfEpisodes: json['number_of_episodes'] ?? 0,
+      numberOfSeasons: json['number_of_seasons'] ?? 0,
+      originCountry: json['origin_country'] != null
+          ? json['origin_country'].cast<String>()
+          : null,
+      originalLanguage: json['original_language'] ?? '',
+      originalName: json['original_name'] ?? '',
+      overview: json['overview'] ?? '',
+      popularity:
+          json['popularity'] != null ? json['popularity'].toDouble() : 0.0,
+      posterPath: json['poster_path'] ?? '',
+      productionCompanies: json['production_companies'] != null
+          ? List<ProductionCompanies>.from(json["production_companies"]
+              .map((x) => ProductionCompanies.fromJson(x)))
+          : null,
+      seasons: json['seasons'] != null
+          ? List<Seasons>.from(json["seasons"].map((x) => Seasons.fromJson(x)))
+          : null,
+      status: json['status'] ?? '',
+      type: json['type'] ?? '',
+      voteAverage:
+          json['vote_average'] != null ? json['vote_average'].toDouble() : 0.0,
+      voteCount: json['vote_count'] ?? 0,
+    );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['backdrop_path'] = this.backdropPath;
     if (this.createdBy != null) {
-      data['created_by'] = this.createdBy.map((v) => v.toJson()).toList();
+      data['created_by'] = this.createdBy!.map((v) => v.toJson()).toList();
     }
     data['episode_run_time'] = this.episodeRunTime;
     data['first_air_date'] = this.firstAirDate;
     if (this.genres != null) {
-      data['genres'] = this.genres.map((v) => v.toJson()).toList();
+      data['genres'] = this.genres!.map((v) => v.toJson()).toList();
     }
     data['homepage'] = this.homepage;
     data['id'] = this.id;
@@ -181,12 +167,12 @@ class TV extends Equatable with HiveObject{
     data['languages'] = this.languages;
     data['last_air_date'] = this.lastAirDate;
     if (this.lastEpisodeToAir != null) {
-      data['last_episode_to_air'] = this.lastEpisodeToAir.toJson();
+      data['last_episode_to_air'] = this.lastEpisodeToAir!.toJson();
     }
     data['name'] = this.name;
     data['next_episode_to_air'] = this.nextEpisodeToAir;
     if (this.networks != null) {
-      data['networks'] = this.networks.map((v) => v.toJson()).toList();
+      data['networks'] = this.networks!.map((v) => v.toJson()).toList();
     }
     data['number_of_episodes'] = this.numberOfEpisodes;
     data['number_of_seasons'] = this.numberOfSeasons;
@@ -198,10 +184,10 @@ class TV extends Equatable with HiveObject{
     data['poster_path'] = this.posterPath;
     if (this.productionCompanies != null) {
       data['production_companies'] =
-          this.productionCompanies.map((v) => v.toJson()).toList();
+          this.productionCompanies!.map((v) => v.toJson()).toList();
     }
     if (this.seasons != null) {
-      data['seasons'] = this.seasons.map((v) => v.toJson()).toList();
+      data['seasons'] = this.seasons!.map((v) => v.toJson()).toList();
     }
     data['status'] = this.status;
     data['type'] = this.type;
@@ -209,15 +195,11 @@ class TV extends Equatable with HiveObject{
     data['vote_count'] = this.voteCount;
     return data;
   }
-
-  @override
-  // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
 }
 
 class Genres {
-  int id;
-  String name;
+  int? id;
+  String? name;
 
   Genres({this.id, this.name});
 
@@ -235,17 +217,17 @@ class Genres {
 }
 
 class LastEpisodeToAir {
-  String airDate;
-  int episodeNumber;
-  int id;
-  String name;
-  String overview;
-  String productionCode;
-  int seasonNumber;
-  int showId;
-  String stillPath;
-  double voteAverage;
-  int voteCount;
+  String? airDate;
+  int? episodeNumber;
+  int? id;
+  String? name;
+  String? overview;
+  String? productionCode;
+  int? seasonNumber;
+  int? showId;
+  String? stillPath;
+  double? voteAverage;
+  int? voteCount;
 
   LastEpisodeToAir(
       {this.airDate,
@@ -292,10 +274,10 @@ class LastEpisodeToAir {
 }
 
 class Networks {
-  String name;
-  int id;
-  String logoPath;
-  String originCountry;
+  String? name;
+  int? id;
+  String? logoPath;
+  String? originCountry;
 
   Networks({this.name, this.id, this.logoPath, this.originCountry});
 
@@ -317,10 +299,10 @@ class Networks {
 }
 
 class ProductionCompanies {
-  int id;
-  String logoPath;
-  String name;
-  String originCountry;
+  int? id;
+  String? logoPath;
+  String? name;
+  String? originCountry;
 
   ProductionCompanies({this.id, this.logoPath, this.name, this.originCountry});
 
@@ -342,13 +324,13 @@ class ProductionCompanies {
 }
 
 class Seasons {
-  String airDate;
-  int episodeCount;
-  int id;
-  String name;
-  String overview;
-  String posterPath;
-  int seasonNumber;
+  String? airDate;
+  int? episodeCount;
+  int? id;
+  String? name;
+  String? overview;
+  String? posterPath;
+  int? seasonNumber;
 
   Seasons(
       {this.airDate,

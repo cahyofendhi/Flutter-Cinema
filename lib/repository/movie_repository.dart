@@ -1,6 +1,4 @@
 // import 'package:cinema_flt/db/movie_moor.dart';
-import 'dart:io';
-
 import 'package:cinema_flt/models/media_credit.dart';
 import 'package:cinema_flt/models/movie/movie.dart';
 import 'package:cinema_flt/models/movie/movies_result.dart';
@@ -8,8 +6,6 @@ import 'package:cinema_flt/models/service_model.dart';
 import 'package:cinema_flt/models/similar_result.dart';
 import 'package:cinema_flt/repository/database_repository.dart';
 import 'package:cinema_flt/services/service.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import 'group.dart';
 
@@ -50,8 +46,8 @@ class MovieRepository {
     }
     try {
       final response =
-          await _service.getMovieList(_getCategoryMovie(category), 1);
-      final _result = MoviesResult.fromJson(response.data);
+          await _service.getMovieList(_getCategoryMovie(category), page: 1);
+      final _result = MoviesResult.fromJson(response!.data!);
 
       await insertMovie(
           datas: _result.results,
@@ -66,11 +62,12 @@ class MovieRepository {
     }
   }
 
-  Future<void> insertMovie(
-      {List<Movie> datas,
-      bool isPopuler = false,
-      bool isUpcoming = false,
-      bool isTopRate = false}) async {
+  Future<void> insertMovie({
+    required List<Movie> datas,
+    bool isPopuler = false,
+    bool isUpcoming = false,
+    bool isTopRate = false,
+  }) async {
     _databaseRepository.insertMovie(
         movies: datas,
         isPopuler: isPopuler,
@@ -110,11 +107,11 @@ class MovieRepository {
   Future<ServiceModel> getSearchMovie(String query, int page) async {
     final data = await ServiceModel.fetch<MoviesResult>(() async {
       final response = await _service.getSearchMovieList(
-        query,
-        page,
-        getRequestType(RequestType.Movie),
+        query: query,
+        page: page,
+        group: getRequestType(RequestType.Movie),
       );
-      return MoviesResult.fromJson(response.data);
+      return MoviesResult.fromJson(response?.data);
     });
     return data;
   }
@@ -122,24 +119,24 @@ class MovieRepository {
   //! ================ movie detail =================
   Future<ServiceModel> getMovieDetail(int movieId) async {
     final data = await ServiceModel.fetch<Movie>(() async {
-      final response = await _service.getMovieDetail(movieId);
-      return Movie.fromDetailJson(response.data);
+      final response = await _service.getMovieDetail(movieId: movieId);
+      return Movie.fromDetailJson(response?.data);
     });
     return data;
   }
 
   Future<ServiceModel> getMovieMediaCredit(int movieId) async {
     final data = await ServiceModel.fetch<MediaCredit>(() async {
-      final response = await _service.getMovieMediaCredit(movieId);
-      return MediaCredit.fromJson(response.data);
+      final response = await _service.getMovieMediaCredit(movieId: movieId);
+      return MediaCredit.fromJson(response?.data);
     });
     return data;
   }
 
   Future<ServiceModel> getMovieSimilar(int movieId) async {
     final data = await ServiceModel.fetch<SimilarResult>(() async {
-      final response = await _service.getMovieSimilar(movieId);
-      return SimilarResult.fromJson(response.data);
+      final response = await _service.getMovieSimilar(movieId: movieId);
+      return SimilarResult.fromJson(response?.data);
     });
     return data;
   }
