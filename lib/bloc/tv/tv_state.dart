@@ -7,34 +7,34 @@ class TvState extends Equatable {
   final TvResult? top;
   final TvResult? popular;
   final TvResult? onAir;
-  final FormzStatus topStatus;
-  final FormzStatus popularStatus;
-  final FormzStatus onAirStatus;
+  final FormzSubmissionStatus topStatus;
+  final FormzSubmissionStatus popularStatus;
+  final FormzSubmissionStatus onAirStatus;
 
   const TvState({
     this.top,
     this.popular,
     this.onAir,
-    this.topStatus = FormzStatus.pure,
-    this.popularStatus = FormzStatus.pure,
-    this.onAirStatus = FormzStatus.pure,
+    this.topStatus = FormzSubmissionStatus.initial,
+    this.popularStatus = FormzSubmissionStatus.initial,
+    this.onAirStatus = FormzSubmissionStatus.initial,
   });
 
   TvState copyWith({
     TvResult? top,
     TvResult? popular,
     TvResult? onAir,
-    FormzStatus? topStatus,
-    FormzStatus? popularStatus,
-    FormzStatus? onAirStatus,
+    FormzSubmissionStatus? topStatus,
+    FormzSubmissionStatus? popularStatus,
+    FormzSubmissionStatus? onAirStatus,
   }) =>
       TvState(
         popular: popular ?? this.popular,
         top: top ?? this.top,
         onAir: onAir ?? this.onAir,
-        topStatus: topStatus ?? FormzStatus.pure,
-        popularStatus: popularStatus ?? FormzStatus.pure,
-        onAirStatus: onAirStatus ?? FormzStatus.pure,
+        topStatus: topStatus ?? FormzSubmissionStatus.initial,
+        popularStatus: popularStatus ?? FormzSubmissionStatus.initial,
+        onAirStatus: onAirStatus ?? FormzSubmissionStatus.initial,
       );
 
   @override

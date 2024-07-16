@@ -7,34 +7,34 @@ class HomeState extends Equatable {
   final MoviesResult? upcoming;
   final MoviesResult? popular;
   final MoviesResult? trending;
-  final FormzStatus upcomingStatus;
-  final FormzStatus popularStatus;
-  final FormzStatus trendingStatus;
+  final FormzSubmissionStatus upcomingStatus;
+  final FormzSubmissionStatus popularStatus;
+  final FormzSubmissionStatus trendingStatus;
 
   const HomeState({
     this.upcoming,
     this.popular,
     this.trending,
-    this.upcomingStatus = FormzStatus.pure,
-    this.popularStatus = FormzStatus.pure,
-    this.trendingStatus = FormzStatus.pure,
+    this.upcomingStatus = FormzSubmissionStatus.initial,
+    this.popularStatus = FormzSubmissionStatus.initial,
+    this.trendingStatus = FormzSubmissionStatus.initial,
   });
 
   HomeState copyWith({
     MoviesResult? upcoming,
     MoviesResult? popular,
     MoviesResult? trending,
-    FormzStatus? upcomingStatus,
-    FormzStatus? popularStatus,
-    FormzStatus? trendingStatus,
+    FormzSubmissionStatus? upcomingStatus,
+    FormzSubmissionStatus? popularStatus,
+    FormzSubmissionStatus? trendingStatus,
   }) =>
       HomeState(
         popular: popular ?? this.popular,
         trending: trending ?? this.trending,
         upcoming: upcoming ?? this.upcoming,
-        upcomingStatus: upcomingStatus ?? FormzStatus.pure,
-        popularStatus: popularStatus ?? FormzStatus.pure,
-        trendingStatus: trendingStatus ?? FormzStatus.pure,
+        upcomingStatus: upcomingStatus ?? FormzSubmissionStatus.initial,
+        popularStatus: popularStatus ?? FormzSubmissionStatus.initial,
+        trendingStatus: trendingStatus ?? FormzSubmissionStatus.initial,
       );
 
   @override

@@ -88,9 +88,9 @@ class _TvScreenState extends State<TvScreen> {
     return BlocBuilder<TvBloc, TvState>(
       buildWhen: (previous, current) => previous.onAir != current.onAir,
       builder: (context, state) {
-        return state.onAirStatus == FormzStatus.submissionInProgress
+        return state.onAirStatus == FormzSubmissionStatus.inProgress
             ? ContainerCategory('On Air', TvVideo(null))
-            : state.onAirStatus == FormzStatus.submissionSuccess
+            : state.onAirStatus == FormzSubmissionStatus.success
                 ? ContainerCategory(
                     'On Air', TvVideo(state.onAir?.results ?? []))
                 : Container();
@@ -102,12 +102,12 @@ class _TvScreenState extends State<TvScreen> {
     return BlocBuilder<TvBloc, TvState>(
       buildWhen: (previous, current) => previous.popular != current.popular,
       builder: (context, state) {
-        return state.popularStatus == FormzStatus.submissionInProgress
+        return state.popularStatus == FormzSubmissionStatus.inProgress
             ? Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: ContainerCategory('Popular', TvPopuler(null)),
               )
-            : state.popularStatus == FormzStatus.submissionSuccess
+            : state.popularStatus == FormzSubmissionStatus.success
                 ? Padding(
                     padding: const EdgeInsets.only(top: 15),
                     child: ContainerCategory(
@@ -122,12 +122,12 @@ class _TvScreenState extends State<TvScreen> {
     return BlocBuilder<TvBloc, TvState>(
       buildWhen: (previous, current) => previous.top != current.top,
       builder: (context, state) {
-        return state.topStatus == FormzStatus.submissionInProgress
+        return state.topStatus == FormzSubmissionStatus.inProgress
             ? Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: ContainerCategory('Top Rate', TvPopuler(null)),
               )
-            : state.topStatus == FormzStatus.submissionSuccess
+            : state.topStatus == FormzSubmissionStatus.success
                 ? Padding(
                     padding: const EdgeInsets.only(top: 15),
                     child: ContainerCategory(

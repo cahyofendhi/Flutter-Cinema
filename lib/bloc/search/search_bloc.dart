@@ -21,13 +21,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   void _init(SearchInitEvent event, Emitter<SearchState> emit) {}
 
   void _loadSearch(SubmitSearchEvent event, Emitter<SearchState> emit) async {
-    emit(state.copyWith(movieStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(movieStatus: FormzSubmissionStatus.inProgress));
     try {
       final response = await _repository!.getSearchMovie(event.query, 1);
       emit(state.copyWith(
-          movies: response.data, movieStatus: FormzStatus.submissionSuccess));
+          movies: response.data, movieStatus: FormzSubmissionStatus.success));
     } catch (err) {
-      emit(state.copyWith(movieStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(movieStatus: FormzSubmissionStatus.failure));
     }
   }
 

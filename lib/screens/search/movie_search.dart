@@ -137,9 +137,9 @@ class _MovieSearchState extends State<MovieSearch> {
         appBar: _buildAppBar(),
         body: BlocBuilder<SearchBloc, SearchState>(
           builder: (context, state) {
-            if (state.movieStatus == FormzStatus.submissionInProgress) {
+            if (state.movieStatus == FormzSubmissionStatus.inProgress) {
               return Center(child: CircularProgressIndicator());
-            } else if (state.movieStatus == FormzStatus.submissionSuccess) {
+            } else if (state.movieStatus == FormzSubmissionStatus.success) {
               MoviesResult data = state.movies!;
               totalPage = data.totalPages ?? 0;
               page = data.page ?? 0;

@@ -16,8 +16,8 @@ class NetworkClient {
   BaseOptions _optionRequest() {
     return new BaseOptions(
       baseUrl: BASE_URL,
-      connectTimeout: CONNECTION_TIME_OUT,
-      receiveTimeout: RECEIVE_TIME_OUT,
+      connectTimeout: Duration(milliseconds: CONNECTION_TIME_OUT),
+      receiveTimeout: Duration(milliseconds: CONNECTION_TIME_OUT),
     );
   }
 

@@ -27,36 +27,36 @@ class TvBloc extends Bloc<TvEvent, TvState> {
   }
 
   void _loadTop(TvTopEvent event, Emitter<TvState> emit) async {
-    emit(state.copyWith(topStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(topStatus: FormzSubmissionStatus.inProgress));
     try {
       final response = await _repository!.getTopRateTv();
       emit(state.copyWith(
-          top: response.data, topStatus: FormzStatus.submissionSuccess));
+          top: response.data, topStatus: FormzSubmissionStatus.success));
     } catch (err) {
-      emit(state.copyWith(topStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(topStatus: FormzSubmissionStatus.failure));
     }
   }
 
   void _loadPopular(TvPopularEvent event, Emitter<TvState> emit) async {
-    emit(state.copyWith(popularStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(popularStatus: FormzSubmissionStatus.inProgress));
     try {
       final response = await _repository!.getPopullerTv();
       emit(state.copyWith(
           popular: response.data,
-          popularStatus: FormzStatus.submissionSuccess));
+          popularStatus: FormzSubmissionStatus.success));
     } catch (err) {
-      emit(state.copyWith(popularStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(popularStatus: FormzSubmissionStatus.failure));
     }
   }
 
   void _loadOnAir(TvOnAirEvent event, Emitter<TvState> emit) async {
-    emit(state.copyWith(onAirStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(onAirStatus: FormzSubmissionStatus.inProgress));
     try {
       final response = await _repository!.getOnAirTv();
       emit(state.copyWith(
-          onAir: response.data, onAirStatus: FormzStatus.submissionSuccess));
+          onAir: response.data, onAirStatus: FormzSubmissionStatus.success));
     } catch (err) {
-      emit(state.copyWith(onAirStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(onAirStatus: FormzSubmissionStatus.failure));
     }
   }
 

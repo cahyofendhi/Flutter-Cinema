@@ -62,9 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
           buildWhen: (previous, current) =>
               previous.upcoming != current.upcoming,
           builder: (context, state) {
-            return state.upcomingStatus == FormzStatus.submissionInProgress
+            return state.upcomingStatus == FormzSubmissionStatus.inProgress
                 ? _upcomingMovie([])
-                : state.upcomingStatus == FormzStatus.submissionSuccess
+                : state.upcomingStatus == FormzSubmissionStatus.success
                     ? _upcomingMovie(state.upcoming?.results ?? [])
                     : Container();
           },
@@ -74,9 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocBuilder<HomeBloc, HomeState>(
           buildWhen: (previous, current) => previous.popular != current.popular,
           builder: (context, state) {
-            return state.popularStatus == FormzStatus.submissionInProgress
+            return state.popularStatus == FormzSubmissionStatus.inProgress
                 ? _populerMovie(null)
-                : state.popularStatus == FormzStatus.submissionSuccess
+                : state.popularStatus == FormzSubmissionStatus.success
                     ? _populerMovie(state.popular?.results ?? [])
                     : Container();
           },
@@ -87,9 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
           buildWhen: (previous, current) =>
               previous.trending != current.trending,
           builder: (context, state) {
-            return state.trendingStatus == FormzStatus.submissionInProgress
+            return state.trendingStatus == FormzSubmissionStatus.inProgress
                 ? _trendingMovie([])
-                : state.trendingStatus == FormzStatus.submissionSuccess
+                : state.trendingStatus == FormzSubmissionStatus.success
                     ? _trendingMovie(state.trending?.results ?? [])
                     : Container();
           },
