@@ -41,13 +41,13 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
     LoadCreditDetailMovieEvent event,
     Emitter<DetailMovieState> emit,
   ) async {
-    emit(state.copyWith(creditStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(creditStatus: FormzSubmissionStatus.inProgress));
     try {
       final response = await _repository!.getMovieMediaCredit(event.id);
       emit(state.copyWith(
-          credit: response.data, creditStatus: FormzStatus.submissionSuccess));
+          credit: response.data, creditStatus: FormzSubmissionStatus.success));
     } catch (err) {
-      emit(state.copyWith(creditStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(creditStatus: FormzSubmissionStatus.failure));
     }
   }
 
@@ -55,14 +55,14 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
     LoadSimiliarDetailMovieEvent event,
     Emitter<DetailMovieState> emit,
   ) async {
-    emit(state.copyWith(similiarStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(similiarStatus: FormzSubmissionStatus.inProgress));
     try {
       final response = await _repository!.getMovieSimilar(event.id);
       emit(state.copyWith(
           similiar: response.data,
-          similiarStatus: FormzStatus.submissionSuccess));
+          similiarStatus: FormzSubmissionStatus.success));
     } catch (err) {
-      emit(state.copyWith(similiarStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(similiarStatus: FormzSubmissionStatus.failure));
     }
   }
 

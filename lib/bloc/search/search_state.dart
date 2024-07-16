@@ -5,20 +5,20 @@ import '../../models/movie/movies_result.dart';
 
 class SearchState extends Equatable {
   final MoviesResult? movies;
-  final FormzStatus movieStatus;
+  final FormzSubmissionStatus movieStatus;
 
   const SearchState({
     this.movies,
-    this.movieStatus = FormzStatus.pure,
+    this.movieStatus = FormzSubmissionStatus.initial,
   });
 
   SearchState copyWith({
     MoviesResult? movies,
-    FormzStatus? movieStatus,
+    FormzSubmissionStatus? movieStatus,
   }) =>
       SearchState(
         movies: movies ?? this.movies,
-        movieStatus: movieStatus ?? FormzStatus.pure,
+        movieStatus: movieStatus ?? FormzSubmissionStatus.initial,
       );
 
   @override

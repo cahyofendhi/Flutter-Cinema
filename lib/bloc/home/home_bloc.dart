@@ -28,41 +28,41 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _loadUpcoming(HomeUpcomingEvent event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(upcomingStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(upcomingStatus: FormzSubmissionStatus.inProgress));
     try {
       await for (ServiceModel result in _repository!.getUpcomingMovie(1)) {
         emit(state.copyWith(
             upcoming: result.data,
-            upcomingStatus: FormzStatus.submissionSuccess));
+            upcomingStatus: FormzSubmissionStatus.success));
       }
     } catch (err) {
-      emit(state.copyWith(upcomingStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(upcomingStatus: FormzSubmissionStatus.failure));
     }
   }
 
   void _loadPopular(HomePopularEvent event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(popularStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(popularStatus: FormzSubmissionStatus.inProgress));
     try {
       await for (ServiceModel result in _repository!.getPopulerMovie(1)) {
         emit(state.copyWith(
             popular: result.data,
-            popularStatus: FormzStatus.submissionSuccess));
+            popularStatus: FormzSubmissionStatus.success));
       }
     } catch (err) {
-      emit(state.copyWith(popularStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(popularStatus: FormzSubmissionStatus.failure));
     }
   }
 
   void _loadTrending(HomeTrendingEvent event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(trendingStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(trendingStatus: FormzSubmissionStatus.inProgress));
     try {
       await for (ServiceModel result in _repository!.getPopulerMovie(1)) {
         emit(state.copyWith(
             trending: result.data,
-            trendingStatus: FormzStatus.submissionSuccess));
+            trendingStatus: FormzSubmissionStatus.success));
       }
     } catch (err) {
-      emit(state.copyWith(trendingStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(trendingStatus: FormzSubmissionStatus.success));
     }
   }
 

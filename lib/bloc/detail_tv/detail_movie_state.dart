@@ -4,20 +4,20 @@ import 'package:formz/formz.dart';
 
 class DetailTvState extends Equatable {
   final TV? movie;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
 
   const DetailTvState({
     this.movie,
-    this.status = FormzStatus.pure,
+    this.status = FormzSubmissionStatus.initial,
   });
 
   DetailTvState copyWith({
     TV? movie,
-    FormzStatus? status,
+    FormzSubmissionStatus? status,
   }) =>
       DetailTvState(
         movie: movie ?? this.movie,
-        status: status ?? FormzStatus.pure,
+        status: status ?? FormzSubmissionStatus.initial,
       );
 
   @override

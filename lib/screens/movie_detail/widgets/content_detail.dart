@@ -113,9 +113,9 @@ class _ContentDetailState extends State<ContentDetail> {
           previous.creditStatus != current.creditStatus,
       builder: (context, state) {
         Widget cardItem = Container();
-        if (state.creditStatus == FormzStatus.submissionInProgress) {
+        if (state.creditStatus == FormzSubmissionStatus.inProgress) {
           cardItem = CastDetailItem(null);
-        } else if (state.creditStatus == FormzStatus.submissionSuccess) {
+        } else if (state.creditStatus == FormzSubmissionStatus.success) {
           cardItem = CastDetailItem(state.credit);
         }
         return Column(
@@ -218,9 +218,9 @@ class _ContentDetailState extends State<ContentDetail> {
           previous.similiarStatus != current.similiarStatus,
       builder: (context, state) {
         Widget cardItem = Container();
-        if (state.similiarStatus == FormzStatus.submissionInProgress) {
+        if (state.similiarStatus == FormzSubmissionStatus.inProgress) {
           cardItem = SimiliarMovie(null);
-        } else if (state.similiarStatus != FormzStatus.submissionSuccess) {
+        } else if (state.similiarStatus != FormzSubmissionStatus.success) {
           cardItem = SimiliarMovie(state.similiar);
         }
         return Column(

@@ -9,30 +9,30 @@ class DetailMovieState extends Equatable {
   final Movie? movie;
   final MediaCredit? credit;
   final SimilarResult? similiar;
-  final FormzStatus creditStatus;
-  final FormzStatus similiarStatus;
+  final FormzSubmissionStatus creditStatus;
+  final FormzSubmissionStatus similiarStatus;
 
   const DetailMovieState({
     this.movie,
     this.credit,
     this.similiar,
-    this.creditStatus = FormzStatus.pure,
-    this.similiarStatus = FormzStatus.pure,
+    this.creditStatus = FormzSubmissionStatus.initial,
+    this.similiarStatus = FormzSubmissionStatus.initial,
   });
 
   DetailMovieState copyWith({
     Movie? movie,
     MediaCredit? credit,
     SimilarResult? similiar,
-    FormzStatus? creditStatus,
-    FormzStatus? similiarStatus,
+    FormzSubmissionStatus? creditStatus,
+    FormzSubmissionStatus? similiarStatus,
   }) =>
       DetailMovieState(
         movie: movie ?? this.movie,
         credit: credit ?? this.credit,
         similiar: similiar ?? this.similiar,
-        creditStatus: creditStatus ?? FormzStatus.pure,
-        similiarStatus: similiarStatus ?? FormzStatus.pure,
+        creditStatus: creditStatus ?? FormzSubmissionStatus.initial,
+        similiarStatus: similiarStatus ?? FormzSubmissionStatus.initial,
       );
 
   @override
